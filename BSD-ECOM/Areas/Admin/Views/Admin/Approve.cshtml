@@ -1,0 +1,316 @@
+﻿@model BSD_ECOM.Areas.Admin.Models.AddNewProduct
+
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    int companyid = Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetString("Company_Id"));
+}
+@{
+    ViewData["Title"] = "Approve";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <style>
+        .form-group.textarea-form textarea#Description {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+        }
+
+        .form-group.textarea-form1 textarea#additional {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+        }
+
+        .form-group.textarea-form2 textarea#ingredients {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">VIEW DETAIL PRODUCT</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">VIEW DETAIL PRODUCT</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <input type="hidden" id="id" name="ID" value="@Model.ID" />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Name</label>
+                                                    <input type="text" class="form-control" id="txtItemName" placeholder="Item Name" name="ItemName" value="@Model.ItemName" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Url</label>
+                                                    <input type="text" class="form-control" id="txtUrl" placeholder="Url Name" name="URLName" value="@Model.URLName" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Super Category</label>
+                                                    <input type="hidden" id="GroupID" name="GroupID" value="@Model.GroupID" />
+                                                    <input type="text" class="form-control" id="txtSuperCategory" placeholder="Super Category" name="GroupID" value="@Model.Main_cat_name" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Category</label>
+                                                    <input type="hidden" id="CategoryID" name="CategoryID" value="@Model.CategoryID" />
+                                                    <input type="text" class="form-control" id="txtCategory" placeholder="Super Category" name="CategoryID" value="@Model.category_name" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Sub Category</label>
+                                                    <input type="hidden" id="SubGroupID" name="SubGroupID" value="@Model.SubGroupID" />
+                                                    <input type="text" class="form-control" id="txtSubCategory" placeholder="Sub Category" name="SubGroupID" value="@Model.cat_name" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Brand</label>
+                                                    <input type="text" class="form-control" id="txtBrandID" placeholder="Product Tags" name="BrandID" value="@Model.brand_name" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">HSNCode</label>
+                                                    <input type="text" class="form-control" id="txtHSNCode" placeholder="HSNCode" name="HSNCode" value="@Model.HSNName" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                        </div>
+                                        <div id="divproductdata">
+                                            <div style="display:none">
+                                                <h3 class="page-header">Product Data</h3>
+                                                <div id="divgeneral">
+                                                    <h4><i class="fa fa-bars"></i>General</h4>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-700 font-size-16">SKU</label>
+                                                                <input type="text" class="form-control" id="txtSkuCode" placeholder="SKU Code" name="SKUCode" value="@Model.SKUCode" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-700 font-size-16">Regular Price (Rs.)</label>
+                                                                <input type="text" class="form-control" id="txtRegularPrice" placeholder="Regular Price (Rs.)" name="CostPrice" value="@Model.CostPrice" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-700 font-size-16">Sale Price (Rs.)</label>
+                                                                <input type="text" class="form-control" id="txtSalePrice" placeholder="Sale Price (Rs.)" name="MRP" value="@Model.MRP" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div id="divInventory" style="display:none">
+                                                <h4><i class="fa fa-line-chart"></i>Inventory</h4>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-700 font-size-16">Stock status</label>
+                                                            <input type="text" class="form-control" id="txtStockstatus" placeholder="Stock status" name="StockStatus" value="@Model.StockStatus" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div id="divShipping" style="display:none">
+                                                <h4><i class="fa fa-truck"></i>Shipping</h4>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-700 font-size-16">Weight &nbsp;(gm/L)</label>
+                                                            <div class="form-inline">
+                                                                <input type="text" class="form-control" id="txtWeight" placeholder="Weight(gm/L)" style="width:45%" name="Weight" />
+                                                                <select id="ddlweight" class="form-control" tabindex="1" style="width:50%">
+                                                                    <option value="0">Select</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-700 font-size-16">Dimension (cm)</label>
+                                                            <div class="form-inline">
+                                                                <input type="text" class="form-control" id="txtLength" placeholder="Dimension (cm)" style="width:32%" name="Dimension" value="@Model.Dimension" />
+                                                                <input type="text" class="form-control" id="txtwidth" placeholder="Dimension (cm)" style="width:32%" />
+                                                                <input type="text" class="form-control" id="txtheight" placeholder="Dimension (cm)" style="width:32%" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="display:none">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-700 font-size-16">Shipping Charges</label>
+                                                            <input type="text" class="form-control" id="txtShipCharges" placeholder="Shipping Charges" name="ShipCharge" value="@Model.ShipCharge" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div id="divImages">
+                                                <h4><i class="fa fa-image"></i>Images</h4>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-700 font-size-16">Featured Image</label>
+                                                            <input type="file" class="form-control" id="imagefile" name="FeaturedImage" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <img id="img" src="~/images/productimage/@companyid/@Model.image" alt="your image" width="75" height="80" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-700 font-size-16">Back Image</label>
+                                                            <input type="file" class="form-control" id="backimage" name="BackImage" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <img id="backimg" src="~/images/productimage/@companyid/@Model.image1" alt="your image" width="75" height="80" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-700 font-size-16">Left Image</label>
+                                                            <input type="file" class="form-control" id="leftimage" name="LeftImage" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <img id="leftimg" src="~/images/productimage/@companyid/@Model.image2" alt="your image" width="75" height="80" ismap />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-700 font-size-16">Right  Image</label>
+                                                            <input type="file" class="form-control" id="rightimage" name="RightImage" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <img id="rightimg" src="~/images/productimage/@companyid/@Model.image3" alt="your image" width="75" height="80" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Status</label>
+                                                        <input type="checkbox" id="chkStatus" checked />waiting Approval
+                                                    </div>
+                                                </div>
+                                                @*<div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-700 font-size-16">Flag</label>
+                                                            <input type="checkbox" id="chkApproval" checked />Approval
+                                                        </div>
+                                                    </div>*@
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div id="divDescription">
+                                            @using (Html.BeginForm("Approve", "Admin", FormMethod.Post))
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group textarea-form">
+                                                            <label class="font-weight-700 font-size-25">Product Short Description</label>
+                                                            @*<textarea id="txtProductDesc" class="ckeditor" name="Description" rows="200"></textarea>*@
+                                                            @*@Html.TextAreaFor(d => d.Description)*@  <br />
+                                                            <div style="border: 1px solid;">
+                                                                @Html.Raw(Model.Description)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group textarea-form1 texta">
+                                                            <label class="font-weight-700 font-size-16">Additional Information</label>
+                                                            @*<textarea id="AddInformation" class="ckeditor" name="additional" rows="200"></textarea>*@
+                                                            <div style="border: 1px solid;">
+                                                                @Html.Raw(Model.additional)
+                                                            </div>
+                                                            @*@Html.TextAreaFor(d => d.additional)  <br />*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group textarea-form2">
+                                                            <label class="font-weight-700 font-size-16">Ingredients</label>
+                                                            @*<textarea id="Ingredients" class="ckeditor" name="ingredients" rows="200" value="@Model.ingredients"></textarea>*@
+                                                            <div style="border: 1px solid;">
+                                                                @Html.Raw(Model.ingredients)
+                                                            </div>
+                                                            @*@Html.TextAreaFor(d => d.ingredients)*@  <br />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    @*<div class="form-actions mt-10">
+                                            <input type="button" class="btn btn-primary" id="btnSave" onclick="Save()" value="Submit For Review" />
+                                            <input type="button" class="btn btn-danger" value="Clear" onclick="Clear()" />
+                                        </div>*@
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            <input type="hidden" ID="hdnBalance" Value="0" />
+            <input type="hidden" id="hdnStock" value="0" />
+            <!--/ Content-->
+        </div>
+    </div>
+    <script src="@Url.Content("~/js/Admin/ApproveItem.js")"></script>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .contact-form fieldset {
+        border: 3px solid #008000;
+        padding: 35px;
+        border-radius: 20px;
+        margin-top: 50px;
+        position: relative;
+    }
+        .contact-form fieldset legend {
+            left: 21px;
+            width: 42%;
+            font-size: 18px;
+            margin-left: 10px;
+            padding: 10px 5px 10px 17px;
+            border: 3px solid #008000;
+            color: #000;
+            position: absolute;
+            top: -29px;
+            background: white;
+            border-radius: 10px;
+        }
+    .contact-form label {
+        margin: 10px 0 0 0;
+    }
+    .padding-bottom {
+        padding-bottom: 75px;
+    }
+</style>
+<main class="main">
+     <div class="page-header mt-30 mb-50">
+        <div class="container-fluid">
+            <div class="archive-header">
+                <div class="row align-items-center">
+                    <div class="col-xl-3">
+                        <h1 class="mb-15"> Contact Us</h1>
+                        <div class="breadcrumb">
+                            <a href="/Home/Index" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                             <span></span> Contact Us
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+      <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    @*<h4 id="Locality_detailsName">Connect with "Akash medical shop"</h4>*@
+                    <h4 id="Locality_detailsName"></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                       @* <div class="col-md-4">
+                            <img width="100%" src="assets/img/s1.png" id="locDetailsimg">
+                        </div>*@
+                        <div class="col-md-12">
+                         <p>  We have received your message and would like to thank you for writing to us.</p> <p>If your inquiry is urgent, please use the telephone number
+                         listed below to talk to one of our staff members.</p><p> Otherwise, we will reply by email as soon as possible.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="subscription">
+            <div class="container padding-bottom">
+                
+                <div class="row">
+                    <div class="col-md-8 col-sm-12 col-xs-12 contact-form">
+                        <fieldset>
+                            <legend>Contact Information</legend>
+                            <div class="row">
+                                <input type="hidden" id="id" value="0" />
+                                <div class="col-md-6 col-sm-6">
+                                    <label>First Name</label><br>
+                                    <input name="txtFname" type="text" id="txtFname" maxlength="100"  class="form-control valid" err="Please Enter First Name">
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <label>Last Name</label><br>
+                                    <input name="txtLname" type="text" id="txtLname" maxlength="100" class="form-control valid" err="Please Enter Last Name">
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-md-6 col-sm-6">
+                                    <label>Your Email</label><br>
+                                    <input name="txtEmail" type="text" id="txtEmail" maxlength="100"  class="form-control valid" err="Please Enter Email">
+                                      
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <label>Your Phone</label><br>
+                                    <input name="txtMobile" type="text" id="txtMobile" maxlength="10" class="form-control valid numberone" err="Please Enter Mobile">
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-md-12 col-sm-12">
+                                    <label>Message</label><br>
+                                    <input name="txtComments" type="text" id="txtComments" maxlength="500" class="form-control valid" err="Please Enter Message">
+                                    <br />
+                                    <div align="right">
+                                        <input type="button" name="btnSumit" value="Submit" onclick=" return Save()" id="btnSumit" class="main-btn" style="margin-top: 10PX;margin-bottom: 0px !important;">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12 responsive-margin">
+                    <div class="address" style="padding-top: 45px; border: 3px solid #008000; border-radius: 10px; padding: 20px; margin-top: 49px;">
+                        <h4 class="office-text-heading" style="margin-left: 119px;">Address</h4>
+                        <div class="office-text" style="margin-top: 27px;">
+                            <p><h5>BSD INFOTECH</h5></p>
+                            <p><h6>BE-373, A/2 Behind Street No. 1, Hari Nagar, New Delhi</h6></p>
+                            <div>
+                                <h6>Pin Code – <strong>110064</strong></h6>
+                            </div>
+                            <div>
+                                <h6>Contact – <strong>9871092024/8588827540</strong></h6>
+                            </div>
+                            <div>
+                                <h6>Email – <strong>info@bsdinfotech.com</strong></h6>
+                            </div>
+
+                            @*  <p><h5>@HttpContextAccessor.HttpContext.Session.GetString("SiteName")</h5></p>
+                            <p><h6>@HttpContextAccessor.HttpContext.Session.GetString("Comp_Address")</h6></p>
+                            <p><strong>Email :</strong> <span>@HttpContextAccessor.HttpContext.Session.GetString("EmailID")</span></p>
+                            <p><strong>Helpline No. :</strong> <span>@HttpContextAccessor.HttpContext.Session.GetString("MobileNo")</span></p> *@
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+
+            </div>
+    </section>
+</main>
+
+<script src="@Url.Content("~/js/Front/contact-us.js")"></script>
+

@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "CustomerList";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title" id="customerlist">Customer List</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Customer List</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="mr-auto" @* style="margin-top: -98px;" @* style=" margin-top: -104px; margin-left: 540px; *@">
+                        <li class="btn-group nav-item d-none d-xl-inline-block">
+                            <div class="app-menu">
+                                <div class="search-bx mx-5">
+
+                                    <div class="input-group">
+                                        <input type="search" class="form-control" id="txtsearch" placeholder="Search" oninput="CustomerList()" aria-label="Search" style="    width: 300px;
+    margin-left: 433px;" aria-describedby="button-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn" type="submit" id="btnsearch" onclick="ProductList()"></button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <input type="hidden" id="reg_id" value="0" />
+                                        <div class="col-md-12">
+                                            <div class="col-md-8" style="padding-top:10px;">
+                                                <input type="button" class="btn btn-danger" value="Export To excel" name="LoadExcel" id="LoadExcel" onclick="exportexcel('xlsx')" />
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive rounded card-table">
+                                            <table class="table border-no" id="data-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="display:none">Id</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Password</th>
+                                                        <th>Mobile No</th>
+                                                        
+                                                        <th>State</th>
+                                                        <th>City</th>
+                                                        <th style="display:none">DOB</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbodyData"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--/ Content-->
+        </div>
+    </div>
+    <script src="@Url.Content("~/js/Admin/CustomerList.js")"></script>
+    <script src="@Url.Content("~/js/xlxs.full.min.js")"></script>
+    <script type="text/javascript">
+        CustomerList();
+    </script>
+</body>
+</html>

@@ -1,0 +1,846 @@
+﻿@model BSD_ECOM.ViewModel.IndexViewModel
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+<style>
+    .header-style-1 .search-style-2 section {
+        border: 2px solid #BCE3C9;
+        border-radius: 4px;
+        max-width: 700px;
+        background-color: #fff;
+        margin:0 auto;
+    }
+
+    .search-style-2 section {
+        width: 100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        position: relative;
+    }
+
+    /* .quantitys h4 {
+        display: block; /* Ensures each heading is on a new line */
+        margin: 0; /* Adjust as needed to control spacing */
+    } */
+
+
+    .header-style-1 .search-style-2 section input {
+        max-width: 600px;
+        border-width: 0px;
+        border-radius: 0 5px 5px 0;
+        margin-left: 20px;
+        background-color: #fff;
+        border: none;
+    }
+
+    .search-style-2 section input {
+        width: 100%;
+        max-width: 683px;
+        font-size: 14px;
+        /*   background-image: url('/assets/imgs/theme/icons/search.png');
+       background-repeat: no-repeat;
+        background-position: center right;*/
+        padding-left: 0;
+        height: 50px;
+        line-height: 50px;
+        font-size: 14px;
+    }
+
+    .search img {
+        /* background-image: url('/assets/imgs/theme/icons/search.png');*/
+        background-repeat: no-repeat;
+        background-position: center right;
+        height: 30px;
+        object-fit: contain;
+        position: relative;
+        top: 10px;
+        /*height: 50px;
+        line-height: 50px;*/
+    }
+
+    .search-container {
+        position: relative;
+        width: 300px;
+    }
+
+    .search-results {
+      /*   border: 1px solid #ccc; */
+        max-height: 150px;
+        overflow-y: auto;
+        position: absolute;
+        width: 78%;
+        background-color: white;
+        z-index: 1;
+        margin-top: 49px;
+        margin-left: 155px;
+    }
+
+        .search-results div {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+            .search-results div:hover {
+                background-color: #f1f1f1;
+            }
+
+         
+</style>
+<header class="header-area header-style-1 header-height-2">
+    <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+        @*<div style="text-align:center;font-size:x-large"><a href="/images/Team Harmony Folder.pdf" target="_blank" style="color:red">Vasant Vihar Society Election 2024</a></div> *@
+        <div class="container-fluid">
+            <div class="header-wrap">
+                <div class="logo logo-width-1">
+                    <a href="/Home/Index"><img src="/images/CompanyLogo/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@HttpContextAccessor.HttpContext.Session.GetString("logo")" alt="logo"></a>
+                </div>
+
+                <div class="header-right">
+                    <div class="search-style-2">
+
+                        @*@using(Html.BeginForm("SearchItem", "home", FormMethod.Get, new { entye = "multipart/Form-data" }))
+                        {*@
+                        <section>
+
+                            <select class="select-active" id="dropcatid">
+                                <option value="0">All Categories</option>
+                                @if (Model.categories.Count > 0)
+                                {
+                                    foreach (var item in Model.categories)
+                                    {
+                                        <option value="@item.category_id">@item.category_name</option>
+                                    }
+                                }
+                            </select>
+                            @* <input type="text" id="txtSearch" placeholder="Search for items..." onFocus="if(this.value=='Data Search') this.value=''" onBlur="if(this.value=='') this.value='Data Search'">
+                            <div class="search"><img src="/assets/imgs/theme/icons/search.png" onclick="javascript: return fncheckselectval();"></div> *@
+
+                            <input type="text" class="form-control" id="txtitemnameidon" />
+                            <div id="search-results" class="search-results" onclick="FocusItemName()"></div> 
+
+
+                            @*  }*@
+                        </section>
+
+                    </div>
+                    <div class="header-action-right">
+                        <div class="header-action-2">
+                            <div class="search-location" style="display:none">
+                                <form action="#">
+                                    <select class="select-active">
+                                        <option>Your Location</option>
+                                        <option>Alabama</option>
+                                        <option>Alaska</option>
+                                        <option>Arizona</option>
+                                        <option>Delaware</option>
+                                        <option>Florida</option>
+                                        <option>Georgia</option>
+                                        <option>Hawaii</option>
+                                        <option>Indiana</option>
+                                        <option>Maryland</option>
+                                        <option>Nevada</option>
+                                        <option>New Jersey</option>
+                                        <option>New Mexico</option>
+                                        <option>New York</option>
+                                    </select>
+                                </form>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a href="#">
+                                    <img class="svgInject" alt="" src="/images/icons/blog.png">
+                                    @*<span class="pro-count blue">6</span>*@
+                                </a>
+                                <a href="https://www.bsdinfotechpvtltd.wordpress.com"><span class="lable">Blog</span></a>
+                                @* <a href="home/blog"><span class="lable">Blog</span></a> *@
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a href="#">
+                                    <img class="svgInject" alt="Nest" src="/images/icons/icon-heart.svg">
+                                    @*<span class="pro-count blue">6</span>*@
+                                </a>
+                                <a href="/wishlist"><span class="lable">Wishlist</span></a>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a class="mini-cart-icon" href="javascript:void(0)">
+                                    <img alt="Nest" src="/images/icons/icon-cart.svg">
+                                    <span class="pro-count blue" id="carttotal">@HttpContextAccessor.HttpContext.Session.GetInt32("count")</span>
+                                </a>
+                                <a href="javascript:void(0)"><span class="lable">Cart</span></a>
+                                <div id="divcart">
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                                        <ul>
+                                            @{
+                                                double total = 0;
+                                            }
+                                            @if (ViewBag.ccc > 0)
+                                            {
+                                                @foreach (var item in ViewBag.cart)
+                                                {
+                                                    total = (total + item.totalprice);
+                                                    <li>
+                                                        <div class="shopping-cart-img">
+                                                            <input type="hidden" value="@item.stockqty" id="unitqtyid" />
+                                                            <a href="#"><img alt="Nest" src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.productimage"></a>
+                                                        </div>
+                                                        <div class="shopping-cart-title">
+                                                            <h4><a href="/product/@item.productid/@item.itemdetid/@item.productname.Replace(" ","-")/@item.CategoryId">@item.productname</a></h4>
+                                                            
+                                                            <div class="quantitys">
+                                                                <h4><span>@item.quantity × </span>@item.productprice</h4>
+
+                                                                
+                                                                
+
+                                                                @* <div class="quantity">
+                                                                <button class="minus" aria-label="Decrease">&minus;</button>
+                                                                <input type="number" class="input-box" value="1" min="1" max="10">
+                                                                <button class="plus" aria-label="Increase">&plus;</button>
+                                                                </div> *@
+                                                                @* <div class="detail-extralink">
+                                                                    <div class="detail-qty border radius">
+                                                                        <a href="#" class="qty-down" onclick="changepriceiddown(@item.productid,'1')"><i class="fi-rs-angle-small-down"></i></a>
+                                                                        <span class="qty-val" id="quantity_@item.productid">@item.quantity</span>
+                                                                        <a href="#" class="qty-up" onclick="changepriceid(@item.productid,'2')"><i class="fi-rs-angle-small-up"></i></a>
+                                                                    </div>
+
+                                                                </div> *@
+                                                            </div>
+                                                            <div>
+                                                                <h4>Quantity -<span>@item.quantity  </span></h4>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        
+
+
+
+                                                       @*  <div class="shopping-cart-delete" style="">
+                                                            <a href="#"><i class="fi-rs-cross-small"></i></a>
+                                                        </div> *@
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+
+                                        <div class="shopping-cart-footer">
+                                            <div class="shopping-cart-total">
+                                                <h4>Total <span>@total</span></h4>
+                                            </div>
+                                            <div class="shopping-cart-button">
+                                                <a href="/cart" class="outline">View cart</a>
+                                                <a href="/CheckOut">Checkout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="header-action-icon-2">
+
+                                @if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("customerid")))
+                                {
+                                    <a href="/Login">
+                                        <img class="svgInject" alt="Nest" src="/images/icons/icon-user.svg">
+                                    </a>
+                                    <a href="/Login"><span class="lable ml-0">Login</span></a>
+                                }
+                                else
+                                {
+                                    <a href="/CustomerAccount">
+                                        <img class="svgInject" alt="Nest" src="/images/icons/icon-user.svg">
+                                    </a>
+                                    <a href="/CustomerAccount">
+                                        <span class="lable ml-0">
+                                            @HttpContextAccessor.HttpContext.Session.GetString("customerfirstname") @HttpContextAccessor.HttpContext.Session.GetString("customerlastname")
+                                    </span></a>
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                        <ul>
+                                            <li>
+                                                <a href="/CustomerAccount"><i class="fi fi-rs-user mr-10"></i>My Account</a>
+                                            </li>
+
+                                            <li>
+                                                <a href="/Logout"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a>
+                                            </li>
+                                        </ul>
+
+
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-bottom header-bottom-bg-color sticky-bar">
+        <div class="container-fluid">
+            <div class="header-wrap header-space-between position-relative">
+                <div class="logo logo-width-1 d-block d-lg-none">
+                    <a href="/home/index"><img src="/images/CompanyLogo/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@HttpContextAccessor.HttpContext.Session.GetString("logo")" alt="logo"></a>
+                </div>
+                <div class="header-nav d-none d-lg-flex">
+                    @* <div class="main-categori-wrap d-none d-lg-block">
+                        <a class="categories-button-active" href="#">
+                            <span class="fi-rs-apps"></span> <span class="et">Browse</span> Categories
+                            <i class="fi-rs-angle-down"></i>
+                        </a>
+                        <div class="categories-dropdown-wrap categories-dropdown-active-large font-heading">
+                            <div class="d-flex categori-dropdown-inner">
+                                @{
+                                    int j = 0, k = 0, lop = 0;
+                                    int cc = Model.subcategories.Count;
+                                    if (cc > 10)
+                                    {
+                                        //lop = 10;
+                                        lop = Model.subcategories.Count;
+                                    }
+                                    else
+                                    {
+                                        lop = Model.subcategories.Count;
+                                    }
+                                }
+                                @if (Model.subcategories.Count > 0)
+                                {
+                                    <ul>
+                                        @for (int i = 0; i < lop; i++)
+                                        {
+                                            if (i % 2 == 0)
+                                            {
+                                             <li><a href="/Category/@Model.subcategories[i].cat_id/@Model.subcategories[i].cat_name.Replace(" ","-")"><img src="/images/SubCategory/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@Model.subcategories[i].Image" alt="">@Model.subcategories[i].cat_name</a></li>
+                                            }
+                                        }
+                                    </ul>
+                                    <ul class="end">
+                                        @for (int i = 0; i < lop; i++)
+                                        {
+                                            if (i % 2 != 0)
+                                            {
+                                             <li><a href="/Category/@Model.subcategories[i].cat_id/@Model.subcategories[i].cat_name.Replace(" ","-")"><img src="/images/SubCategory/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@Model.subcategories[i].Image" alt="">@Model.subcategories[i].cat_name</a></li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                            <div class="more_slide_open" style="display: none">
+                                <div class="d-flex categori-dropdown-inner">
+                                </div>
+                            </div>
+                            <div class="more_categories" style="display: none"><span class="icon"></span> <span class="heading-sm-1">Show more...</span></div>
+                        </div>
+                    </div> *@
+                    <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block font-heading">
+                        <nav>
+                            <ul>
+                                @foreach (var item in Model.mainCategories)
+                                {
+                                    <li class="position-static">
+                                        <a href="/Category/@item.Main_cat_id/@item.Main_cat_name.Replace(" ","-")/1/@item.Main_cat_id" onclick="">@item.Main_cat_name<i class="fi-rs-angle-down"></i></a>
+                                        <ul class="mega-menu">
+
+                                            @foreach (var Catitem in Model.categories)
+                                            {
+                                                if (item.Main_cat_id == Catitem.Main_cat_id)
+                                                {
+                                                    <li class="sub-mega-menu sub-mega-menu-width-22">
+                                                        <a class="menu-title" href="/Category/@Catitem.category_id/@Catitem.category_name.Replace(" ","-")/2/@Catitem.Main_cat_id">@Catitem.category_name</a>
+                                                        @*  <ul>
+                                            @foreach (var Subitem in Model.subcategories)
+                                            {
+                                            if (Catitem.category_id == Subitem.category_id)
+                                            {
+                                            <li><a href="/Category/@Subitem.cat_id/@Subitem.cat_name.Replace(" ", "-")">@Subitem.cat_name</a></li>
+                                            }
+                                            }
+                                            </ul> *@
+                                                    </li>
+                                                }
+                                            }
+                                            <li class="sub-mega-menu sub-mega-menu-width-34" style=" float: right;">
+                                                @* <div class="menu-banner-wrap">
+                                            <a href="shop-product-right.html"><img src="/images/banner/banner-menu.png" alt="Nest"></a>
+                                            <div class="menu-banner-content">
+                                            <h4></h4>
+                                            <h3>
+                                            <br>
+                                            </h3>
+                                            </div>
+                                            </div> *@
+                                            </li>
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="hotline d-none d-lg-flex">
+                   @*  <img src="/images/icons/icon-headphone.svg" alt="hotline"> <p>
+                        9871092024 /
+                        9312289566<span></span>
+                    </p> *@
+                </div>
+                <div class="header-action-icon-2 d-block d-lg-none">
+                    <div class="burger-icon burger-icon-white">
+                        <span class="burger-icon-top"></span>
+                        <span class="burger-icon-mid"></span>
+                        <span class="burger-icon-bottom"></span>
+                    </div>
+                </div>
+                <div class="header-action-right d-block d-lg-none">
+                    <div class="header-action-2">
+                        <div class="header-action-icon-2">
+                            <a href="shop-wishlist.html">
+                                <img alt="Nest" src="/images/icons/icon-heart.svg">
+                                <span class="pro-count white">4</span>
+                            </a>
+                        </div>
+                        <div class="header-action-icon-2">
+                            <a class="mini-cart-icon" href="#">
+                                <img alt="Nest" src="/images/icons/icon-cart.svg">
+                                <span class="pro-count blue">@HttpContextAccessor.HttpContext.Session.GetInt32("count")</span>
+                            </a>
+                            <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                                <ul>
+                                    @*@{int total = 0; }*@
+                                    @if (ViewBag.count > 0)
+                                    {
+                                        @foreach (var item in ViewBag.cart)
+                                        {
+                                            total = item.totalprice;
+                                            <li>
+                                                <div class="shopping-cart-img" style="float: left;">
+                                                    <a href="/product/@item.productid/@item.itemdetid/@item.productname.Replace(" ","-")/@item.CategoryId"><img alt="Nest" src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.productimage"></a>
+                                                </div>
+                                                <div class="shopping-cart-title">
+                                                    <h4><a href="/product/@item.productid/@item.itemdetid/@item.productname.Replace(" ","-")/@item.CategoryId">@item.productname</a></h4>
+                                                    <h4><span>@item.quantity × </span>@item.productprice</h4>
+
+                                                </div>
+                                                @* <div class="shopping-cart-delete">
+                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
+                                                </div> *@
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                                <div class="shopping-cart-footer">
+                                    <div class="shopping-cart-total">
+                                        <h4>Total <span>@total</span></h4>
+                                    </div>
+                                    <div class="shopping-cart-button">
+                                        <a href="/cart" class="outline">View cart</a>
+                                        <a href="shop-checkout.html">Checkout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div class="mobile-header-active mobile-header-wrapper-style">
+    <div class="mobile-header-wrapper-inner">
+        <div class="mobile-header-top">
+            <div class="mobile-header-logo">
+                <a href="/Home/Index"><img src="/images/CompanyLogo/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@HttpContextAccessor.HttpContext.Session.GetString("logo")" alt="logo"></a>
+            </div>
+            <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                <button class="close-style search-close">
+                    <i class="icon-top"></i>
+                    <i class="icon-bottom"></i>
+                </button>
+            </div>
+        </div>
+        <div class="mobile-header-content-area">
+            <div class="mobile-search search-style-3 mobile-header-border">
+                <input type="text" id="txtSearch1" placeholder="Search for items..." onFocus="if(this.value=='Data Search') this.value=''" onBlur="if(this.value=='') this.value='Data Search'">
+                <div class="search"><img src="/assets/imgs/theme/icons/search.png" onclick="javascript: return fncheckselectvalmob();"></div>
+                @*<form action="#">
+                @*<input type="text" placeholder="Search for items…">
+                <button type="submit"><i class="fi-rs-search"></i></button>*@
+                @*</form>*@
+            </div>
+            <div class="mobile-menu-wrap mobile-header-border">
+                <!-- mobile menu start -->
+                <nav>
+                    <ul class="mobile-menu font-heading">
+                        <li class="menu-item-has-children">
+                            <a href="/Home/Index">Home</a>
+                        </li>
+                        <li class="menu-item-has-children">
+                            <a href="/Home/About">About</a>
+                        </li>
+                        @foreach (var item in Model.mainCategories)
+                        {
+                            <li class="menu-item-has-children">
+                                <a href="#">@item.Main_cat_name</a>
+                                <ul class="dropdown">
+                                    @foreach (var Catitem in Model.categories)
+                                    {
+                                        if (item.Main_cat_id == Catitem.Main_cat_id)
+                                        {
+                                            <li class="menu-item-has-children">
+                                                <a href="/Category/@Catitem.category_id/@Catitem.category_name.Replace(" ","-")">@Catitem.category_name</a>
+                                                <ul class="dropdown">
+                                                    @foreach (var Subitem in Model.subcategories)
+                                                    {
+                                                        if (Catitem.category_id == Subitem.category_id)
+                                                        {
+                                                            <li><a href="/Category/@Subitem.cat_id/@Subitem.cat_name.Replace(" ", "-")">@Subitem.cat_name</a></li>
+                                                        }
+                                                    }
+
+                                                </ul>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        @*   <li class="menu-item-has-children">
+                        <a href="blog-category-fullwidth.html">Blog</a>
+                        </li>*@
+                        <li class="menu-item-has-children">
+                            <a href="/contact">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- mobile menu end -->
+            </div>
+            <div class="mobile-header-info-wrap">
+                <div class="single-mobile-header-info">
+                    <a href="/contact"><i class="fi-rs-marker"></i> Our location </a>
+                </div>
+                <div class="single-mobile-header-info">
+                    <a href="/login"><i class="fi-rs-user"></i>Log In / Sign Up </a>
+                </div>
+                @*<div class="single-mobile-header-info">
+                <a href="#"><i class="fi-rs-headphones"></i>(+01) - 2345 - 6789 </a>
+                </div>*@
+            </div>
+            @*<div class="mobile-social-icon mb-50">
+            <h6 class="mb-15">Follow Us</h6>
+            <a href="#"><img src="/images/icons/icon-facebook-white.svg" alt=""></a>
+            <a href="#"><img src="/images/icons/icon-twitter-white.svg" alt=""></a>
+            <a href="#"><img src="/images/icons/icon-instagram-white.svg" alt=""></a>
+            <a href="#"><img src="/images/icons/icon-pinterest-white.svg" alt=""></a>
+            <a href="#"><img src="/images/icons/icon-youtube-white.svg" alt=""></a>
+            </div>*@
+            @*<div class="site-copyright">Copyright 2021 © Nest. All rights reserved. Powered by AliThemes.</div>*@
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="@Url.Content("~/js/Front/ProductDetails.js")"></script>
+@* <script>
+    function fncheckselectval() {
+        var txtSearch = $('#txtSearch').val();
+        var catid = $('#dropcatid').val()
+
+        if (txtSearch == '' || txtSearch == null || txtSearch == undefined) {
+            
+            return false;
+        }
+        // $('.loader_cont').show();
+        window.location.href = "@Url.Action("SearchItem", "Home")" + "?catid=" + catid + "&txtSearch=" + txtSearch;
+        return true;
+    }
+
+    function fncheckselectvalmob() {
+        var txtSearch = $('#txtSearch1').val();
+        var catid = "0";
+
+        if (txtSearch == '' || txtSearch == null || txtSearch == undefined) {
+            // alert('Pease enter a keyword');
+            return false;
+        }
+        // $('.loader_cont').show();
+        window.location.href = "@Url.Action("SearchItem", "Home")" + "?catid=" + catid + "&txtSearch=" + txtSearch;
+        return true;
+    }
+
+
+
+</script> *@
+
+     @*    <script>
+    (function () {
+        const quantityContainer = document.querySelector(".quantity");
+        const minusBtn = quantityContainer.querySelector(".minus");
+        const plusBtn = quantityContainer.querySelector(".plus");
+        const inputBox = quantityContainer.querySelector(".input-box");
+
+        updateButtonStates();
+
+        quantityContainer.addEventListener("click", handleButtonClick);
+        inputBox.addEventListener("input", handleQuantityChange);
+
+        function updateButtonStates() {
+            const value = parseInt(inputBox.value);
+            minusBtn.disabled = value <= 1;
+            plusBtn.disabled = value >= parseInt(inputBox.max);
+        }
+
+        function handleButtonClick(event) {
+            if (event.target.classList.contains("minus")) {
+                decreaseValue();
+            } else if (event.target.classList.contains("plus")) {
+                increaseValue();
+            }
+        }
+
+        function decreaseValue() {
+            let value = parseInt(inputBox.value);
+            value = isNaN(value) ? 1 : Math.max(value - 1, 1);
+            inputBox.value = value;
+            updateButtonStates();
+            handleQuantityChange();
+        }
+
+        function increaseValue() {
+            let value = parseInt(inputBox.value);
+            value = isNaN(value) ? 1 : Math.min(value + 1, parseInt(inputBox.max));
+            inputBox.value = value;
+            updateButtonStates();
+            handleQuantityChange();
+        }
+
+        function handleQuantityChange() {
+            let value = parseInt(inputBox.value);
+            value = isNaN(value) ? 1 : value;
+
+            // Execute your code here based on the updated quantity value
+            console.log("Quantity changed:", value);
+        }
+    })();
+
+        </script> *@
+
+@* 
+<script type="text/javascript">
+
+
+    function changeprice(itemid, type) {
+
+        //var   type="";
+
+        var itemdetid = $('#' + 'productdetId_' + itemid).val();
+        var quantity = $('#' + 'quantity_' + itemid).text();
+
+        if (quantity == 0) {
+            quantity = 1;
+        }
+
+
+        $.ajax({
+            type: "POST",
+            url: '/Home/Addcart',
+            data: { productId: itemid, quantity: quantity, itemdetid: itemdetid, type: type },
+            dataType: "JSON",
+            success: function (response) {
+                var html = '';
+                var count = 0;
+                count = response.carts.length;
+                //  debugger;
+                //alert(count);
+                $('#carttotal').html(count)
+                //  var fff = response.carts[0].productname;
+                var total = "0";
+                var gtotal = "0";
+                var shipchg = "0";
+
+                if (response.message == "add cart added.")
+
+                    $('#cartdata').html('')
+
+                for (var i = 0; i < count; i++) {
+                    total = (parseFloat(total) + parseFloat(response.carts[i].totalprice));
+
+                    shipchg = (parseFloat(shipchg) + parseFloat(response.carts[i].shipcharge));
+                    html += '<tr class="pt-10">'
+                    html += '<td class="custome-checkbox pl-30" style="display:none">'
+                    html += '<input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">'
+                    html += '<label class="form-check-label" for="exampleCheckbox1"></label>'
+                    html += '</td>'
+                    html += '<td class="image product-thumbnail pt-10"><img src="/images/Productimage/6/' + response.carts[i].productimage + '" alt="#"></td>'
+                    html += '<td class="product-des product-name">'
+                    html += '<h6 class="mb-5"><a class="product-name mb-10 text-heading" href="/product/' + response.carts[i].productid + '/' + response.carts[i].productname + '">' + response.carts[i].productname + '</a></h6>'
+                    html += '<div class="product-rate-cover">'
+                    html += ' <div class="product-rate d-inline-block">'
+                    html += '<div class="product-rating" style="width:90%">'
+                    html += '</div>'
+                    html += '</div>'
+                    html += '<span class="font-small ml-5 text-muted"> (4.0)</span>'
+                    html += '</div>'
+                    html += '</td>'
+                    html += '<td class="price" data-title="Price">'
+                    html += '<h4 class="text-body unitprice" id="unitprice_' + response.carts[i].productid + '">' + response.carts[i].productprice + '</h4>'
+                    html += '<input type="hidden" value=' + response.carts[i].itemdetid + ' id="productdetId_' + response.carts[i].productid + '" />'
+                    html += ' </td>'
+
+
+                    html += '<td class="text-center detail-info" data-title="Stock">'
+                    html += '<div class="detail-extralink">'
+                    html += '<div class="detail-qty border radius">'
+                    html += '<a href="#" class="qty-down" onclick="changeprice(' + response.carts[i].productid + ',1)"><i class="fi-rs-angle-small-down"></i></a>'
+                    html += '<span class="qty-val" id="qty_' + response.carts[i].productid + '">' + response.carts[i].quantity + '</span>'
+                    html += '<a href="#" class="qty-up" onclick="changeprice(' + response.carts[i].productid + ',2)"><i class="fi-rs-angle-small-up"></i></a>'
+                    html += '</div>'
+                    html += '</div>'
+                    html += ' </td>'
+                    html += '<td class="price" data-title="Price">'
+                    html += ' <span id="total_' + response.carts[i].productid + '" class="text-brand total">' + response.carts[i].totalprice + '</span>'
+                    html += ' </td>'
+                    html += ' <td class="action text-center" data-title="Remove"><a href="#" class="text-body" onclick=changeprice(' + response.carts[i].productid + ',3)><i class="fi-rs-trash"></i></a></td>'
+                    html += ' </tr>'
+
+
+                }
+
+
+
+                $("#stotal").text(total);
+                $('#shipcharge').text(shipchg);
+
+                $("#gtotal").text(parseFloat(total) + parseFloat(shipchg));
+                $("#grandtotal").text(total);
+
+                if (html != "") {
+                    $("#cartdata").html(html);
+                    if (response.displaymessage != "") {
+                        alert(response.displaymessage);
+                    }
+                }
+                else {
+                    $("#cartdata").html("Your Cart is Empty.");
+                }
+
+                // alert("Your product added in cart.");
+            },
+            error: function (e) {
+                //$('#divPrint').html(e.responseText);
+            }
+        });
+    }
+    function chek(itemid) {
+        alert("ddd");
+    }
+
+
+
+
+    var Addtocarts = new Array();
+    var Subtotal = 0;
+
+    var rowCount;
+    function viewcart() {
+        $.ajax({
+            url: "/Home/Viewcart",
+            dataType: 'JSON',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                if (response.length == 0)
+                    alert('Some error occured.');
+                else {
+                    $('#divPrint').html(response);
+                    rowCount = $("#cartView tr").length;
+                    $('#count').text(rowCount);
+                }
+            },
+            error: function (e) {
+                $('#divPrint').html(e.responseText);
+                rowCount = $("#cartView tr").length - 1;
+                $('#count').text(rowCount);
+            }
+        });
+    }
+    function DeleteProduct(productid, itemdetid) {
+        var checkstr = confirm('Are You Sure You Want To Delete This?');
+        var PetObj = JSON.stringify({ productid: productid, itemdetid: itemdetid });
+        alert(productid);
+        // var item;
+        if (checkstr == true) {
+            $.ajax({
+                url: "/Home/DeleteViewCart",
+                data: JSON.parse(PetObj),
+                dataType: 'JSON',
+                type: 'POST',
+                //contentType: 'application/json; charset=utf-8',
+                success: function (result) {
+                    if (result.msg == "Delete Successfull!!") {
+                        viewcart();
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    }
+
+
+
+    (function () {
+        const quantityContainer = document.querySelector(".quantity");
+        const minusBtn = quantityContainer.querySelector(".minus");
+        const plusBtn = quantityContainer.querySelector(".plus");
+        const inputBox = quantityContainer.querySelector(".input-box");
+
+        updateButtonStates();
+
+        quantityContainer.addEventListener("click", handleButtonClick);
+        inputBox.addEventListener("input", handleQuantityChange);
+
+        function updateButtonStates() {
+            const value = parseInt(inputBox.value);
+            minusBtn.disabled = value <= 1;
+            plusBtn.disabled = value >= parseInt(inputBox.max);
+        }
+
+        function handleButtonClick(event) {
+            if (event.target.classList.contains("minus")) {
+                decreaseValue();
+            } else if (event.target.classList.contains("plus")) {
+                increaseValue();
+            }
+        }
+
+        function decreaseValue() {
+            let value = parseInt(inputBox.value);
+            value = isNaN(value) ? 1 : Math.max(value - 1, 1);
+            inputBox.value = value;
+            updateButtonStates();
+            handleQuantityChange();
+        }
+
+        function increaseValue() {
+            let value = parseInt(inputBox.value);
+            value = isNaN(value) ? 1 : Math.min(value + 1, parseInt(inputBox.max));
+            inputBox.value = value;
+            updateButtonStates();
+            handleQuantityChange();
+        }
+
+        function handleQuantityChange() {
+            let value = parseInt(inputBox.value);
+            value = isNaN(value) ? 1 : value;
+
+            // Execute your code here based on the updated quantity value
+            console.log("Quantity changed:", value);
+        }
+    })();
+
+</script> *@

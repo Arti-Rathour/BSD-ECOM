@@ -1,0 +1,376 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "InquiryToConfirm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Inquiry_Page</h1>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h5 class="page-title">Inquiry To Confirm</h5>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <Orderli class="breadcrumb-item" aria-current="page">Inquiry To Confirm</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body row">
+                                <div class="col-md-12" style="margin-bottom:20px;">
+                                    <form action="#">
+                                        <div class="form-body">
+                                            <div id="divDescription">
+                                               <div class="row">
+                                                <input type="hidden" id="order_id" />
+                                                <div class="col-md-4">
+                                                <div class="form-group">
+                                                <label class="font-weight-700 font-size-16"> From Date </label>
+                                                <input type="date" class="form-control" id="txtfdate" />
+                                                </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                <div class="form-group">
+                                                <label class="font-weight-700 font-size-16"> To Date </label>
+                                                <input type="date" class="form-control" id="txttdate" />
+                                                </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                <div class="form-group">
+                                                <label class="font-weight-700 font-size-16">User Name</label>
+                                                <select id="ddlUserNames" class="form-control" tabindex="1" name="UserName" onchange="SearchReturned_Orders();">
+                                                <option value="0">Select UserNane</option>
+                                                @if (ViewBag.ItemUserNane != null)
+                                                {
+                                                foreach (var item in ViewBag.ItemUserNane as List<SelectListItem>)
+                                                {
+                                                <option value="@item.Value">@item.Text</option>
+                                                }
+                                                }
+                                                </select>
+                                                </div>
+                                                </div>
+                                                </div> 
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                              @*   <div class="col-md-12">
+                                    <table id="data-table" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Order Number</th>
+                                                <th>Customer Name</th>
+                                                <th>Customer Email</th>
+                                                <th>Mobile No</th>
+                                                <th>Date</th>
+
+                                                <th>Reconfirm Mail</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Inquiry_detalisbody"></tbody>
+                                    </table>
+
+                                </div> *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <div class="modal fade custom-modal" id="btnAddtoquery" tabindex="-1" aria-labelledby="btnAddtoquery" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="padding:0px;    background: white;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="detail-info">
+                                @* <span class="stock-status out-stock"> Sale Off </span>*@
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 contact-form">
+                                        <fieldset>
+                                            <h4></h4>
+                                            <br />
+                                            <div class="row">
+                                                <input type="hidden" id="hidid" value="0">
+                                                <input type="hidden" id="hidEnquiryNo" value="0">
+                                                <input type="hidden" id="hidcustomerid" value="@ViewBag.customerid">
+                                                <input type="hidden" id="hiditemid" value="@ViewBag.itemid">
+                                                <input type="hidden" id="hidcompanyid" value="@ViewBag.companyid">
+
+
+
+
+
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;    margin-bottom: 20px;">
+                                                    <label>Name</label><br>
+                                                    <input name="txtFname" type="text" id="txtFullname" maxlength=" 100" class="form-control valid" value="" err="Please Enter First Name">
+
+                                                    <label>Email</label><br>
+                                                    <input name="txtEmail" type="text" id="txtEmail"
+                                                           maxlength="100" class="form-control valid" value="" err="Please Enter Email">
+
+                                                </div>
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;    margin-bottom: 20px;">
+                                                    <label>Mobile No</label><br>
+                                                    <input name="txtMobile" type="text" id="txtMobile"
+                                                           maxlength="10" class="form-control valid numberone" value="" err="Please Enter Mobile">
+
+
+
+                                                    <label>Payment mode</label><span style="color:red">*</span>
+                                                    <select id="ddlpayment_mode" class="form-control">
+                                                        <option value="0">Select payment mode</option>
+                                                        <option value="COD">COD</option>
+                                                        <option value="Online">Online</option>
+                                                        <option value="Cheque">Cheque</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;    margin-bottom: 20px;">
+                                                    <label>Shipping Address</label><br>
+                                                    <textarea name="txtaddress" style="height:100px;" type="text" id="txtaddress" class="form-control valid" err="Please Enter Message"></textarea>
+
+
+                                                </div>
+
+                                                <div class="table-responsive shopping-summery">
+                                                    <table class="table table-wishlist" id="addtocart">
+                                                        <thead>
+                                                            <tr class="main-heading">
+                                                                <th class="custome-checkbox start pl-30" style="display:none">
+                                                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11" value="">
+                                                                    <label class="form-check-label" for="exampleCheckbox11"></label>
+                                                                </th>
+                                                                <th>S.No</th>
+                                                                <th style="display:none;">ID</th>
+                                                                <th scope="col">Item Name</th>
+                                                                <th scope="col">Rate</th>
+                                                                <th scope="col">Quantity</th>
+                                                                <th scope="col">Courior Charges</th>
+                                                                <th scope="col">Tax</th>
+                                                                <th scope="col">Total</th>
+
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="itemdetails_body"></tbody>
+                                                    </table>
+
+                                                </div>
+
+
+
+
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;">
+
+                                                    <br>
+                                                    <div align="right">
+                                                        <input type="button" name="btnSumit" value="confirm order" onclick="Saveconfrimorder(1)" id="btnSumit" class="main-btn" style="margin-top: 10PX;margin-bottom: 0px !important;background: #3465ae;
+    color: white;height: auto;padding: 10px 0px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- Detail Info -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Modal Structure edit -->
+    <div class="modal fade" id="orderModaledit" tabindex="-1" aria-labelledby="orderModaledit" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderModalLabel">Order Confirmation and Payment Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <input type="hidden" id="hidrate" value="0">
+                <input type="hidden" id="hidquantity" value="0">
+                <input type="hidden" id="hidcourior" value="0">
+                <input type="hidden" id="hidtax" value="0">
+                <input type="hidden" id="hidtotal" value="0">
+
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+
+                    <input type="text" id="dearedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="thankedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="orderedit" maxlength="100" class="form-control mb-2">
+
+                    @*  <table id="dataitemedit" class="table table-bordered mt-3">
+                    <thead>
+                    <tr>
+                    <th>S.No</th>
+                    <th>Item</th>
+                    <th>Rate</th>
+                    <th>Qty</th>
+                    <th>Courier Charges</th>
+                    <th>Tax (%)</th>
+                    <th>Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody class="itemdetailsemailedit"></tbody>
+                    </table> *@
+
+                    <input type="text" id="totaledit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="accountdetailedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="bankedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="accountedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="beneficiaryedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="branchedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="ifscedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="paymenttermedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="advanceedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="kindlyedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="emailedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="onceedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="choosingedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="bestedit" maxlength="100" class="form-control mb-2">
+                    <input type="text" id="teamedit" maxlength="100" class="form-control mb-2">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="Updateemail()">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderModalLabel">Order Confirmation and Payment Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <input type="hidden" id="hidrate" value="0">
+                <input type="hidden" id="hidquantity" value="0">
+                <input type="hidden" id="hidcourior" value="0">
+                <input type="hidden" id="hidtax" value="0">
+                <input type="hidden" id="hidtotal" value="0">
+
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                    <p id="dear" contenteditable="true">Dear <span id="cust"></span>,</p>
+                    <p id="thank" contenteditable="true">
+                        We are reconfirming your order :
+                        <span id="orderno" contenteditable="true"></span>.
+                        <span id="pleasereview"> Please review the details and let us know if there are any changes needed. </span>
+                    </p>
+
+
+
+                    <h6 id="order" contenteditable="true">Order Details:</h6>
+                    <table class="table table-bordered" id="dataitem">
+                        <thead>
+                            <tr>
+                                <th id="th1" contenteditable="true">S.No</th>
+                                <th id="th2" contenteditable="true">Item</th>
+                                <th id="th3" contenteditable="true">Rate</th>
+                                <th id="th4" contenteditable="true">Qty</th>
+                                <th id="th5" contenteditable="true">Courier Charges</th>
+                                <th id="th6" contenteditable="true">Tax (%)</th>
+                                <th id="th7" contenteditable="true">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="itemdetailsemail"></tbody>
+                    </table>
+
+                    <p id="total" contenteditable="true">Total Amount Payable: <span id="payamount" contenteditable="true">.</span> </p>
+
+                  
+                    <p id="ifeverything" contenteditable="true">
+                        If everything looks good, no further action is needed.<span id="willwe">We will proceed with processing your order.</span>
+                    </p>
+                    <p id="shopping" contenteditable="true">Thank you for shopping with us!</p>
+                    <p id="best" contenteditable="true">Best Regards,</p>
+                    <p id="team" contenteditable="true">Team BSD</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="Saveconfrimorderemail(2)">Send</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <style>
+        /* Remove border when clicking on editable text */
+        [contenteditable="true"]:focus {
+            outline: none;
+        }
+    </style>
+
+
+    <!-- Bootstrap 5 JS (includes Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+
+
+</body>
+</html>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+@* <script src="~/js/Admin/Inquiry_details.js">
+</script>
+ *@@* <script src="~/js/Admin/Confirm_order.js">
+</script> *@
+<script src="@Url.Content("~/js/Admin/Inquiry_details.js")"></script>
+<script src="@Url.Content("~/js/Admin/Confirm_order.js")"></script>
+
+

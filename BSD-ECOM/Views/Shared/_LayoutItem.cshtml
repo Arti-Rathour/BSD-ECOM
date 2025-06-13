@@ -1,0 +1,288 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BSD-ECOM</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/assets/css/plugins/animate.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css?v=4.1">
+    <link rel="stylesheet" href="/assets/css/plugins/slider-range.css" />
+</head>
+<body>
+    @await Component.InvokeAsync("Header")
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    @await Component.InvokeAsync("Footer")
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    @*  <img src="/assets/imgs/theme/loading.gif" alt=""> *@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3" id="gifrr" style="display:none">
+        <div class="form-group">
+            <img src="/CompanyLogo/loading-waiting.gif"
+                 style="width: 68px;height: 57px;margin: -10px 0px 0 -157px;border-radius: 100%;position: absolute;" />
+        </div>
+    </div>
+
+    <div class="modal fade custom-modal" id="btnAddtoquery" tabindex="-1" aria-labelledby="btnAddtoquery" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="padding:0px;    background: white;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="detail-info">
+                                @* <span class="stock-status out-stock"> Sale Off </span>*@
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 contact-form">
+                                        <fieldset>
+                                            <h4>Send Inquiry Comments</h4>
+                                            <br />
+                                            <div class="row">
+                                                <input type="hidden" id="hidid" value="0">
+                                                <input type="hidden" id="hidcustomerid" value="@ViewBag.customerid">
+                                                <input type="hidden" id="hiddenuserid" value="@HttpContextAccessor.HttpContext.Session.GetString("customerid")">
+                                                <input type="hidden" id="hiditemid" value="@ViewBag.itemid">
+                                                <input type="hidden" id="hidcompanyid" value="@ViewBag.companyid">
+                                                <input type="hidden" id="hidstateid" value="@HttpContextAccessor.HttpContext.Session.GetString("StateID")">
+                                                <input type="hidden" id="hidcityid" value="@HttpContextAccessor.HttpContext.Session.GetString("Cityid")">
+                                                <input type="hidden" id="hidcodeid" value="@HttpContextAccessor.HttpContext.Session.GetString("code")">
+
+
+
+
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;    margin-bottom: 20px;">
+                                                    <label>Full Name</label><br>
+                                                    <input name="txtFname" type="text" id="txtFullname" value="@HttpContextAccessor.HttpContext.Session.GetString("customerfirstname") @HttpContextAccessor.HttpContext.Session.GetString("customerlastname")" maxlength="100" class="form-control valid" err="Please Enter First Name">
+                                                </div>
+
+
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;    margin-bottom: 20px;">
+                                                    <label>Your Email</label><br>
+                                                    <input name="txtEmail" type="text" id="txtEmail" value="@HttpContextAccessor.HttpContext.Session.GetString("customeremail")" maxlength="100" class="form-control valid" err="Please Enter Email">
+
+                                                </div>
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;    margin-bottom: 20px;">
+                                                    <label>Your Phone</label><br>
+                                                    <input name="txtMobile" type="text" id="txtMobile" maxlength="10" value="@HttpContextAccessor.HttpContext.Session.GetString("customerMobileNo")" class="form-control valid numberone" err="Please Enter Mobile">
+
+
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    <label>State</label><span style="color:red">*</span>
+                                                    <select id="ddlstate" class="form-control" onchange="BimdCity()">
+                                                        <option value="0">Select</option>
+                                                        @if (ViewBag.Bindstate != null)
+                                                        {
+                                                            foreach (var item in ViewBag.Bindstate as List<SelectListItem>)
+                                                            {
+                                                                <option value="@item.Value">@item.Text</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="col-lg-" id="gif" style="display:none">
+                                                    <div class="form-group">
+                                                        <img src="/CompanyLogo/loading-waiting.gif"
+                                                             style="width: 68px;height: 57px;margin: -86px 0px 0 195px;border-radius: 100%;position: absolute;" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    <label>City</label><span style="color:red">*</span>
+                                                    <select id="txtcity" class="form-control">
+                                                        <option value="0">Select</option>
+                                                        @* @if (ViewBag.Bindstate != null)
+                                                        {
+                                                        foreach (var item in ViewBag.Bindstate as List<SelectListItem>)
+                                                        {
+                                                        <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                        } *@
+                                                    </select>
+                                                </div>
+
+
+                                                @*  <div class="col-md-9 col-sm-9" style="text-align: justify;    margin-bottom: 20px;">
+                                                <label>City</label><br>
+                                                <input name="txtcity" type="text" id="txtcity" class="form-control valid" err="Please Enter City">
+                                                </div> *@
+
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;">
+                                                    <label>Message</label><br>
+                                                    <textarea name="txtComments" style="height:100px;" type="text" id="txtComments" class="form-control valid" err="Please Enter Message"></textarea>
+                                                    <br>
+                                                    <div align="right">
+                                                        <input type="button" name="btnSumit" value="Submit" onclick="openPopup()" id="btnSumit" class="main-btn" style="margin-top: 10PX;margin-bottom: 0px !important;background: #3465ae;
+    color: white;height: auto;padding: 10px 0px;">
+
+                                                  
+
+
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- Detail Info -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+   
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h5 class="modal-title" style="    margin-inline-start: 60px;" id="exampleModalLongTitle">Please Enter Your Verification Code  </h5>
+                   
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   <div style="display: flex; justify-content: center; gap: 10px;">
+                        <input class="verification-input" onkeyup="movetoNext(this, 'code2')" type="text" id="code1" maxlength="1" style="width: 50px; margin-right: 0; ">
+                        <input class="verification-input" onkeyup="movetoNext(this, 'code3')" type="text" id="code2" maxlength="1" style="width: 50px; margin-right: 0; ">
+                        <input class="verification-input" onkeyup="movetoNext(this, 'code4')" type="text" id="code3" maxlength="1" style="width: 50px;">
+                        <input class="verification-input" onkeyup="lastdata()" type="text" id="code4" maxlength="1" style="width: 50px;">
+                       
+                        <div class="col-lg-3" id="gifiddd" style="display:none">
+                            <div class="form-group">
+                                <img src="/CompanyLogo/loading-waiting.gif"
+                                     style="width: 68px;height: 57px;margin: -10px 0px 0 -157px;border-radius: 100%;position: absolute;" />
+                            </div>
+                        </div>
+
+                 
+                   </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn" onclick="DATA()" data-dismiss="modal">Verify</button>
+              
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+   
+
+
+
+
+
+
+
+    <script src="~/js/SweatAlert/sweetalert.min.js"></script>
+    <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/plugins/slick.js"></script>
+    <script src="/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="/assets/js/plugins/waypoints.js"></script>
+    <script src="/assets/js/plugins/wow.js"></script>
+    <script src="/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="/assets/js/plugins/magnific-popup.js"></script>
+    <script src="/assets/js/plugins/select2.min.js"></script>
+    <script src="/assets/js/plugins/counterup.js"></script>
+    <script src="/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="/assets/js/plugins/images-loaded.js"></script>
+    <script src="/assets/js/plugins/isotope.js"></script>
+    <script src="/assets/js/plugins/scrollup.js"></script>
+    <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="/assets/js/plugins/jquery.elevatezoom.js"></script>
+    <script src="~/assets/js/plugins/slider-range.js"></script>
+    <!-- Template  JS -->
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/shop.js"></script>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+    <script>
+        $(document).ready(function () {
+            if ($("#hidstateid").val() != 0) {
+                $("#ddlstate").val($("#hidstateid").val());
+                BimdCity();
+                $("#txtcity").val($("#hidcityid").val());
+
+            }
+        });
+
+        function BimdCity() {
+
+
+            $.ajax({
+                url: '/Home/BindCity',
+                type: 'get',
+                data: { id: $("#ddlstate").val() },
+                async: false,
+                success: function (json, result) {
+
+                    $("#txtcity").empty();
+                    json = json || {};
+                    $("#txtcity").append('<option value="0">Select</option>');
+                    for (var i = 0; i < json.length; i++) {
+                        $("#txtcity").append('<option value="' + json[i].value + '">' + json[i].text + '</option>');
+                    }
+
+                },
+                error: function (error) {
+                    alert(error.mes)
+                }
+            })
+
+        }
+
+       
+
+        // //Function to open the popup
+       
+
+       
+    </script>
+
+
+   
+
+</body>
+</html>

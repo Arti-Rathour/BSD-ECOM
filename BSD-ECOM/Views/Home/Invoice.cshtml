@@ -1,0 +1,214 @@
+﻿@model BSD_ECOM.Models.InvoiceModel
+@{
+    ViewData["Title"] = "Invoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 1320px;
+    }
+
+    .border-table-data th, .border-table-data td {
+        border: none;
+        color: black;
+    }
+
+    .border-table-data th {
+        color: black;
+    }
+
+    .border-table-data td {
+        vertical-align: top;
+    }
+
+    .border-table-data thead {
+        border-bottom: 2px solid black;
+        border-top: 2px solid black;
+    }
+
+    .total-item-data td {
+        border-bottom: 2px solid black;
+        border-top: 2px solid black;
+    }
+
+    .p1 {
+        color: black;
+        font-size: 14px;
+        "><span style="font-weight: 800;
+        font-size: 16px;
+    }
+
+    .p2 {
+        color: black;
+        font-weight: 600;
+        font-size: 14px;
+    }
+</style>
+
+<main class="main pages">
+    <div class="page-content pt-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-10 col-lg-12 m-auto">
+                    <div class="bill-form text-center" style="padding-bottom: 20px;">
+                        <h2>Tax Invoice</h2>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h5>Sold By: @Model.companyname,</h5>
+                    <p style="font-style: italic;color: black;font-weight: 600;font-size: 14px;"><span style="font-weight: 800;font-size: 18px;">Ship-from Address:</span>@Model.companyaddress</p>
+                    <p class="p2"><span style="font-weight: 800;font-size: 18px;">GSTIN</span> - 06AABCD3982G1ZP</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="Invoice-id">
+                        <label style="padding: 10px;border: 1px dotted;"><p style="color: black;font-size: 14px;"><span style="    float: left;font-weight: 800;font-size: 18px;margin-right: 5px;">Invoice Number</span>  @Model.invoicenumber</p></label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <hr style="background:black;opacity: 1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="bill-order">
+                        <p class="p2"><span style="font-weight: 800;font-size: 16px;">Order ID: @Model.orderid</span></p>
+                        <p class="p1">Order Date:</span> @Model.orderdate</p>
+                        <p class="p1">Invoice Date:</span>@Model.invoicedate</p>
+                        <p class="p1">PAN:</span> AABCD3982G</p>
+                        <p class="p1">CIN:</span>  U72900GJ2000PTC039057</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="bill-order">
+                        <p class="p2"><span style="font-weight: 800;font-size: 16px;">Bill To</span></p>
+                        <p class="p1">@Model.bname </span></p>
+                        <p style="color: black;font-size: 14px;">@Model.baddress1</p>
+                        <p style="color: black;font-size: 14px;">@Model.baddress2</p>
+                        <p style="color: black;font-size: 14px;">@Model.bcity @Model.bPincode @Model.bstate</p>
+                        <p style="color: black;font-size: 14px;">Phone: @Model.bphone</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="bill-order">
+                        <p class="p2"><span style="font-weight: 800;font-size: 16px;">Shipping To</span></p>
+                        <p class="p1">@Model.sname </span></p>
+                        <p style="color: black;font-size: 14px;">@Model.saddress1</p>
+                        <p style="color: black;font-size: 14px;">@Model.saddress2</p>
+                        <p style="color: black;font-size: 14px;">@Model.scity @Model.sPincode @Model.sstate</p>
+                        <p style="color: black;font-size: 14px;">Phone: @Model.sphone</p>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <div class="bill-order" style="padding-top: 50px;">
+                        <p style="font-style: italic; color: black;font-size: 14px; font-weight: 700; text-align: end;">*Keep this invoice and manufacturer box for warranty purposes.</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="Total-item">
+                        <p style="color: black;font-size: 14px;">Total items: 1</p>
+                    </div>
+                </div>
+            </div>
+            <br>
+            @foreach(var item in ViewBag.invoiceModels) {
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="border-table-data">
+                        <thead>
+                            <tr>
+                                <th width="20%">Product</th>
+                                <th>Title</th>
+                                <th>Qty</th>
+                                <th>Gross Amount ₹</th>
+                                <th>Discount ₹</th>
+                                <th>Taxable Value ₹</th>
+                                <th>IGST ₹</th>
+                                <th>Total ₹</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Gaming Laptops<br> <span>
+                                        FSN:
+                                        COMFP64FZKAHVT3H
+                                        HSN/SAC: 84713010
+                                    </span>
+                                </td>
+                                <td>
+                                    MSI GF65 Thin Core i7 9th
+                                    Gen - (16 GB/512 GB SSD
+                                    /Windows 10 Home/6 GB
+                                    Graphics/NVIDIA Geforce
+                                    GTX 1660 Ti) GF65 Thin
+                                    9SD-293IN / GF65 Thin
+                                    9SD-1042IN Gaming
+                                    Laptop
+                                    <br><span style="font-size: 11px;">
+                                        Warranty: 2 Year Carry In Warranty
+                                        1. [IMEI/Serial No: K2009N0013228 ]
+                                        Includes 'No Cost EMI Program Discount' of<br>
+                                        Rs 3524.0<br>
+                                        IGST: 18.0 %
+                                    </span>
+                                </td>
+                                <td>1</td>
+                                <td>84990.00</td>
+                                <td>-5274.00 </td>
+                                <td>67555.93</td>
+                                <td>12160.07</td>
+                                <td>79716.00</td>
+                            </tr>
+
+                            <tr class="total-item-data">
+                                <td style="border-top: none;"></td>
+                                <td>Total</td>
+                                <td>1</td>
+                                <td>84990.00</td>
+                                <td>-5274.00 </td>
+                                <td>67555.93</td>
+                                <td>12160.07</td>
+                                <td>79716.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            }
+            <div class="row">
+                <div class="col-md-12 text-end">
+                    <p style="color: black;font-weight: 600;">Grand Total : <span style="font-weight: 800;font-size: 18px;">₹ @Model.subtotal</span> </p>
+                    <p style="color: black;font-size: 14px;">@Model.companyname</p>
+                    <br><br><br>
+                    <p style="color: black;font-size: 14px;">Authorized Signatory</p>
+                </div>
+                <div class="col-md-12">
+                    <hr style="background:black;opacity: 1;height: 2px;">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-end">
+
+                    <br><br><br>
+                    <p style="color: black;font-size: 14px;"><img width="10%" src="flip.jpg"></p>
+                </div>
+                <div class="col-md-12">
+                    <p style="font-size: 14px;font-style: italic;color: black;">
+                        <span style="font-style: initial;font-weight: 800;color: black;">Returns Policy:</span> At Flipkart we try to deliver perfectly each and every time. But in the off-chance that you need to return the item, please do so with the original Brand box/price
+                        tag, <span style="font-style: initial;font-weight: 800;color: black;">original packing and invoice</span> without which it will be really difficult for us to act on your request. Please help us in helping you. Terms and conditions apply.<br>
+                        The goods sold as are intended for end user consumption and not for re-sale.
+                        <br>
+                        Regd. office: Damson Technologies Private Limited , 302, Solitaire, Sunrise Park, Vastrapur Himalaya Mall Link Road,, Bodakdev, AHMEDABAD, GUJARAT - 380054
+                    </p>
+                    <p style="color: black;font-size: 14px;margin-bottom: 0px;">Contact Flipkart: 1800 208 9898 || www.flipkart.com/helpcentre</p>
+                </div>
+                <div class="col-md-12">
+                    <hr style="background:black;opacity: 1;height: 2px;margin-top: 0px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

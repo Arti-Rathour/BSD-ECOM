@@ -1,0 +1,645 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    string companylogo = HttpContextAccessor.HttpContext.Session.GetString("Logo");
+    string CompanyName = HttpContextAccessor.HttpContext.Session.GetString("CompanyName");
+
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="~/images/favicon.ico">
+    <link href="~/css/vendors_css.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/skin_color.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/ckeditor/ckeditor.js"></script>
+     <script src="~/js/SweatAlert/sweetalert.min.js"></script>
+    <!-- Vendor JS -->
+    <script src="~/js/vendors.min.js"></script>
+    <script src="~/js/pages/chat-popup.js"></script>
+    <script src="~/assets/vendor_components/apexcharts-bundle/dist/apexcharts.min.js"></script>
+    <script src="~/assets/icons/feather-icons/feather.min.js"></script>
+    <script src="~/assets/vendor_components/OwlCarousel2/dist/owl.carousel.js"></script>
+    <!-- Riday App -->
+    <script src="~/js/template.js"></script>
+    <script src="~/js/pages/dashboard.js"></script>
+    <script src="~/js/Common.js"></script>
+    <style>
+        .multinav-scroll {
+            height: 541px;
+            overflow: auto;
+        }
+            /* Demonstrate a "mostly customized" scrollbar
+        * (won't be visible otherwise if width/height is specified) */
+            .multinav-scroll::-webkit-scrollbar {
+                width: 5px;
+                height: 8px;
+                opacity: 0;
+                display: none;
+                background-color: #aaa; /* or add it to the track */
+            }
+
+            /* Add a thumb */
+            .multinav-scroll::-webkit-scrollbar-thumb {
+                background: #000;
+                opacity: 0;
+                display: none;
+            }
+    </style>
+</head>
+<body class="hold-transition light-skin sidebar-mini theme-danger fixed">
+    <div class="wrapper">
+        <div id="loader"></div>
+        <header class="main-header">
+            <div class="d-flex align-items-center logo-box justify-content-start">
+                <a href="#" class="waves-effect waves-light nav-link d-none d-md-inline-block mx-10 push-btn bg-transparent hover-primary" data-toggle="push-menu" role="button">
+                    <span class="icon-Align-left"><span class="path1"></span><span class="path2"></span><span class="path3"></span></span>
+                </a>
+                <!-- Logo -->
+                <a href="" class="logo">
+                    <!-- logo-->
+                    <div class="logo-lg">
+                        <span class="light-logo"><img src="/images/CompanyLogo/6/@companylogo" alt="logo"></span>
+                        <span class="dark-logo"><img src="/images/CompanyLogo/6/@companylogo" alt="logo"></span>
+                    </div>
+                </a>
+            </div>
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <div class="app-menu">
+                    <ul class="header-megamenu nav">
+                        <li class="btn-group nav-item d-md-none">
+                            <a href="#" class="waves-effect waves-light nav-link push-btn btn-info-light" data-toggle="push-menu" role="button">
+                                <span class="icon-Align-left"><span class="path1"></span><span class="path2"></span><span class="path3"></span></span>
+                            </a>
+                        </li>
+                        @* <li class="btn-group nav-item d-none d-xl-inline-block">
+                            <div class="app-menu">
+                                <div class="search-bx mx-5">
+                                    
+                                        <div class="input-group">
+                                            <input type="search" class="form-control" id="txtsearch" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
+                                            <div class="input-group-append">
+                                                <button class="btn" type="submit" id="btnsearch" onclick="ProductList()"></button>
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </li> *@
+                    </ul>
+                </div>
+
+                <div class="navbar-custom-menu r-side">
+                    <ul class="nav navbar-nav">
+                        <li class="btn-group nav-item d-lg-inline-flex d-none">
+                            <a href="#" data-provide="fullscreen" class="waves-effect waves-light nav-link full-screen btn-info-light" title="Full Screen">
+                                <i class="fa fa-arrows-alt"><span class="path1"></span><span class="path2"></span></i>
+                            </a>
+                        </li>
+                        <!-- Notifications -->
+                        <li class="dropdown notifications-menu">
+                            <span class="label label-danger">5</span>
+                            <a href="#" class="waves-effect waves-light dropdown-toggle btn-danger-light" data-toggle="dropdown" title="Notifications">
+                                <i class="fa fa-bell"><span class="path1"></span><span class="path2"></span></i>
+                            </a>
+                            <ul class="dropdown-menu animated bounceIn">
+
+                                <li class="header">
+                                    <div class="p-20">
+                                        <div class="flexbox">
+                                            <div>
+                                                <h4 class="mb-0 mt-0">Notifications</h4>
+                                            </div>
+                                            <div>
+                                                <a href="#" class="text-danger">Clear All</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu sm-scrol">
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-users text-info"></i> Curabitur id eros quis nunc suscipit blandit.
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-warning text-warning"></i> Duis malesuada justo eu sapien elementum, in semper diam posuere.
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-users text-danger"></i> Donec at nisi sit amet tortor commodo porttitor pretium a erat.
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-shopping-cart text-success"></i> In gravida mauris et nisi
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-user text-danger"></i> Praesent eu lacus in libero dictum fermentum.
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-user text-primary"></i> Nunc fringilla lorem
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-user text-success"></i> Nullam euismod dolor ut quam interdum, at scelerisque ipsum imperdiet.
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer">
+                                    <a href="#">View all</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Messages -->
+                        <li class="dropdown messages-menu">
+                            <span class="label label-danger">5</span>
+                            <a href="#" class="dropdown-toggle btn-danger-light" data-toggle="dropdown" title="Messages">
+                                <i class="fa fa-envelope"><span class="path1"></span><span class="path2"></span></i>
+                            </a>
+                            <ul class="dropdown-menu animated bounceIn">
+
+                                <li class="header">
+                                    <div class="p-20">
+                                        <div class="flexbox">
+                                            <div>
+                                                <h4 class="mb-0 mt-0">Messages</h4>
+                                            </div>
+                                            <div>
+                                                <a href="#" class="text-danger">Clear All</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu sm-scrol">
+                                        <li>
+                                            <!-- start message -->
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <img src="/images/user2-160x160.jpg" class="rounded-circle" alt="User Image">
+                                                </div>
+                                                <div class="mail-contnet">
+                                                    <h4>
+                                                        Lorem Ipsum
+                                                        <small><i class="fa fa-clock-o"></i> 15 mins</small>
+                                                    </h4>
+                                                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <!-- end message -->
+                                        <li>
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <img src="/images/user3-128x128.jpg" class="rounded-circle" alt="User Image">
+                                                </div>
+                                                <div class="mail-contnet">
+                                                    <h4>
+                                                        Nullam tempor
+                                                        <small><i class="fa fa-clock-o"></i> 4 hours</small>
+                                                    </h4>
+                                                    <span>Curabitur facilisis erat quis metus congue viverra.</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <img src="/images/user4-128x128.jpg" class="rounded-circle" alt="User Image">
+                                                </div>
+                                                <div class="mail-contnet">
+                                                    <h4>
+                                                        Proin venenatis
+                                                        <small><i class="fa fa-clock-o"></i> Today</small>
+                                                    </h4>
+                                                    <span>Vestibulum nec ligula nec quam sodales rutrum sed luctus.</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <img src="/images/user3-128x128.jpg" class="rounded-circle" alt="User Image">
+                                                </div>
+                                                <div class="mail-contnet">
+                                                    <h4>
+                                                        Praesent suscipit
+                                                        <small><i class="fa fa-clock-o"></i> Yesterday</small>
+                                                    </h4>
+                                                    <span>Curabitur quis risus aliquet, luctus arcu nec, venenatis neque.</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <img src="/images/user4-128x128.jpg" class="rounded-circle" alt="User Image">
+                                                </div>
+                                                <div class="mail-contnet">
+                                                    <h4>
+                                                        Donec tempor
+                                                        <small><i class="fa fa-clock-o"></i> 2 days</small>
+                                                    </h4>
+                                                    <span>Praesent vitae tellus eget nibh lacinia pretium.</span>
+                                                </div>
+
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer">
+                                    <a href="#">See all e-Mails</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <li class="btn-group nav-item">
+                            <span class="label label-primary">5</span>
+                            <a href="#" data-toggle="control-sidebar" title="Setting" class="waves-effect waves-light nav-link full-screen btn-primary-light">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                        </li>
+                        <!-- Right Sidebar Toggle Button -->
+                        <li class="btn-group nav-item d-xl-none d-inline-flex">
+                            <a href="#" class="push-btn right-bar-btn waves-effect waves-light nav-link full-screen btn-info-light">
+                                <span class="fa fa-layout-left-panel-1"><span class="path1"></span><span class="path2"></span></span>
+                            </a>
+                        </li>
+                        <!-- User Account-->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle p-0 text-dark hover-primary ml-md-30 ml-10" data-toggle="dropdown" title="User">
+                                <span class="pl-30 d-md-inline-block d-none">Hello,</span> <strong class="d-md-inline-block d-none">Alia</strong><img src="/images/avatar-11.png" class="user-image rounded-circle avatar bg-white mx-10" alt="User Image">
+                            </a>
+                            <ul class="dropdown-menu animated flipInX">
+                                <li class="user-body">
+                                    <a class="dropdown-item" href="#"><i class="ti-user text-muted mr-2"></i> Profile</a>
+                                    <a class="dropdown-item" href="#"><i class="ti-wallet text-muted mr-2"></i> My Wallet</a>
+                                    <a class="dropdown-item" href="#"><i class="ti-settings text-muted mr-2"></i> Settings</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/Admin/Admin/AdminLogin"><i class="ti-lock text-muted mr-2"></i> Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <aside class="main-sidebar">
+            <!-- sidebar-->
+            <section class="sidebar position-relative">
+                <div class="multinav">
+                    <div class="multinav-scroll" style="height: 100%;">
+                        <!-- sidebar menu-->
+                        <ul class="sidebar-menu" data-widget="tree">
+                            <li>
+                                <a href="/Admin/Admin/Dashboard">
+                                    <i class="fa fa-home"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-clipboard-check"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                    <span>Master</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-right pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+
+                                    <li><a href="/Admin/Admin/Vendor_Page"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Vendor</a></li>
+
+                                    <li><a href="/Admin/Admin/Vendor_Mapping"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Vendor Mapping</a></li>
+
+                                   
+
+                                    <li><a href="/Admin/Admin/MainCategory"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Main Category</a></li>
+                                    <li><a href="/Admin/Admin/Category"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Category</a></li>
+                                    <li><a href="/Admin/Admin/SubCategory"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Sub Category</a></li>
+                                    <li><a href="/Admin/Admin/Brand"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Brand</a></li>
+                                    <li><a href="/Admin/Admin/Blog"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Blog</a></li>
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                            <span>Product Master</span>
+                                            <span class="pull-right-container">
+                                                <i class="fa fa-angle-right pull-right"></i>
+                                            </span>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="/Admin/Admin/NewProduct"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>New Product</a></li>
+                                            
+                                            <li><a href="/Admin/Admin/ProductList"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Product List</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                            <span>Locality Master</span>
+                                            <span class="pull-right-container">
+                                                <i class="fa fa-angle-right pull-right"></i>
+                                            </span>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="/Admin/Admin/Locality"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Locality</a></li>
+                                            <li><a href="/Admin/Admin/LocalityDetails"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Locality Details</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="/Admin/Admin/DisplayItem"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Display Item</a></li>
+                                    <li><a href="/Admin/Admin/MStCMSBanner_srv"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Banner service</a></li>
+                                    <li><a href="/Admin/Admin/Courier"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Courier</a></li>
+                                    <li><a href="/Admin/Admin/HSNMaster"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>HSN Master</a></li>
+                                    <li><a href="/Admin/Admin/unitmaster"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Unit Master</a></li>
+                                    <li><a href="/Admin/Admin/welfaremaster"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Welfare Master</a></li>
+                                    <li><a href="/Admin/Admin/Welfaredetails"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Welfare Details</a></li>
+                                    <li><a href="/Admin/Admin/About"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>About Information</a></li>
+                                    <li><a href="/Admin/Admin/DeliveryInformation"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Delivery Information</a></li>
+                                    <li><a href="/Admin/Admin/Payment"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Payment Description</a></li>
+                                    <li><a href="/Admin/Admin/FAQ"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>FAQ Description</a></li>
+                                    <li><a href="/Admin/Admin/Terms"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Terms & Condition Desctiption</a></li>
+                                    <li><a href="/Admin/Admin/PrivacyPolish"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Privacy Polish Description</a></li>
+                                    <li><a href="/Admin/Admin/Shipping"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Shipping Description</a></li>
+                                    <li><a href="/Admin/Admin/Createuser"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Create User</a></li>
+                                    @*<li><a href="/Admin/Admin/Orders"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Orders</a></li>*@
+                                    <li><a href="/Admin/Admin/Country"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Country</a></li>
+                                    <li><a href="/Admin/Admin/State"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>State</a></li>
+                                    <li><a href="/Admin/Admin/City"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>City</a></li>
+                                    <li><a href="/Admin/Admin/Location"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Location</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="#">
+                                       <i class="fa fa-clipboard-check"><span class="path3"></span><span class="path3"></span><span class="path3"></span></i>
+                                   @* <i><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>*@
+                                    <span>Master Report</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-right pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="/Admin/Admin/CustomerList"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Customer List</a></li>
+                                    <li><a href="/Admin/Admin/Vendor_Report_Page"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Vendor Report</a></li>
+
+                                    <li><a href="/Admin/Admin/Stock_Report"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Stock Report</a></li>
+                                    @*<li><a href="/Admin/Admin/VendorReport"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Vendor</a></li>*@
+                                    <li><a href="/Admin/Admin/BrandReport"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Brand Report</a></li>
+                                    <li><a href="/Admin/Admin/MainCategoryReport"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>MainCategory Report</a></li>
+                                    <li><a href="/Admin/Admin/SubCategoryReport"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>SubCategory Report</a></li>
+                                    <li><a href="/Admin/Admin/CategoryReport"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Category Report</a></li>
+
+                                    <li><a href="/Admin/Admin/Order_Report"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Order Report</a></li>
+
+                                    <li><a href="/Admin/Admin/Order_Delivery_Report"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Delivered Report</a></li>
+                                    <li><a href="/Admin/Admin/ApproveCancelOrderReport"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Cancel Report</a></li>
+                                    <li><a href="/Admin/Admin/ApproveReturnOrderReport"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Return Report</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="treeview">
+                                <a href="#">
+                                     <i class="fa fa-clipboard-check"><span class="path3"></span><span class="path3"></span><span class="path3"></span></i>
+                                 @*   <i><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>*@
+                                    <span>Manage Approval</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-right pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="/Admin/Admin/ApproveItemList"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Approve Item</a></li>
+                                    <li><a href="/Admin/Admin/strockUpdate"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Stock Update</a></li>
+                                    <li><a href="/Admin/Admin/Returned_Orders"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Returned Orders</a></li>
+                                    <li><a href="/Admin/Admin/Cancelled_Orders"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Cancelled Orders</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-clipboard-check"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                    <span>Order</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-right pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="/Admin/Admin/Orders"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Temp Orders</a></li>
+                                    @*<li><a href="/Admin/Admin/VOS_Reports"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>View Order Status Reports</a></li>*@
+
+                                    <li><a href="/Admin/Admin/Confirm_order_page"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Original Orders</a></li>
+
+                                    <li><a href="/Admin/Admin/ORT_Dispatch"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Orders Ready to Dispatch</a></li>
+                                    <li><a href="/Admin/Admin/OR_to_Deliver"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Orders Ready to Deliver</a></li>
+
+                                    <li><a href="/Admin/Admin/Inquiry_Page"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Inquiry Page</a></li>
+                                   
+                                    
+                                </ul>
+                            </li>
+                            <li class="treeview" style="display:none">
+                                <a href="#">
+                                    <i class="fa fa-cutlery"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                                    <span>Menus</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-right pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="add_new_menu.html"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Add New Menu</a></li>
+                                    <li><a href="menu_list.html"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Menu List</a></li>
+                                    <li><a href="menu_categories.html"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Categories</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview" style="display:none">
+                                <a href="#">
+                                    <i class="fa fa-user"><span class="path1"></span><span class="path2"></span></i>
+                                    <span>Customer</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-right pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="add_new_menu.html"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Customer</a></li>
+                                    <li><a href="members.html"><i class="fa fa-commit"><span class="path1"></span><span class="path2"></span></i>Members</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="sidebar-widgets">
+                            <div class="mx-25 mb-30 pb-20 side-bx bg-food-dark rounded20">
+                                <div class="text-center">
+                                    <img src="/images/CompanyLogo/6/@companylogo" class="sideimg" alt="">
+                                    <h3 class="title-bx" style="display:none">Add Menu</h3>
+                                    <a href="#" class="text-white py-10 font-size-16 mb-0" style="display:none">
+                                        Manage Your food and beverages menu <i class="mdi mdi-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="copyright text-left m-25">
+                                <p><strong class="d-block">@CompanyName</strong> © 2022 All Rights Reserved</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <div class="main-container">
+            <main role="main" class="pb-5">
+                @RenderBody()
+            </main>
+        </div>
+        <div class="right-bar" style="display:none">
+            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                <div id="sidebarRight" style="overflow: hidden; width: auto; height: 100%;">
+                    <div class="right-bar-inner">
+                        <div class="text-end position-relative">
+                            <a href="#" class="d-inline-block d-xl-none btn right-bar-btn waves-effect waves-circle btn btn-circle btn-danger btn-sm">
+                                <i class="mdi mdi-close"></i>
+                            </a>
+                        </div>
+                        <div class="right-bar-content">
+                            <div class="box no-shadow box-bordered border-light">
+                                <div class="box-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5>Total Sale</h5>
+                                            <h2 class="mb-0">$254.90</h2>
+                                        </div>
+                                        <div class="p-10" style="position: relative;">
+                                            <div id="chart-spark1" style="min-height: 60px;"><div id="apexcharts07s9wd9b" class="apexcharts-canvas apexcharts07s9wd9b apexcharts-theme-light" style="width: 100px; height: 60px;"><svg id="SvgjsSvg1441" width="100" height="60" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><g id="SvgjsG1443" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)"><defs id="SvgjsDefs1442"><clipPath id="gridRectMask07s9wd9b"><rect id="SvgjsRect1448" width="108" height="64" x="-4" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="gridRectMarkerMask07s9wd9b"><rect id="SvgjsRect1449" width="104" height="64" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><linearGradient id="SvgjsLinearGradient1455" x1="0" y1="0" x2="0" y2="1"><stop id="SvgjsStop1456" stop-opacity="0.65" stop-color="rgba(1,176,117,0.65)" offset="0"></stop><stop id="SvgjsStop1457" stop-opacity="0.5" stop-color="rgba(128,216,186,0.5)" offset="1"></stop><stop id="SvgjsStop1458" stop-opacity="0.5" stop-color="rgba(128,216,186,0.5)" offset="1"></stop></linearGradient></defs><line id="SvgjsLine1447" x1="0" y1="0" x2="0" y2="60" stroke="#b6b6b6" stroke-dasharray="3" class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="60" fill="#b1b9c4" filter="none" fill-opacity="0.9" stroke-width="1"></line><g id="SvgjsG1461" class="apexcharts-xaxis" transform="translate(0, 0)"><g id="SvgjsG1462" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g></g><g id="SvgjsG1464" class="apexcharts-grid"><g id="SvgjsG1465" class="apexcharts-gridlines-horizontal" style="display: none;"><line id="SvgjsLine1467" x1="0" y1="0" x2="100" y2="0" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1468" x1="0" y1="6" x2="100" y2="6" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1469" x1="0" y1="12" x2="100" y2="12" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1470" x1="0" y1="18" x2="100" y2="18" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1471" x1="0" y1="24" x2="100" y2="24" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1472" x1="0" y1="30" x2="100" y2="30" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1473" x1="0" y1="36" x2="100" y2="36" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1474" x1="0" y1="42" x2="100" y2="42" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1475" x1="0" y1="48" x2="100" y2="48" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1476" x1="0" y1="54" x2="100" y2="54" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1477" x1="0" y1="60" x2="100" y2="60" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line></g><g id="SvgjsG1466" class="apexcharts-gridlines-vertical" style="display: none;"></g><line id="SvgjsLine1479" x1="0" y1="60" x2="100" y2="60" stroke="transparent" stroke-dasharray="0"></line><line id="SvgjsLine1478" x1="0" y1="1" x2="0" y2="60" stroke="transparent" stroke-dasharray="0"></line></g><g id="SvgjsG1451" class="apexcharts-area-series apexcharts-plot-series"><g id="SvgjsG1452" class="apexcharts-series" seriesName="Sales" data:longestSeries="true" rel="1" data:realIndex="0"><path id="SvgjsPath1459" d="M 0 60L 0 37.5C 7 37.5 13 33.75 20 33.75C 27 33.75 33 43.125 40 43.125C 47 43.125 53 9.375 60 9.375C 67 9.375 73 0 80 0C 87 0 93 31.875 100 31.875C 100 31.875 100 31.875 100 60M 100 31.875z" fill="url(#SvgjsLinearGradient1455)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-area" index="0" clip-path="url(#gridRectMask07s9wd9b)" pathTo="M 0 60L 0 37.5C 7 37.5 13 33.75 20 33.75C 27 33.75 33 43.125 40 43.125C 47 43.125 53 9.375 60 9.375C 67 9.375 73 0 80 0C 87 0 93 31.875 100 31.875C 100 31.875 100 31.875 100 60M 100 31.875z" pathFrom="M -1 60L -1 60L 20 60L 40 60L 60 60L 80 60L 100 60"></path><path id="SvgjsPath1460" d="M 0 37.5C 7 37.5 13 33.75 20 33.75C 27 33.75 33 43.125 40 43.125C 47 43.125 53 9.375 60 9.375C 67 9.375 73 0 80 0C 87 0 93 31.875 100 31.875" fill="none" fill-opacity="1" stroke="#01b075" stroke-opacity="1" stroke-linecap="butt" stroke-width="4" stroke-dasharray="0" class="apexcharts-area" index="0" clip-path="url(#gridRectMask07s9wd9b)" pathTo="M 0 37.5C 7 37.5 13 33.75 20 33.75C 27 33.75 33 43.125 40 43.125C 47 43.125 53 9.375 60 9.375C 67 9.375 73 0 80 0C 87 0 93 31.875 100 31.875" pathFrom="M -1 60L -1 60L 20 60L 40 60L 60 60L 80 60L 100 60"></path><g id="SvgjsG1453" class="apexcharts-series-markers-wrap" data:realIndex="0"><g class="apexcharts-series-markers"><circle id="SvgjsCircle1485" r="0" cx="0" cy="0" class="apexcharts-marker wx2ngptoy no-pointer-events" stroke="#ffffff" fill="#01b075" fill-opacity="1" stroke-width="2" stroke-opacity="0.9" default-marker-size="0"></circle></g></g></g><g id="SvgjsG1454" class="apexcharts-datalabels" data:realIndex="0"></g></g><line id="SvgjsLine1480" x1="0" y1="0" x2="100" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1481" x1="0" y1="0" x2="100" y2="0" stroke-dasharray="0" stroke-width="0" class="apexcharts-ycrosshairs-hidden"></line><g id="SvgjsG1482" class="apexcharts-yaxis-annotations"></g><g id="SvgjsG1483" class="apexcharts-xaxis-annotations"></g><g id="SvgjsG1484" class="apexcharts-point-annotations"></g></g><rect id="SvgjsRect1446" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect><g id="SvgjsG1463" class="apexcharts-yaxis" rel="0" transform="translate(-18, 0)"></g><g id="SvgjsG1444" class="apexcharts-annotations"></g></svg><div class="apexcharts-legend"></div><div class="apexcharts-tooltip apexcharts-theme-light"><div class="apexcharts-tooltip-title" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"></div><div class="apexcharts-tooltip-series-group"><span class="apexcharts-tooltip-marker" style="background-color: rgb(1, 176, 117);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-label"></span><span class="apexcharts-tooltip-text-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div><div class="apexcharts-yaxistooltip apexcharts-yaxistooltip-0 apexcharts-yaxistooltip-left apexcharts-theme-light"><div class="apexcharts-yaxistooltip-text"></div></div></div></div>
+                                            <div class="resize-triggers"><div class="expand-trigger"><div style="width: 121px; height: 81px;"></div></div><div class="contract-trigger"></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h5 class="my-0">6 total orders</h5>
+                                        <a href="#" class="mb-0">View Report</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box no-shadow box-bordered border-light">
+                                <div class="box-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5>Total Sessions</h5>
+                                            <h2 class="mb-0">845</h2>
+                                        </div>
+                                        <div class="p-10" style="position: relative;">
+                                            <div id="chart-spark2" style="min-height: 60px;"><div id="apexchartsst5mghhr" class="apexcharts-canvas apexchartsst5mghhr apexcharts-theme-light" style="width: 100px; height: 60px;"><svg id="SvgjsSvg1487" width="100" height="60" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><g id="SvgjsG1489" class="apexcharts-inner apexcharts-graphical" transform="translate(0, 0)"><defs id="SvgjsDefs1488"><clipPath id="gridRectMaskst5mghhr"><rect id="SvgjsRect1494" width="108" height="64" x="-4" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="gridRectMarkerMaskst5mghhr"><rect id="SvgjsRect1495" width="104" height="64" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><linearGradient id="SvgjsLinearGradient1501" x1="0" y1="0" x2="0" y2="1"><stop id="SvgjsStop1502" stop-opacity="0.65" stop-color="rgba(253,104,62,0.65)" offset="0"></stop><stop id="SvgjsStop1503" stop-opacity="0.5" stop-color="rgba(254,180,159,0.5)" offset="1"></stop><stop id="SvgjsStop1504" stop-opacity="0.5" stop-color="rgba(254,180,159,0.5)" offset="1"></stop></linearGradient></defs><line id="SvgjsLine1493" x1="0" y1="0" x2="0" y2="60" stroke="#b6b6b6" stroke-dasharray="3" class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="60" fill="#b1b9c4" filter="none" fill-opacity="0.9" stroke-width="1"></line><g id="SvgjsG1507" class="apexcharts-xaxis" transform="translate(0, 0)"><g id="SvgjsG1508" class="apexcharts-xaxis-texts-g" transform="translate(0, -4)"></g></g><g id="SvgjsG1510" class="apexcharts-grid"><g id="SvgjsG1511" class="apexcharts-gridlines-horizontal" style="display: none;"><line id="SvgjsLine1513" x1="0" y1="0" x2="100" y2="0" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1514" x1="0" y1="6" x2="100" y2="6" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1515" x1="0" y1="12" x2="100" y2="12" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1516" x1="0" y1="18" x2="100" y2="18" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1517" x1="0" y1="24" x2="100" y2="24" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1518" x1="0" y1="30" x2="100" y2="30" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1519" x1="0" y1="36" x2="100" y2="36" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1520" x1="0" y1="42" x2="100" y2="42" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1521" x1="0" y1="48" x2="100" y2="48" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1522" x1="0" y1="54" x2="100" y2="54" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1523" x1="0" y1="60" x2="100" y2="60" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line></g><g id="SvgjsG1512" class="apexcharts-gridlines-vertical" style="display: none;"></g><line id="SvgjsLine1525" x1="0" y1="60" x2="100" y2="60" stroke="transparent" stroke-dasharray="0"></line><line id="SvgjsLine1524" x1="0" y1="1" x2="0" y2="60" stroke="transparent" stroke-dasharray="0"></line></g><g id="SvgjsG1497" class="apexcharts-area-series apexcharts-plot-series"><g id="SvgjsG1498" class="apexcharts-series" seriesName="Sessions" data:longestSeries="true" rel="1" data:realIndex="0"><path id="SvgjsPath1505" d="M 0 60L 0 37.5C 7 37.5 13 33.75 20 33.75C 27 33.75 33 43.125 40 43.125C 47 43.125 53 9.375 60 9.375C 67 9.375 73 0 80 0C 87 0 93 31.875 100 31.875C 100 31.875 100 31.875 100 60M 100 31.875z" fill="url(#SvgjsLinearGradient1501)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-area" index="0" clip-path="url(#gridRectMaskst5mghhr)" pathTo="M 0 60L 0 37.5C 7 37.5 13 33.75 20 33.75C 27 33.75 33 43.125 40 43.125C 47 43.125 53 9.375 60 9.375C 67 9.375 73 0 80 0C 87 0 93 31.875 100 31.875C 100 31.875 100 31.875 100 60M 100 31.875z" pathFrom="M -1 60L -1 60L 20 60L 40 60L 60 60L 80 60L 100 60"></path><path id="SvgjsPath1506" d="M 0 37.5C 7 37.5 13 33.75 20 33.75C 27 33.75 33 43.125 40 43.125C 47 43.125 53 9.375 60 9.375C 67 9.375 73 0 80 0C 87 0 93 31.875 100 31.875" fill="none" fill-opacity="1" stroke="#fd683e" stroke-opacity="1" stroke-linecap="butt" stroke-width="4" stroke-dasharray="0" class="apexcharts-area" index="0" clip-path="url(#gridRectMaskst5mghhr)" pathTo="M 0 37.5C 7 37.5 13 33.75 20 33.75C 27 33.75 33 43.125 40 43.125C 47 43.125 53 9.375 60 9.375C 67 9.375 73 0 80 0C 87 0 93 31.875 100 31.875" pathFrom="M -1 60L -1 60L 20 60L 40 60L 60 60L 80 60L 100 60"></path><g id="SvgjsG1499" class="apexcharts-series-markers-wrap" data:realIndex="0"><g class="apexcharts-series-markers"><circle id="SvgjsCircle1531" r="0" cx="0" cy="0" class="apexcharts-marker wgmcpwkxy no-pointer-events" stroke="#ffffff" fill="#fd683e" fill-opacity="1" stroke-width="2" stroke-opacity="0.9" default-marker-size="0"></circle></g></g></g><g id="SvgjsG1500" class="apexcharts-datalabels" data:realIndex="0"></g></g><line id="SvgjsLine1526" x1="0" y1="0" x2="100" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1527" x1="0" y1="0" x2="100" y2="0" stroke-dasharray="0" stroke-width="0" class="apexcharts-ycrosshairs-hidden"></line><g id="SvgjsG1528" class="apexcharts-yaxis-annotations"></g><g id="SvgjsG1529" class="apexcharts-xaxis-annotations"></g><g id="SvgjsG1530" class="apexcharts-point-annotations"></g></g><rect id="SvgjsRect1492" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect><g id="SvgjsG1509" class="apexcharts-yaxis" rel="0" transform="translate(-18, 0)"></g><g id="SvgjsG1490" class="apexcharts-annotations"></g></svg><div class="apexcharts-legend"></div><div class="apexcharts-tooltip apexcharts-theme-light"><div class="apexcharts-tooltip-title" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"></div><div class="apexcharts-tooltip-series-group"><span class="apexcharts-tooltip-marker" style="background-color: rgb(253, 104, 62);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-label"></span><span class="apexcharts-tooltip-text-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div><div class="apexcharts-yaxistooltip apexcharts-yaxistooltip-0 apexcharts-yaxistooltip-left apexcharts-theme-light"><div class="apexcharts-yaxistooltip-text"></div></div></div></div>
+                                            <div class="resize-triggers"><div class="expand-trigger"><div style="width: 121px; height: 81px;"></div></div><div class="contract-trigger"></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <a href="#" class="btn btn-primary-light btn-sm">Live</a>
+                                        <a href="#" class="btn btn-info-light btn-sm">4 Visitors</a>
+                                        <a href="#" class="btn btn-success-light btn-sm">See Live View</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box no-shadow box-bordered border-light">
+                                <div class="box-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5>Customer rate</h5>
+                                            <h2 class="mb-0">5.12%</h2>
+                                        </div>
+                                        <div class="p-10" style="position: relative;">
+                                            <div id="chart3" style="min-height: 135px;"><div id="apexcharts2q8xo5vc" class="apexcharts-canvas apexcharts2q8xo5vc apexcharts-theme-light" style="width: 150px; height: 120px;"><svg id="SvgjsSvg1534" width="150" height="120" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><g id="SvgjsG1536" class="apexcharts-inner apexcharts-graphical" transform="translate(22, 30)"><defs id="SvgjsDefs1535"><clipPath id="gridRectMask2q8xo5vc"><rect id="SvgjsRect1542" width="122.5" height="68.5" x="-2.25" y="-0.25" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="gridRectMarkerMask2q8xo5vc"><rect id="SvgjsRect1543" width="122" height="72" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><linearGradient id="SvgjsLinearGradient1549" x1="0" y1="0" x2="0" y2="1"><stop id="SvgjsStop1550" stop-opacity="0.65" stop-color="rgba(253,104,62,0.65)" offset="0"></stop><stop id="SvgjsStop1551" stop-opacity="0.5" stop-color="rgba(254,180,159,0.5)" offset="1"></stop><stop id="SvgjsStop1552" stop-opacity="0.5" stop-color="rgba(254,180,159,0.5)" offset="1"></stop></linearGradient><linearGradient id="SvgjsLinearGradient1558" x1="0" y1="0" x2="0" y2="1"><stop id="SvgjsStop1559" stop-opacity="0.65" stop-color="rgba(45,155,218,0.65)" offset="0"></stop><stop id="SvgjsStop1560" stop-opacity="0.5" stop-color="rgba(150,205,237,0.5)" offset="1"></stop><stop id="SvgjsStop1561" stop-opacity="0.5" stop-color="rgba(150,205,237,0.5)" offset="1"></stop></linearGradient></defs><line id="SvgjsLine1541" x1="0" y1="0" x2="0" y2="68" stroke="#b6b6b6" stroke-dasharray="3" class="apexcharts-xcrosshairs" x="0" y="0" width="1" height="68" fill="#b1b9c4" filter="none" fill-opacity="0.9" stroke-width="1"></line><g id="SvgjsG1564" class="apexcharts-xaxis" transform="translate(0, 0)"><g id="SvgjsG1565" class="apexcharts-xaxis-texts-g" transform="translate(0, 2.75)"></g><line id="SvgjsLine1566" x1="0" y1="69" x2="118" y2="69" stroke="#e0e0e0" stroke-dasharray="0" stroke-width="1"></line></g><g id="SvgjsG1569" class="apexcharts-grid"><g id="SvgjsG1570" class="apexcharts-gridlines-horizontal" style="display: none;"><line id="SvgjsLine1572" x1="0" y1="0" x2="118" y2="0" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1573" x1="0" y1="17" x2="118" y2="17" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1574" x1="0" y1="34" x2="118" y2="34" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1575" x1="0" y1="51" x2="118" y2="51" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line><line id="SvgjsLine1576" x1="0" y1="68" x2="118" y2="68" stroke="#e0e0e0" stroke-dasharray="0" class="apexcharts-gridline"></line></g><g id="SvgjsG1571" class="apexcharts-gridlines-vertical" style="display: none;"></g><line id="SvgjsLine1578" x1="0" y1="68" x2="118" y2="68" stroke="transparent" stroke-dasharray="0"></line><line id="SvgjsLine1577" x1="0" y1="1" x2="0" y2="68" stroke="transparent" stroke-dasharray="0"></line></g><g id="SvgjsG1545" class="apexcharts-area-series apexcharts-plot-series"><g id="SvgjsG1555" class="apexcharts-series" seriesName="Returning" data:longestSeries="true" rel="2" data:realIndex="1"><path id="SvgjsPath1562" d="M 0 68L 0 61.766666666666666C 6.883333333333332 61.766666666666666 12.783333333333331 49.86666666666667 19.666666666666664 49.86666666666667C 26.549999999999997 49.86666666666667 32.449999999999996 42.5 39.33333333333333 42.5C 46.21666666666666 42.5 52.11666666666666 49.86666666666667 58.99999999999999 49.86666666666667C 65.88333333333333 49.86666666666667 71.78333333333333 48.733333333333334 78.66666666666666 48.733333333333334C 85.55 48.733333333333334 91.44999999999999 38.53333333333333 98.33333333333333 38.53333333333333C 105.21666666666665 38.53333333333333 111.11666666666666 44.766666666666666 117.99999999999999 44.766666666666666C 117.99999999999999 44.766666666666666 117.99999999999999 44.766666666666666 117.99999999999999 68M 117.99999999999999 44.766666666666666z" fill="url(#SvgjsLinearGradient1558)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-area" index="1" clip-path="url(#gridRectMask2q8xo5vc)" pathTo="M 0 68L 0 61.766666666666666C 6.883333333333332 61.766666666666666 12.783333333333331 49.86666666666667 19.666666666666664 49.86666666666667C 26.549999999999997 49.86666666666667 32.449999999999996 42.5 39.33333333333333 42.5C 46.21666666666666 42.5 52.11666666666666 49.86666666666667 58.99999999999999 49.86666666666667C 65.88333333333333 49.86666666666667 71.78333333333333 48.733333333333334 78.66666666666666 48.733333333333334C 85.55 48.733333333333334 91.44999999999999 38.53333333333333 98.33333333333333 38.53333333333333C 105.21666666666665 38.53333333333333 111.11666666666666 44.766666666666666 117.99999999999999 44.766666666666666C 117.99999999999999 44.766666666666666 117.99999999999999 44.766666666666666 117.99999999999999 68M 117.99999999999999 44.766666666666666z" pathFrom="M -1 68L -1 68L 19.666666666666664 68L 39.33333333333333 68L 58.99999999999999 68L 78.66666666666666 68L 98.33333333333333 68L 117.99999999999999 68"></path><path id="SvgjsPath1563" d="M 0 61.766666666666666C 6.883333333333332 61.766666666666666 12.783333333333331 49.86666666666667 19.666666666666664 49.86666666666667C 26.549999999999997 49.86666666666667 32.449999999999996 42.5 39.33333333333333 42.5C 46.21666666666666 42.5 52.11666666666666 49.86666666666667 58.99999999999999 49.86666666666667C 65.88333333333333 49.86666666666667 71.78333333333333 48.733333333333334 78.66666666666666 48.733333333333334C 85.55 48.733333333333334 91.44999999999999 38.53333333333333 98.33333333333333 38.53333333333333C 105.21666666666665 38.53333333333333 111.11666666666666 44.766666666666666 117.99999999999999 44.766666666666666" fill="none" fill-opacity="1" stroke="#2d9bda" stroke-opacity="1" stroke-linecap="butt" stroke-width="0.5" stroke-dasharray="0" class="apexcharts-area" index="1" clip-path="url(#gridRectMask2q8xo5vc)" pathTo="M 0 61.766666666666666C 6.883333333333332 61.766666666666666 12.783333333333331 49.86666666666667 19.666666666666664 49.86666666666667C 26.549999999999997 49.86666666666667 32.449999999999996 42.5 39.33333333333333 42.5C 46.21666666666666 42.5 52.11666666666666 49.86666666666667 58.99999999999999 49.86666666666667C 65.88333333333333 49.86666666666667 71.78333333333333 48.733333333333334 78.66666666666666 48.733333333333334C 85.55 48.733333333333334 91.44999999999999 38.53333333333333 98.33333333333333 38.53333333333333C 105.21666666666665 38.53333333333333 111.11666666666666 44.766666666666666 117.99999999999999 44.766666666666666" pathFrom="M -1 68L -1 68L 19.666666666666664 68L 39.33333333333333 68L 58.99999999999999 68L 78.66666666666666 68L 98.33333333333333 68L 117.99999999999999 68"></path><g id="SvgjsG1556" class="apexcharts-series-markers-wrap" data:realIndex="1"><g class="apexcharts-series-markers"><circle id="SvgjsCircle1585" r="0" cx="0" cy="0" class="apexcharts-marker wia98f6hy no-pointer-events" stroke="#ffffff" fill="#2d9bda" fill-opacity="1" stroke-width="2" stroke-opacity="0.9" default-marker-size="0"></circle></g></g></g><g id="SvgjsG1546" class="apexcharts-series" seriesName="FirstxTime" data:longestSeries="true" rel="1" data:realIndex="0"><path id="SvgjsPath1553" d="M 0 68L 0 50.43333333333334C 6.883333333333332 50.43333333333334 12.783333333333331 45.33333333333333 19.666666666666664 45.33333333333333C 26.549999999999997 45.33333333333333 32.449999999999996 52.13333333333333 39.33333333333333 52.13333333333333C 46.21666666666666 52.13333333333333 52.11666666666666 39.099999999999994 58.99999999999999 39.099999999999994C 65.88333333333333 39.099999999999994 71.78333333333333 44.2 78.66666666666666 44.2C 85.55 44.2 91.44999999999999 6.233333333333334 98.33333333333333 6.233333333333334C 105.21666666666665 6.233333333333334 111.11666666666666 11.333333333333329 117.99999999999999 11.333333333333329C 117.99999999999999 11.333333333333329 117.99999999999999 11.333333333333329 117.99999999999999 68M 117.99999999999999 11.333333333333329z" fill="url(#SvgjsLinearGradient1549)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-area" index="0" clip-path="url(#gridRectMask2q8xo5vc)" pathTo="M 0 68L 0 50.43333333333334C 6.883333333333332 50.43333333333334 12.783333333333331 45.33333333333333 19.666666666666664 45.33333333333333C 26.549999999999997 45.33333333333333 32.449999999999996 52.13333333333333 39.33333333333333 52.13333333333333C 46.21666666666666 52.13333333333333 52.11666666666666 39.099999999999994 58.99999999999999 39.099999999999994C 65.88333333333333 39.099999999999994 71.78333333333333 44.2 78.66666666666666 44.2C 85.55 44.2 91.44999999999999 6.233333333333334 98.33333333333333 6.233333333333334C 105.21666666666665 6.233333333333334 111.11666666666666 11.333333333333329 117.99999999999999 11.333333333333329C 117.99999999999999 11.333333333333329 117.99999999999999 11.333333333333329 117.99999999999999 68M 117.99999999999999 11.333333333333329z" pathFrom="M -1 68L -1 68L 19.666666666666664 68L 39.33333333333333 68L 58.99999999999999 68L 78.66666666666666 68L 98.33333333333333 68L 117.99999999999999 68"></path><path id="SvgjsPath1554" d="M 0 50.43333333333334C 6.883333333333332 50.43333333333334 12.783333333333331 45.33333333333333 19.666666666666664 45.33333333333333C 26.549999999999997 45.33333333333333 32.449999999999996 52.13333333333333 39.33333333333333 52.13333333333333C 46.21666666666666 52.13333333333333 52.11666666666666 39.099999999999994 58.99999999999999 39.099999999999994C 65.88333333333333 39.099999999999994 71.78333333333333 44.2 78.66666666666666 44.2C 85.55 44.2 91.44999999999999 6.233333333333334 98.33333333333333 6.233333333333334C 105.21666666666665 6.233333333333334 111.11666666666666 11.333333333333329 117.99999999999999 11.333333333333329" fill="none" fill-opacity="1" stroke="#fd683e" stroke-opacity="1" stroke-linecap="butt" stroke-width="0.5" stroke-dasharray="0" class="apexcharts-area" index="0" clip-path="url(#gridRectMask2q8xo5vc)" pathTo="M 0 50.43333333333334C 6.883333333333332 50.43333333333334 12.783333333333331 45.33333333333333 19.666666666666664 45.33333333333333C 26.549999999999997 45.33333333333333 32.449999999999996 52.13333333333333 39.33333333333333 52.13333333333333C 46.21666666666666 52.13333333333333 52.11666666666666 39.099999999999994 58.99999999999999 39.099999999999994C 65.88333333333333 39.099999999999994 71.78333333333333 44.2 78.66666666666666 44.2C 85.55 44.2 91.44999999999999 6.233333333333334 98.33333333333333 6.233333333333334C 105.21666666666665 6.233333333333334 111.11666666666666 11.333333333333329 117.99999999999999 11.333333333333329" pathFrom="M -1 68L -1 68L 19.666666666666664 68L 39.33333333333333 68L 58.99999999999999 68L 78.66666666666666 68L 98.33333333333333 68L 117.99999999999999 68"></path><g id="SvgjsG1547" class="apexcharts-series-markers-wrap" data:realIndex="0"><g class="apexcharts-series-markers"><circle id="SvgjsCircle1584" r="0" cx="0" cy="0" class="apexcharts-marker wllow2uqs no-pointer-events" stroke="#ffffff" fill="#fd683e" fill-opacity="1" stroke-width="2" stroke-opacity="0.9" default-marker-size="0"></circle></g></g><g id="SvgjsG1548" class="apexcharts-datalabels" data:realIndex="0"></g></g><g id="SvgjsG1557" class="apexcharts-datalabels" data:realIndex="1"></g></g><line id="SvgjsLine1579" x1="0" y1="0" x2="118" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1580" x1="0" y1="0" x2="118" y2="0" stroke-dasharray="0" stroke-width="0" class="apexcharts-ycrosshairs-hidden"></line><g id="SvgjsG1581" class="apexcharts-yaxis-annotations"></g><g id="SvgjsG1582" class="apexcharts-xaxis-annotations"></g><g id="SvgjsG1583" class="apexcharts-point-annotations"></g></g><rect id="SvgjsRect1540" width="0" height="0" x="0" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fefefe"></rect><g id="SvgjsG1567" class="apexcharts-yaxis" rel="0" transform="translate(-8, 0)"><g id="SvgjsG1568" class="apexcharts-yaxis-texts-g"></g></g><g id="SvgjsG1537" class="apexcharts-annotations"></g></svg><div class="apexcharts-legend"></div><div class="apexcharts-tooltip apexcharts-theme-light"><div class="apexcharts-tooltip-title" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"></div><div class="apexcharts-tooltip-series-group"><span class="apexcharts-tooltip-marker" style="background-color: rgb(253, 104, 62);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-label"></span><span class="apexcharts-tooltip-text-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div><div class="apexcharts-tooltip-series-group"><span class="apexcharts-tooltip-marker" style="background-color: rgb(45, 155, 218);"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-label"></span><span class="apexcharts-tooltip-text-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div><div class="apexcharts-xaxistooltip apexcharts-xaxistooltip-bottom apexcharts-theme-light"><div class="apexcharts-xaxistooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"></div></div><div class="apexcharts-yaxistooltip apexcharts-yaxistooltip-0 apexcharts-yaxistooltip-left apexcharts-theme-light"><div class="apexcharts-yaxistooltip-text"></div></div><div class="apexcharts-toolbar" style="top: 0px; right: 3px;"><div class="apexcharts-menu-icon" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg></div><div class="apexcharts-menu"><div class="apexcharts-menu-item exportSVG" title="Download SVG">Download SVG</div><div class="apexcharts-menu-item exportPNG" title="Download PNG">Download PNG</div><div class="apexcharts-menu-item exportCSV" title="Download CSV">Download CSV</div></div></div></div></div>
+                                            <div class="resize-triggers"><div class="expand-trigger"><div style="width: 171px; height: 156px;"></div></div><div class="contract-trigger"></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h5 class="my-0"><span class="badge badge-xl badge-dot badge-primary mr-10"></span>First Time</h5>
+                                        <h5 class="my-0"><span class="badge badge-xl badge-dot badge-danger mr-10"></span>Returning</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box no-shadow box-bordered border-light">
+                                <div class="box-header">
+                                    <h4 class="box-title">Resent Activity</h4>
+                                </div>
+                                <div class="box-body p-5">
+                                    <div class="media-list media-list-hover">
+                                        <a class="media media-single mb-10 p-0 rounded-0" href="#">
+                                            <h4 class="w-50 text-gray font-weight-500">10:10</h4>
+                                            <div class="media-body pl-15 bl-5 rounded border-primary">
+                                                <p>Morbi quis ex eu arcu auctor sagittis.</p>
+                                                <span class="text-fade">by Johne</span>
+                                            </div>
+                                        </a>
+                                        <a class="media media-single mb-10 p-0 rounded-0" href="#">
+                                            <h4 class="w-50 text-gray font-weight-500">08:40</h4>
+                                            <div class="media-body pl-15 bl-5 rounded border-success">
+                                                <p>Proin iaculis eros non odio ornare efficitur.</p>
+                                                <span class="text-fade">by Amla</span>
+                                            </div>
+                                        </a>
+                                        <a class="media media-single mb-10 p-0 rounded-0" href="#">
+                                            <h4 class="w-50 text-gray font-weight-500">07:10</h4>
+                                            <div class="media-body pl-15 bl-5 rounded border-info">
+                                                <p>In mattis mi ut posuere consectetur.</p>
+                                                <span class="text-fade">by Josef</span>
+                                            </div>
+                                        </a>
+                                        <a class="media media-single mb-10 p-0 rounded-0" href="#">
+                                            <h4 class="w-50 text-gray font-weight-500">01:15</h4>
+                                            <div class="media-body pl-15 bl-5 rounded border-danger">
+                                                <p>Morbi quis ex eu arcu auctor sagittis.</p>
+                                                <span class="text-fade">by Rima</span>
+                                            </div>
+                                        </a>
+                                        <a class="media media-single mb-10 p-0 rounded-0" href="#">
+                                            <h4 class="w-50 text-gray font-weight-500">23:12</h4>
+                                            <div class="media-body pl-15 bl-5 rounded border-warning">
+                                                <p>Morbi quis ex eu arcu auctor sagittis.</p>
+                                                <span class="text-fade">by Alaxa</span>
+                                            </div>
+                                        </a>
+
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <div class="text-center">
+                                        <a href="#" class="mb-0">Load More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 296.602px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="@Url.Content("~/js/Admin/Product.js")"></script>
+<script type="text/javascript">
+    //SearchProductList();
+</script>

@@ -1,0 +1,397 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #password-strength-status {
+        padding: 5px 10px;
+        color: #FFFFFF;
+        border-radius: 4px;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+
+    .medium-password {
+        background-color: #BBB418;
+        border: #BBB418 1px solid;
+        padding: 10px;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .weak-password {
+        background-color: #AA4502;
+        border: #AA4502 1px solid;
+        padding: 10px;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .strong-password {
+        background-color: #0FA015;
+        border: #0FA015 1px solid;
+        padding: 10px;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .form-group input {
+        background: #fff;
+        font-size: 16px;
+        width: 100%;
+        height: auto !important;
+        padding: 17px 0px !important;
+        padding-bottom: 0px !important;
+        border: none;
+        border-bottom: 1px solid #bce3c9;
+        border-radius: inherit;
+    }
+</style>
+<main class="main pages">
+    <div class="page-header mt-30 mb-50">
+        <div class="container">
+            <div class="archive-header">
+                <div class="row align-items-center">
+                    <div class="col-xl-3">
+                        <h1 class="mb-15">Login </h1>
+                        <div class="breadcrumb">
+                            <a href="/Home/Index" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                            <span></span> login
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @* <div class="page-content pt-150 pb-150">*@
+    <div class="container">
+        <div class="row">
+            <div id="Login-form">
+                <div class="col-xl-8 col-lg-10 col-md-12 m-auto">
+                    <div class="row">
+                        <div class="login-form-data pt-4">
+                            <div class="row">
+                                <div class="col-lg-6 d-none d-lg-block" style="padding:0px">
+                                    <img class="border-radius" src="~/images1/login.png" />
+                                </div>
+                                <div class="col-lg-6 col-md-8">
+                                    <div class="login_wrap widget-taber-content background-white">
+                                        <div class="padding_eight_all bg-white">
+                                            <div class="heading_s1">
+                                                <h1 class="mb-5">Login</h1>
+                                                <p class="mb-30">Don't have an account?<a href="javascript:void(0)" id="Register">Create here</a></p>
+                                            </div>
+                                            <form method="post">
+                                                <input type="hidden" id="hiddencompanyid" value="@ViewBag.companyid" />
+                                                <input type="hidden" id="hidtype" value="@ViewBag.type" />
+                                                <div class="form-group">
+                                                    <input class="login-form _2IX_2- VJZDxU" type="text" name="email" id="txtemail" placeholder="" onkeyup="check_Email(this.value)">
+
+                                                    <label class="zkak _1fqY3P">Enter Email/Mobile Number *</label>
+                                                </div>
+                                                <div class="form-group d-none">
+                                                    <input class="login-form _2IX_2- VJZDxU numberone" type="text" name="mobile" maxlength="10" id="txtmobile" placeholder="" onkeyup="check_contNo(this.value)">
+                                                    <label class="zkak _1fqY3P">Mobile *</label>
+                                                    <span id="txtmobilenoerror" class="text-danger"></span>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input class="login-form _2IX_2- VJZDxU" type="password" maxlength="15" name="password" id="txtpassword" placeholder="">
+                                                    <label class="zkak _1fqY3P">Enter password *</label>
+                                                </div>
+                                                <div class="login_footer form-group">
+                                                    <div class="chek-form" style="width:90%">
+                                                        <input class="login-form _2IX_2- VJZDxU" type="text" name="email" maxlength="100" placeholder="" id="txtsecrutiycode">
+                                                        <label class="zkak _1fqY3P">Security code *</label>
+                                                    </div>
+                                                    <span id="security-code" class="security-code">
+                                                        @*<b class="text-new">8</b>
+                                                        <b class="text-hot">6</b>
+                                                        <b class="text-sale">7</b>
+                                                        <b class="text-best">5</b>*@
+                                                    </span><a onclick="RefreshLoginSecruitcode();" class="action-btn"><i class="fi-rs-refresh" aria-hidden="true"></i></a>
+                                                </div>
+                                                <div class="login_footer form-group">
+                                                    <div class="chek-form">
+                                                        <div class="custome-checkbox">
+                                                            <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
+                                                            <label class="form-check-label" for="exampleCheckbox1"><span>Remember me</span></label>
+                                                        </div>
+                                                    </div>
+                                                    <a class="text-muted" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#forgotpassword">Forgot password?</a>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-md-5">
+                                                        <button type="button" width="100%" style="width:100%" class="btn btn-heading btn-block hover-up" name="login" onclick="return Login()">Log in</button>
+                                                    </div>
+                                                    @*   <div class="col-md-2 text-center pt-2">
+                                                    <p>or</p>
+                                                    </div> *@
+                                                    @* <div class="form-group col-md-5">
+                                                    <button type="button" onclick="return OTP()" width="100%" style="width:100%" class="btn btn-heading btn-block hover-up" name="">Request OTP</button>
+                                                    </div> *@
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="Registraion" style="display:none">
+                <div class="col-xl-8 col-lg-10 col-md-12 m-auto">
+                    <div class="row">
+                        <div class="col-lg-6 pr-30 d-none d-lg-block">
+                            <img class="border-radius" src="~/images1/signup.png" />
+                            @* <div class="card-login mt-115">
+                            <a href="#" class="social-login facebook-login">
+                            <img src="assets/imgs/theme/icons/logo-facebook.svg" alt="">
+                            <span>Continue with Facebook</span>
+                            </a>
+                            <a href="#" class="social-login google-login">
+                            <img src="assets/imgs/theme/icons/logo-google.svg" alt="">
+                            <span>Continue with Google</span>
+                            </a>
+
+                            </div>*@
+                        </div>
+                        <div class="col-lg-6 col-md-8">
+                            <div class="login_wrap widget-taber-content background-white">
+                                <div class="padding_eight_all bg-white">
+                                    <div class="heading_s1">
+                                        <h1 class="mb-5">Create an Account</h1>
+                                        <p class="mb-30">Already have an account? <a href="javascript:void(0)" id="login">Login</a></p>
+                                    </div>
+                                    <form>
+                                        <input type="hidden" value="0" id="hidcustomerid" />
+                                        <div class="form-group">
+                                            <input type="text" class="login-form _2IX_2- VJZDxU" required="" name="firstname" maxlength="50" placeholder="" id="txtfirstname">
+                                            <label class="zkak _1fqY3P">First Name</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="login-form _2IX_2- VJZDxU" required="" name="lastname" maxlength="50" placeholder="" id="txtlastname">
+                                            <label class="zkak _1fqY3P">Last Name</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="login-form _2IX_2- VJZDxU" required="" name="email" maxlength="50" placeholder="" id="txtEmail" onkeyup="check_Email(this.value)">
+                                            <label class="zkak _1fqY3P">Email</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="login-form _2IX_2- VJZDxU numberone" required="" name="mobile" placeholder="" maxlength="10" id="txtmobilenumber" onkeyup="check_contNo(this.value)">
+                                            <label class="zkak _1fqY3P">Mobile Number</label>
+                                            <span id="txtmobilenoerror" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input required="" class="login-form _2IX_2- VJZDxU" type="password" name="password" maxlength="10" placeholder="" id="newpassword" onkeyup="checknewPasswordStrength();">
+                                            <label class="zkak _1fqY3P">Password</label>
+                                        </div>
+                                        <div id="passwords-strength-status"></div>
+                                        <div class="form-group">
+                                            <input required="" class="login-form _2IX_2- VJZDxU" type="password" name="password" maxlength="10" placeholder="" id="confirmpassword" onkeyup="checkPasswordMatch();">
+                                            <label class="zkak _1fqY3P">Confirm password</label>
+                                        </div>
+                                        <div id="passwords-strength-status"></div>
+                                        <div class="form-group col-md-12" id="ErrorMessage">
+                                        </div>
+                                        <div class="login_footer form-group">
+                                            <div class="chek-form" style="width:90%">
+                                                <input type="text" required="" name="secrutiycode" id="txtsecrutiycode1" placeholder="">
+                                                <label class="zkak _1fqY3P">Security code</label>
+                                            </div>
+                                            <span id="security-code1" class="security-code">
+                                                @*<b class="text-new">8</b>
+                                                <b class="text-hot">6</b>
+                                                <b class="text-sale">7</b>
+                                                <b class="text-best">5</b>*@
+                                            </span><a onclick="RefreshRegSecruityCode();" class="action-btn"><i class="fi-rs-refresh" aria-hidden="true"></i></a>
+                                        </div>
+                                        @* <div class="payment_option mb-50">
+                                        <div class="custome-radio">
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
+                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">I am a customer</label>
+                                        </div>
+                                        <div class="custome-radio">
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="">
+                                        <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">I am a vendor</label>
+                                        </div>
+                                        </div>*@
+                                        <div class="login_footer form-group mb-50">
+                                            <div class="chek-form">
+                                                <div class="custome-checkbox">
+                                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox12" value="">
+                                                    <label class="form-check-label" for="exampleCheckbox12"><span>I agree to terms &amp; Policy.</span></label>
+                                                </div>
+                                            </div>
+                                            <a href="/privacy-policy"><i class="fi-rs-book-alt mr-5 text-muted"></i>Lean more</a>
+                                        </div>
+                                        <div class="form-group mb-30">
+                                            <button type="button" class="btn btn-fill-out btn-block hover-up font-weight-bold" onclick="return Registration()">Submit & Register</button>
+                                        </div>
+                                        <p class="font-xs text-muted"><strong>Note:</strong>Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy</p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="forgotpassword" tabindex="-1" aria-labelledby="forgotpasswordmodalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="forgotpasswordmodalLabel">Forgot Current Password</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <input type="hidden" value="0" id="hidcustomerid" />
+                                <div class="form-group mb-3">
+                                    <label for="txtemailid" class="form-label">Email ID</label>
+                                    <input type="email" class="form-control" required="" name="emailid" maxlength="50" placeholder="Enter your email" id="txtemailid">
+                                </div>
+                                <div class="form-group mb-30">
+                                    <button type="button" class="btn btn-primary w-30" onclick="forgot_password()">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+          
+
+            @*
+            <div id="forgotpassword" style="">
+            <div class="col-xl-8 col-lg-10 col-md-12 m-auto">
+            <div class="row">
+            <div class="col-lg-6 col-md-8">
+            <div class="login_wrap widget-taber-content background-white">
+            <div class="padding_eight_all bg-white">
+
+            <form>
+            <input type="hidden" value="0" id="hidcustomerid" />
+            <div class="form-group">
+            <input type="text" class="login-form _2IX_2- VJZDxU" required="" name="emailid" maxlength="50" placeholder="" id="txtemailid">
+            <label class="zkak _1fqY3P">Email ID</label>
+            </div>
+
+            <div class="form-group mb-30">
+            <button type="button" class="btn btn-fill-out btn-block hover-up font-weight-bold" onclick="forgot_password()">Submit</button>
+            </div>
+
+            </form>
+            </div>
+            </div>
+            </div>
+
+            </div>
+            </div>
+            </div>
+            *@
+
+
+
+            <div id="OTP" style="display:none">
+                <div class="col-xl-12 col-lg-12 col-md-12 m-auto pt-4">
+                    <div class="row">
+                        <div class="offset-md-4  col-md-4  offset-md-4">
+                            <div class="login_wrap widget-taber-content background-white">
+                                <div class="padding_eight_all bg-white">
+                                    <div class="heading_s1">
+                                        <h1 class="mb-5">Enter your OTP </h1>
+                                        <p class="mb-30"> </p>
+                                    </div>
+                                    <form>
+
+                                        <div class="form-group">
+                                            <input type="text" required="" name="OPTNO" maxlength="50" placeholder="OTP" id="OPTNO">
+                                            @*  <h2 style="padding-left: 0px;"><span id="timer"></span></h2>*@
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="hidden" value="" id="OPTNOid" />
+                                            @*  <a href="/CustomerAccount" id="ccacid">d</a>*@
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-6 mb-30">
+                                                <button type="button" class="btn btn-fill-out btn-block hover-up font-weight-bold" onclick="varfiy();"> VERIFY & PROCEED</button>
+
+                                            </div>
+                                            <div class="form-group col-md-6 mb-30">
+                                                <button style="width:100%" class="btn btn-fill-out btn-block hover-up font-weight-bold" onclick="resenotp();" id="resend"> Resend OTP</button>
+
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-lg-6 pr-30 d-none d-lg-block">
+                        <img class="border-radius" src="~/images1/signup.png" />
+                        </div>*@
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* </div>*@
+</main>
+<script src="@Url.Content("~/js/Front/Customer.js")"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    RefreshLoginSecruitcode();
+    $(document).ready(function () {
+        $('#Register').click(function () {
+            RefreshRegSecruityCode();
+            $('#Registraion').css('display', 'block');
+            $('#Login-form').css('display', 'none');
+        });
+        $('#login').click(function () {
+            RefreshLoginSecruitcode();
+            $('#Registraion').css('display', 'none');
+            $('#Login-form').css('display', 'block');
+        });
+
+    });
+
+
+    function forgot_password() {
+        $("#forgotpassword").modal("hide");
+        var email = $("#txtemailid").val();
+        if (email !=  "") {
+            $.ajax({
+                url: '/Customer/ForgotPasswordid',
+                type: 'post',
+                dataType: 'json',
+                data: { email: email /* $("#txtemailid").val() */ },
+                success: function (data) {
+                    alert(data.message);
+                },
+                error: function (error) {
+                    alert("error");
+                }
+            });
+        }
+        else {
+
+            alert("Please Enter Email Id.");
+        }
+    }
+</script>

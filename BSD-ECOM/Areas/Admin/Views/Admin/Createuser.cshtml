@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewData["Title"] = "Createuser";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">Create User</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Create User</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <div id="divDescription">
+
+                                            <div class="row">
+                                                <input type="hidden" id="id" value="0" />
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16"> User Name </label>
+                                                         <input type="text" class="form-control" id="txtuser"  />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16"> Email </label>
+                                                         <input type="text" class="form-control" id="txtemail"  />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+
+                                            <div class="row">
+                                               <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Password</label>
+                                                        <input type="password" class="form-control" id="txtpass"   />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16"> Mobile No </label>
+                                                         <input type="text" class="form-control" id="txtmob"  />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                             <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Type</label>
+                                                       <select id="ddltype" class="form-control" >
+                                                        <option value="0">--Select--</option>
+                                                        <option value="1">Admin</option>
+                                                        <option value="2">Employee</option>
+                                                       
+                                                    </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                             <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Status</label>
+                                                    <input type="checkbox" id="chkStatus" name="status" checked />  Active
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-actions mt-10">
+                                        <input type="button" class="btn btn-primary" id="btnSave" onclick="IUCreateuser()"
+                                               value="Save" />
+                                        <input type="button" class="btn btn-danger" value="Clear" onclick="Clear()" />
+                                    </div>
+                                </form>
+                                <div class="col-md-12">
+                                    <table id="data-table" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="display:none">ID</th>
+                                                <th style="display:none">Type id</th>
+                                                <th>Type</th>
+                                                 <th> User name</th>
+                                                 <th style="display:none">Email</th>
+                                                 <th style="display:none">Password</th>
+                                                 <th style="display:none">Mobile Number</th>
+                                                <th>Status</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Createuserbody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </section>
+        </div>
+    </div>
+   
+
+    <script src="@Url.Content("~/js/Admin/Createuser.js")"></script>
+    <script type="text/javascript">
+         ShowDataInTable();
+    </script>
+
+</body>
+</html>
+
+

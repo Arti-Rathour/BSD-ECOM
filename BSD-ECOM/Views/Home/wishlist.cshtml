@@ -1,0 +1,149 @@
+﻿@model BSD_ECOM.ViewModel.IndexViewModel
+@{
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutItem.cshtml";
+}
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+
+<style>
+    .shopping-summery table tbody tr img {
+        max-width: 50px;
+        border: px solid #ececec;
+        border-radius: 15px;
+    }
+</style>
+<main class="main">
+            <div class="container mb-30 mt-50">
+                <div class="row">
+                    <div class="col-xl-10 col-lg-12 m-auto">
+                        <div class="mb-50">
+                            <h1 class="heading-2 mb-10">Your Wishlist</h1>
+                            <h6 class="text-body">There are <span class="text-brand">@Model.itemStroes.Count</span> products in this list</h6>
+                        </div>
+                        <div class="table-responsive shopping-summery">
+                            <table class="table table-wishlist">
+                                <thead>
+                                    <tr class="main-heading">
+                                        @* <th class="custome-checkbox pl-30">
+                                            
+                                        </th> *@
+                                        <th scope="col" colspan="2">Product</th>
+                                        <th scope="col">Price</th>
+                                        @* <th scope="col">Stock Status</th> *@
+                                        <th scope="col">Add to Cart</th>
+                                        <th scope="col" class="end">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                      @if (Model.itemStroes.Count > 0)
+                            {
+                                @foreach (var item in Model.itemStroes)
+                                {
+                                    <tr class="pt-30">
+                                        @* <td class="custome-checkbox pl-30">
+                                            
+                                        </td> *@
+                                        <td class="image product-thumbnail pt-40"><a href="/Product/@item.Id/@item.itemdetailsId/@item.ItemName.Replace(" ","-")"><img class="default-img" src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Frontimage" alt="#" id="frontimg"></a></td>
+                                        <td class="product-des product-name">
+                                            <h6><a href="/Product/@item.Id/@item.itemdetailsId/@item.ItemName.Replace(" ","-")/@item.CategoryId">@item.ItemName</a></h6>
+                                             <input type="hidden" value="@item.itemdetailsId" id="productdetId_@item.Id" />
+                                                <span id="qty_@item.Id" class="qty-val" style="display:none">1</span>
+                                            <div class="product-rate-cover">
+                                                @* <div class="product-rate d-inline-block">
+                                                    <div class="product-rating" style="width: 90%"></div>
+                                                </div> *@
+                                               @*  <span class="font-small ml-5 text-muted"> (4.0)</span> *@
+                                            </div>
+                                        </td>
+                                        <td class="price" data-title="Price">
+                                            <h5 class="text-brand">₹@item.Disamt</h5>
+
+                                           
+                                        </td>
+                                       @*  <td class=" detail-info" data-title="Stock">
+                                            @if (@item.sbalance > 0)
+                                            {
+                                                <span class="stock-status in-stock mb-0"> In Stock </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="stock-status out-stock mb-0"> Out Stock </span>
+                                            }
+                                        </td> *@
+
+
+                                      @*   <td class="text-right" data-title="Cart">
+                                            @if (@item.Disamt == 0)
+                                            {
+                                                <button class="btn btn-sm" onclick="addcart(@item.Id,5)" disabled>Add to cart</button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-sm" onclick="addcart(@item.Id,5)">Add to cart</button>
+                                            }
+
+                                        </td> *@
+
+                                       
+
+                                        <td class="text-right" data-title="Cart">
+
+                                            @* <div class="col-lg-3" id="gifid" style="display:none">
+                                                <div class="form-group">
+                                                    <img src="/CompanyLogo/loading-waiting.gif"
+                                                         style="width: 68px;height: 57px;margin:-99rem 0px 0 1rem;border-radius: 100%;    margin-bottom: -61px ;/* position: absolute; */" />
+                                                </div>
+                                            </div> *@
+                                            @if (@item.Disamt == 0)
+                                            {
+                                                @* <button class="btn btn-sm" onclick="addcart(@item.Id,5)" disabled>Add to cart</button> *@
+                                                <button type="button" id="btnsendquery" class="button button-add-to-cart"@*  style="display:@((item.send_query ==            1)?"inline-block":"none")" *@ onclick="bindpopup(@item.Id)">
+                                                    Send Query
+                                                </button>
+                                               
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-sm" onclick="addcart(@item.Id,5)">Add to cart</button>
+                                                @* <button type="button" id="btnsendquery" class="button button-add-to-cart" @* style="display:@((item.send_query ==            1)?"inline-block":"none")"  onclick="bindpopup(@item.Id)">
+                                                    Send Query
+                                                </button> *@
+                                            }
+                                        </td>
+
+
+                                        <td class="action" data-title="Remove">
+                                            <a href="#" class="text-body"  onclick="delwishlist(@item.Id)" ><i class="fi-rs-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="@Url.Content("~/js/Front/ProductDetails.js")"></script>
+@*<script src="@Url.Content("~/js/Front/Customer.js")"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Register').click(function () {
+            $('#Registraion').css('display', 'block');
+            $('#Login-form').css('display', 'none');
+        });
+        $('#login').click(function () {
+            $('#Registraion').css('display', 'none');
+            $('#Login-form').css('display', 'block');
+        });
+    });
+</script>*@
+
+@* <script>
+    // This will reload the current page
+    window.location.reload();
+@* </script> *@ 

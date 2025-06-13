@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Order_Report";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+  <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">Order Report</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Order Report</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <div id="divDescription">
+                                            <div class="row">
+                                                <input type="hidden" id="order_id" />
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16"> From Date </label>
+                                                        <input type="date" class="form-control" id="txtfdate" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16"> To Date </label>
+                                                        <input type="date" class="form-control" id="txttdate" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Product Status</label>
+                                                        <select id="productStatus" class="form-control" tabindex="1" name="UserName"">
+                                                            <option value="*">Select Product Status</option>
+                                                            <option value="4">Delivered</option>
+                                                            <option value="5">Cancelled</option>
+                                                            <option value="6">Returned</option>
+                                                                
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions mt-10">
+                                        <input type="button" class="btn btn-primary" id="btnSave" onclick="ShowDataInTable()"
+                                               value="Serach" />
+                                   
+                                    </div>
+                                </form>
+                                <div class="table-responsive rounded card-table">
+                                    <table class="table border-no" id="example">
+                                        <thead>
+                                            <tr>
+                                                <th style="display:none">Id</th>
+                                                <th>Order Id</th>
+                                                <th>Order No.</th>
+                                                <th>User Name</th>
+                                                <th>Amount</th>
+                                                <th>Mobile No.</th>
+                                                <th>Order Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="tbodyData"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        </section>
+        <!--/ Content-->
+    </div>
+    </div>
+<script src="@Url.Content("~/js/Admin/Order_report.js")"></script>

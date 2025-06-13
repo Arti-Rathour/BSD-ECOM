@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewData["Title"] = "Country";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">Country</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Country</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="mr-auto" @* style="margin-top: -98px;" @* style=" margin-top: -104px; margin-left: 540px; *@">
+                        <li class="btn-group nav-item d-none d-xl-inline-block">
+                            <div class="app-menu">
+                                <div class="search-bx mx-5">
+
+                                    <div class="input-group">
+                                        <input type="search" class="form-control" id="txtsearch" placeholder="Search" oninput="ShowDataInTable()" aria-label="Search" style="    width: 300px;
+    margin-left: 433px;" aria-describedby="button-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn" type="submit" id="btnsearch" onclick="ProductList()"></button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <div id="divDescription">
+
+                                            <div class="row">
+                                                <input type="hidden" id="id"  />
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Country</label>
+                                                        <input type="text" class="form-control" id="txtcountry"  />
+                                                       
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                               
+                                                                                       
+                                      </div>
+                                    </div>
+                                    <div class="form-actions mt-10">
+                                        <input type="button" class="btn btn-primary" id="btnSave" onclick="IUCountry()"
+                                               value="Save" />
+                                        <input type="button" class="btn btn-danger" value="Clear" onclick="Clear1()" />
+                                    </div>
+                                </form>
+                                <div class="col-md-12">
+                                    <table id="data-table" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Country ID</th>
+                                                <th>Country</th>                                               
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Countrybody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+   
+
+    <script src="@Url.Content("~/js/Admin/Country.js")"></script>
+    <script type="text/javascript">
+         ShowDataInTable();
+    </script>
+
+</body>
+</html>
+
+

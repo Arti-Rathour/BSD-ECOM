@@ -1,0 +1,297 @@
+﻿@model BSD_ECOM.Models.customer;
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "CheckOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <main class="main">
+        <div class="container mb-80 mt-50">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row mb-50">
+                        <h1 class="heading-2 mb-10">Checkout</h1>
+                        <div class="d-flex justify-content-between">
+                            @*<h6 class="text-body">There are <span class="text-brand">3</span> products in your cart</h6>*@
+                        </div>
+                        <br>
+                        <br>
+                        <div class="col-lg-6 mb-sm-15 mb-lg-0 mb-md-3">
+                            <div class="toggle_info">
+                                <span><i class="fi-rs-user mr-10"></i><span class="text-muted font-lg">Already have an account?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed font-lg" aria-expanded="false">Click here to login</a></span>
+                            </div>
+                            <div class="panel-collapse collapse login_form" id="loginform">
+                                <div class="panel-body">
+                                    <p class="mb-30 font-sm">If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing &amp; Shipping section.</p>
+                                    <form method="post">
+                                        <div class="form-group">
+                                           
+                                            <input type="text" name="email" placeholder="Username Or Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" name="password" placeholder="Password">
+                                        </div>
+                                        <div class="login_footer form-group">
+                                            <div class="chek-form">
+                                                <div class="custome-checkbox">
+                                                    <input class="form-check-input" type="checkbox" name="checkbox" id="remember" value="">
+                                                    <label class="form-check-label" for="remember"><span>Remember me</span></label>
+                                                </div>
+                                            </div>
+                                            <a href="#">Forgot password?</a>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-md" name="login">Log in</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <form method="post" class="apply-coupon">
+                                <input type="text" placeholder="Enter Coupon Code...">
+                                <button class="btn  btn-md" name="login">Apply Coupon</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4 class="mb-30">Billing Details</h4>
+                        <form method="post">
+                            <div class="row">
+                                <input type="hidden" id="customerid" asp-for="id" />
+                                <div class="form-group col-lg-6">
+                                  
+                                    <input type="text" name="fname" id="txtfirstname" placeholder="First name*" asp-for="firstname">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <input type="text" name="lname" id="txtlastname" placeholder="Last name *" asp-for="lastname">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <input type="text" name="billing_address" id=txtaddress1 placeholder="Address *">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <input type="text" name="billing_address2" id="txtaddress2" placeholder="Address line2">
+                                </div>
+                            </div>
+                            <div class="row shipping_calculator">
+                                <div class="form-group col-lg-6">
+                                    <div class="custom_select">
+                                        <select class="form-control select-active" id="ddlcountry" onchange="StateBind(this.value)">
+                                            <option value="0">Select Country</option>
+                                            @if (ViewBag.country != null)
+                                            {
+                                                foreach (var item in ViewBag.country as List<SelectListItem>)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <div class="custom_select">
+                                        <select class="form-control select-active" id="ddlstate" onchange="CityBind(this.value)">
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <div class="custom_select">
+                                        <select class="form-control select-active" id="ddlcity">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <input type="text" name="zipcode" placeholder="Postcode / ZIP *" id="txtpincode">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-lg-6" style="display:none">
+                                    <input type="text" name="cname" placeholder="Company Name">
+                                </div> <div class="form-group col-lg-6">
+                                    <input type="text" name="phone" placeholder="Phone *" id="txtphone" asp-for="MobileNo">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <input type="text" name="email" id="txtemail" placeholder="Email address *" asp-for="email">
+                                </div>
+                            </div>
+                            <div class="form-group mb-30">
+                                <textarea rows="5" placeholder="Additional information" id="txtadditionalinfo"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <div class="custome-checkbox">
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="createaccount">
+                                        <label class="form-check-label label_info" data-bs-toggle="collapse" href="#collapsePassword" data-target="#collapsePassword" aria-controls="collapsePassword" for="createaccount"><span>Create an account?</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapsePassword" class="form-group create-account collapse in">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <input required="" type="password" placeholder="Password" name="password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ship_detail">
+                                <div class="form-group">
+                                    <div class="chek-form">
+                                        <div class="custome-checkbox">
+                                            <input class="form-check-input" type="checkbox" name="checkbox" id="chkshipaddress" value="1" onclick="showshipaddress(this.value)">
+                                            <label class="form-check-label label_info" data-bs-toggle="collapse" data- target="#collapseAddress" href="#collapseAddress" aria-controls="collapseAddress" for="differentaddress"><span>Ship to a different address?</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="collapseAddress" class="different_address collapse in">
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <input type="text" required="" name="fname" placeholder="First name *" id="txtSfirstname">
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <input type="text" required="" name="lname" placeholder="Last name *" id="txtSlastname">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <input type="text" name="shipping_address1" required="" placeholder="Address *" id="txtSaddress1">
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <input type="text" name="shipping_address2" placeholder="Address line2" id="txtSaddress2">
+                                        </div>
+                                    </div>
+                                    <div class="row shipping_calculator">
+                                        <div class="form-group col-lg-6" style="display:none">
+                                            <input type="text" name="cname" placeholder="Company Name">
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <div class="custom_select w-100">
+                                                <select class="form-control select-active" id="ddlcountry1" onchange="StateBind1(this.value)">
+                                                    <option value="0">Select Country</option>
+                                                    @if (ViewBag.country != null)
+                                                    {
+                                                        foreach (var item in ViewBag.country as List<SelectListItem>)
+                                                        {
+                                                            <option value="@item.Value">@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <div class="custom_select w-100">
+                                                <select class="form-control select-active" id="ddlstate1" onchange="CityBind1(this.value)">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <div class="custom_select w-100">
+                                                <select class="form-control select-active" id="ddlcity1">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *" id="txtSpincode">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-6">
+                                            <div class="custom_select w-100">
+                                                <input type="text" required="" id="txtSMobile" placeholder="Mobile number *" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <input required="" type="text" name="Semail" placeholder="Email *" id="txtSemail">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="border p-20 cart-totals ml-30 mb-50">
+                        <div class="d-flex align-items-end justify-content-between mb-10">
+                            <h4>Your Order</h4>
+                        </div>
+                        <div class="divider-2 mb-20"></div>
+                        <div class="table-responsive order_table checkout">
+                            @{double total = 0;
+                                double Grandtotal = 0;
+                            }
+                            <table class="table no-border">
+                                <tbody>
+                                    @if (ViewBag.count > 0)
+                                    {
+                                        @foreach (var item in ViewBag.cart)
+                                        {
+                                            total = (@item.quantity) * (@item.productprice);
+                                            Grandtotal = (Grandtotal + @item.totalprice);
+                                            <tr>
+                                                <td class="image product-thumbnail"><img src="/images/Productimage/@item.productimage" alt="#"></td>
+                                                <td>
+                                                    <h6 class="w-160 mb-5"><a class="product-name mb-10 text-heading" href="/                       product/@item.productid/@item.productname">@item.productname</a></h6>
+                                                    <div class="product-rate-cover" style="display:none">
+                                                        <div class="product-rate d-inline-block">
+                                                            <div class="product-rating" style="width:90%">
+                                                            </div>
+                                                        </div>
+                                                        <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <h6 class="text-muted pl-20 pr-20">@item.quantity</h6>
+                                                </td>
+                                                <td>
+                                                    <h4 class="text-brand">@item.productprice</h4>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                            <div class="shopping-cart-footer">
+                                <div class="shopping-cart-total text-end">
+                                    <h4>Total <span id="grandtotal" class="grandtotal">@Grandtotal</span></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="payment ml-30">
+                        <h4 class="mb-30">Payment</h4>
+                        <div class="payment_option">
+                            <div class="custome-radio">
+                                <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
+                                <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Direct Bank Transfer</label>
+                            </div>
+                            <div class="custome-radio">
+                                <input class="form-check-input" required="" type="radio" name="payment_option" id="rbtcashondelivery" checked="">
+                                <label class="form-check-label" for="rbtcashondelivery" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Cash on delivery</label>
+                            </div>
+                            <div class="custome-radio">
+                                <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" checked="">
+                                <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Online Getway</label>
+                            </div>
+                        </div>
+                        <div class="payment-logo d-flex">
+                            <img class="mr-15" src="assets/imgs/theme/icons/payment-paypal.svg" alt="">
+                            <img class="mr-15" src="assets/imgs/theme/icons/payment-visa.svg" alt="">
+                            <img class="mr-15" src="assets/imgs/theme/icons/payment-master.svg" alt="">
+                            <img src="assets/imgs/theme/icons/payment-zapper.svg" alt="">
+                        </div>
+                        <a class="btn btn-fill-out btn-block mt-30" onclick="checkout()">Place an Order<i class="fi-rs-sign-out ml-15"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="@Url.Content("~/js/Front/Customer.js")"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

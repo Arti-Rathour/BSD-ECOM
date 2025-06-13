@@ -1,0 +1,467 @@
+﻿@*@model BSD_ECOM.Areas.Admin.Models.AddNewProduct*@
+@{
+	ViewData["Title"] = "NewProduct";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+	.modal-header {
+		display: block;
+		align-items: flex-end;
+		justify-content: space-between;
+		padding: 1rem 1rem;
+		border-bottom: 1px solid #dee2e6;
+		border-top-left-radius: calc(0.3rem - 1px);
+		border-top-right-radius: calc(0.3rem - 1px);
+		text-align: end;
+	}
+</style>
+
+
+<div class="content-wrapper">
+	<div class="container-full">
+		<div class="content-header">
+			<div class="d-flex align-items-center">
+				<div class="mr-auto">
+					<h3 class="page-title">Add New Product</h3>
+					<div class="d-inline-block align-items-center">
+						<nav>
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+								<li class="breadcrumb-item" aria-current="page">Add New Product</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Main content-->
+		<section class="content">
+			<div class="row">
+				<div class="col-12">
+					<div class="box">
+						<div class="box-body">
+							<form action="#">
+								<div class="form-body">
+									<input type="hidden" id="id" name="ID" value="0" />
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="font-weight-700 font-size-16">Name</label>
+												<input type="text" class="form-control" id="txtProductName" placeholder="Product Name" name="ItemName" />
+											</div>
+										</div>
+										<div class="col-md-4" style="display:none">
+											<div class="form-group">
+												<label class="font-weight-700 font-size-16">Duplicate Name Product</label>
+												<select id="ddlDupProduct" class="form-control" tabindex="1" name="">
+													<option value="0">Select ItemName</option>
+													@if (ViewBag.DuplicateProduct != null)
+													{
+														foreach (var item in ViewBag.DuplicateProduct as List<SelectListItem>)
+														{
+															<option value="@item.Value">@item.Text</option>
+														}
+													}
+												</select>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="font-weight-700 font-size-16">Url</label>
+												<input type="text" class="form-control" id="txtUrl" placeholder="Url Name" name="URLName" />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="font-weight-700 font-size-16">Super Category</label>
+												<select id="ddlSuCategory" class="form-control" tabindex="1">
+													<option value="0">Select</option>
+													@if (ViewBag.ItemCategory != null)
+													{
+														foreach (var item in ViewBag.ItemCategory as List<SelectListItem>)
+														{
+															<option value="@item.Value">@item.Text</option>
+														}
+													}
+												</select>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="font-weight-700 font-size-16">Category</label>
+												<select id="ddlCategory" class="form-control" tabindex="1">
+												</select>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="font-weight-700 font-size-16">Sub Category</label>
+												<select id="ddlsubCategory" class="form-control" tabindex="1">
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="font-weight-700 font-size-16">Product Tags</label>
+												<input type="text" class="form-control" id="txtProductTag" placeholder="Product Tags" name="productTag" />
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="font-weight-700 font-size-16">Brand</label>
+												<select id="ddlBrand" class="form-control" tabindex="1">
+													<option value="0">Select</option>
+													@if (ViewBag.Brand != null)
+													{
+														foreach (var item in ViewBag.Brand as List<SelectListItem>)
+														{
+															<option value="@item.Value">@item.Text</option>
+														}
+													}
+												</select>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="font-weight-700 font-size-16">HSN</label>
+												<select id="ddlHSN" class="form-control" tabindex="1">
+													<option value="0">Select</option>
+													@if (ViewBag.HSN != null)
+													{
+														foreach (var item in ViewBag.HSN as List<SelectListItem>)
+														{
+															<option value="@item.Value">@item.Text</option>
+														}
+													}
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="font-weight-700 font-size-16">Item Type</label>
+												<select id="ddlItemType" class="form-control" tabindex="1">
+													<option value="0">Select</option>
+													@if (ViewBag.itemType != null)
+													{
+														foreach (var item in ViewBag.itemType as List<SelectListItem>)
+														{
+															<option value="@item.Value">@item.Text</option>
+														}
+													}
+												</select>
+											</div>
+										</div>
+										<div class="col-md-3">
+											<input type="button" class="btn btn-primary" id="btnitemdetails" onclick="itemdetails()" value="Item Details" />
+										</div>
+
+										<div class="col-md-3">
+											<label>Active</label>
+											<input type="checkbox" class="btn btn-primary" id="txtcheckbox" checked value="Active" />
+										</div>
+
+										<div class="col-md-3">
+											<label>Send Query</label>
+											<input type="checkbox" class="btn btn-primary" id="txtsendcheck" checked value="Send Query" />
+										</div>
+
+										<div class="col-md-3">
+											<label>Price</label>
+											<input type="checkbox" class="btn btn-primary" id="txtpricecheck" checked value="Price" />
+										</div>
+
+
+
+									</div>
+									<div id="divproductdata">
+										<div style="display:none">
+											<h3 class="page-header">Product Data</h3>
+											<div id="divgeneral">
+												<h4><i class="fa fa-bars"></i>General</h4>
+												<div class="row">
+													<div class="col-md-4">
+														<div class="form-group">
+															<label class="font-weight-700 font-size-16">SKU</label>
+															<input type="text" class="form-control" id="txtSkuCode" placeholder="SKU Code" name="SKUCode" />
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label class="font-weight-700 font-size-16">Regular Price (Rs.)</label>
+															<input type="text" class="form-control" id="txtRegularPrice" placeholder="Regular Price (Rs.)" name="CostPrice" value="0" />
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label class="font-weight-700 font-size-16">Sale Price (Rs.)</label>
+															<input type="text" class="form-control" id="txtSalePrice" placeholder="Sale Price (Rs.)" name="MRP" value="0" />
+														</div>
+													</div>
+												</div>
+											</div>
+											<br />
+											<div id="divInventory">
+												<h4><i class="fa fa-line-chart"></i>Inventory</h4>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-weight-700 font-size-16">Stock status</label>
+															<input type="text" class="form-control" id="txtStockstatus" placeholder="Stock status" name="StockStatus" />
+														</div>
+													</div>
+												</div>
+											</div>
+											<br />
+											<div id="divShipping">
+												<h4><i class="fa fa-truck"></i>Shipping</h4>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-weight-700 font-size-16">Weight &nbsp;(gm/L)</label>
+															<div class="form-inline">
+																<input type="text" class="form-control" id="txtWeight" placeholder="Weight(gm/L)" style="width:45%" name="Weight" />
+																<select id="ddlweight" class="form-control" tabindex="1" style="width:50%">
+																	<option value="0">Select</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-weight-700 font-size-16">Dimension (cm)</label>
+															<div class="form-inline">
+																<input type="text" class="form-control" id="txtLength" placeholder="Dimension (cm)" style="width:32%" name="Dimension" />
+																<input type="text" class="form-control" id="txtwidth" placeholder="Dimension (cm)" style="width:32%" />
+																<input type="text" class="form-control" id="txtheight" placeholder="Dimension (cm)" style="width:32%" />
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="row" style="display:none">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-weight-700 font-size-16">Shipping Charges</label>
+															<input type="text" class="form-control" id="txtShipCharges" placeholder="Shipping Charges" name="ShipCharge" />
+														</div>
+													</div>
+												</div>
+											</div>
+											<br />
+										</div>
+										<div id="divImages">
+											<h4><i class="fa fa-image"></i>Images</h4>
+											<div class="row">
+												<div class="col-md-4">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Featured Image</label>
+														<input type="file" class="form-control" id="Featuredimage" name="FeaturedImage" />
+
+														<img src="" id="imgfront" height="70" width="70" />
+													</div>
+
+
+
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Back Image</label>
+														<input type="file" class="form-control" id="BackImage" name="BackImage" />
+
+														<img src="" id="imgBack" height="70" width="70" />
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Left Image</label>
+														<input type="file" class="form-control" id="Leftimage" name="LeftImage" />
+
+														<img src="" id="imgLeft" height="70" width="70" />
+													</div>
+												</div>
+											</div>
+
+											<div class="row">
+
+												<div class="col-md-4">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Right  Image</label>
+														<input type="file" class="form-control" id="RightImage" name="RightImage" />
+
+														<img src="" id="imgRight" height="70" width="70" />
+													</div>
+												</div>
+
+
+												<div class="col-md-4">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Upload Video</label>
+														<input type="file" class="form-control" id="imgfile1" name="UploadVideo" />
+
+
+														@* <video width="200" height="150" controls>
+															<source src="" id="file1Image" height="70" width="70" type="video/mp4">
+
+														</video> *@
+														 <video src="" id="imgfiles1" height="70" width="70" ></video> 
+													</div>
+												</div>
+
+
+												<div class="col-md-4">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Upload PDF</label>
+														<input type="file" class="form-control" id="pdf" name="UploadVideo" />
+
+														 <pdf src="" id="pdf1" height="70" width="70"></pdf> 
+														@* <embed src="" id="pdf1"  height="70" width="70"  /> *@
+													</div>
+												</div>
+
+
+											</div>
+
+
+										</div>
+										<hr />
+										<div id="divDescription">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Product Short Description</label>
+														<textarea id="txtProductDesc" class="ckeditor" name="Description" rows="200"></textarea>
+
+													</div>
+												</div>
+											</div>
+											<div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Additional Information</label>
+														<textarea id="AddInformation" class="ckeditor" name="additional" rows="200"></textarea>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Ingredients</label>
+														<textarea id="Ingredients" class="ckeditor" name="ingredients" rows="200"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-actions mt-10">
+										<input type="button" class="btn btn-primary" id="btnSave" onclick="Save()" value="Create Product" />
+										<input type="button" class="btn btn-danger" value="Clear" onclick="Clear()" />
+										@*<button type="submit" class="btn btn-primary"> <i class="fa fa-check"></i> Save / Add</button>
+										<button type="button" class="btn btn-danger">Cancel</button>*@
+									</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<input type="hidden" ID="hdnBalance" Value="0" />
+		<input type="hidden" id="hdnStock" value="0" />
+		<!--/ Content-->
+
+		<div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						@* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close"></button> *@
+						<button type="button" class="close" data-dismiss="modal" id="close">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12 col-sm-12 col-xs-12 mb-md-0 mb-sm-5">
+								<div class="box">
+									<div class="box-body">
+										<form>
+											<div class="form-body">
+												<input type="hidden" id="unitId" />
+												<input type="hidden" id="Index" />
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Unit Name</label>
+														<input type="text" class="form-control" id="txtUnitName" readonly placeholder="Unit Name" name="UnitName" />
+													</div>
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Unit Type</label>
+														<input type="text" class="form-control" id="txtQuantity" placeholder="Quantity" name="quantity" />
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Discount(%)</label>
+														<input type="text" class="form-control" id="txtDiscount" placeholder="Discount" name="discont" />
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Unit Rate</label>
+														<input type="text" class="form-control" id="txtunitrate" placeholder="Unit Rate" name="unitrate" />
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Stock Quantity</label>
+														<input type="text" class="form-control" id="txtStockQty" placeholder="Stock Quantity" name="StockQuantity" />
+													</div>
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="font-weight-700 font-size-16">Shipping Charge</label>
+														<input type="text" class="form-control" id="txtshipping" placeholder="Shipping Charge" name="Shipping Charge" />
+													</div>
+												</div>
+											</div>
+											<div class="form-actions mt-10">
+												<input type="button" class="btn btn-primary" id="savebutton" onclick="saveitem()" value="Save" />
+												@*<input type="button" class="btn btn-danger" value="Clear" id="btnclear1"  />*@
+												<input type="button" class="btn btn-primary" id="Updatebutton" style="display:none" value="Update" />
+											</div>
+										</form>
+										<div class="table-responsive rounded card-table">
+											<table class="table border-no" id="example1">
+												<thead>
+													<tr>
+														<th style="display:none">S.NO</th>
+														<th style="display:none">Unit Id</th>
+														<th style="display:none">Unit Name</th>
+														<th>Unit Type</th>
+														<th>Discount</th>
+														<th>Unit Rate</th>
+														<th>Stock Quantity</th>
+														<th>Shipping Charges</th>
+														<th>Action</th>
+													</tr>
+												</thead>
+												<tbody class="tbodyUnit"></tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="@Url.Content("~/js/Admin/Product.js")"></script>
+

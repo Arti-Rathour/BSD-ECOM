@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewData["Title"] = "Stock_Report";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Stock_Report</h1>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">Stock Report</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Stock Report</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <input type="hidden" id="reg_id" value="0" />
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Product Name</label>
+                                                    <input type="text" class="form-control" id="txtSuperCategory" placeholder="Product Name" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="button" class="btn btn-danger" value="Search" onclick="StockReport()" />
+                                                <input type="button" class="btn btn-success" value="Clear" onclick="window.location.reload()" />
+                                                <input type="button" class="btn btn-primary" value="Export To Excel" onclick="exportToExcel()" />
+
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive rounded card-table">
+                                            <table class="table border-no" id="example">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="display:none">Id</th>
+                                                        <th>Product Name</th>
+                                                        <th>Price</th>
+                                                        <th>Stock Quantity</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbodyData"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--/ Content-->
+        </div>
+    </div>
+    <script src="@Url.Content("~/js/Admin/Stock_report.js")"></script>
+    <script src="@Url.Content("~/js/Admin/xlxs.full.min (1).js")"></script>
+    <script type="text/javascript">
+        StockReport();
+    </script>
+</body>
+</html>
+

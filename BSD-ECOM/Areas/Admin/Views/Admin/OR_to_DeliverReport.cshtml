@@ -1,0 +1,141 @@
+﻿@* @model BSD_ECOM.Areas.Admin.Models.ORT_Dispatch*@
+@using BSD_ECOM.Areas.Admin.Models
+
+@{
+    ViewData["Title"] = "OR_to_DeliverReport";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        @*<h3 class="page-title">Orders Returned</h3>*@
+                        <a href="/Admin/Admin/OR_to_Deliver">back <i class="fa back-top-home"></i></a>
+                        <br />
+                        @*<div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Orders Returned</li>
+                                </ol>
+                            </nav>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="text-muted">
+                        Order Deliver Information <small><i class="fa fa-pencil"></i></small>
+                        <span class="pull-right">
+                        </span>
+                    </h3>
+                    <br>
+                    <table id="dataTable" cellspacing="0" rules="all" class="table table-striped table-bordered table-hover table table-bordered " border="1" style="width:100%;border-collapse:collapse;">
+                        <tbody>
+                            <tr>
+                                <td>Order No: </td>
+                                <td>
+                                    <label> @Model.order_no</label>
+                                </td>
+                                <td>Order Date: </td>
+                                <td>
+                                    <label> @Model.order_date</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Customer Name: </td>
+                                <td>
+                                    <label> @Model.UserName</label>
+                                </td>
+                                <td>Address</td>
+                                <td>
+                                    <level>@Model.Address</level>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mobile No.</td>
+                                <td>
+                                    <span>@Model.MobileNo</span>
+                                </td>
+                                <td>Dispatch date</td>
+                                <td>
+                                    <span>@Model.dispatch_date</span>
+                                </td>
+                            </tr>
+                           @* <tr>
+                                <td>Return User</td>
+                                <td>
+                                    <span>@Model.Return_User</span>
+                                </td>
+                                <td>Return Type</td>
+                                <td>
+                                    <span>@Model.Return_Type</span>
+                                </td>
+                            </tr>*@
+                            <tr>
+                                <td>Plan</td>
+                                <td>
+                                    <label> @Model.amount</label>
+                                </td>
+                                <td>Payment Mode</td>
+                                <td>
+                                    <label> @Model.payment_mode</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <strong>Item Details:</strong>
+                    <div id="Panel1" class="panel-all" style="width:100%;">
+                        <div>
+                            <table cellspacing="0" rules="all" class="table table-striped table-bordered table-hover" border="1" style="width:100%;border-collapse:collapse;">
+                                <tbody>
+                                    <tr>
+                                        <th scope="col">ITEM</th>
+                                        <th scope="col">QUANTITY</th>
+                                        <th scope="col">RATE</th>
+                                        <th scope="col">AMOUNT</th>
+                                    </tr>
+                                    @foreach (var item in ViewBag.order as List<OR_to_Deliver>) 
+                            {
+
+                                    <tr>
+                                        <td>
+                                            <label> @item.itemName</label>
+                                        </td>
+                                        <td>
+                                            <label> @item.quantity</label>
+                                        </td>
+                                        <td>
+                                            <level> @item.subtotal</level>
+                                        </td>
+                                        <td>
+                                            <level>@item.amount</level>
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+

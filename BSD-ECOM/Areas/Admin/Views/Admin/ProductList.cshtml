@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "ProductList";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto"  >
+                        <h3 class="page-title">Product List</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Products</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="mr-auto" @* style="margin-top: -98px;" @* style=" margin-top: -104px; margin-left: 540px; *@" >
+                        <li class="btn-group nav-item d-none d-xl-inline-block">
+                            <div class="app-menu">
+                                <div class="search-bx mx-5">
+
+                                    <div class="input-group">
+                                        <input type="search" class="form-control" id="txtsearch" placeholder="Search" oninput="ProductList()" aria-label="Search" style="    width: 300px;
+    margin-left: 433px;" aria-describedby="button-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn" type="submit" id="btnsearch" onclick="ProductList()"></button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content" @* style="    margin-top: -35px;" *@>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                               
+                                    <div class="form-body">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-700 font-size-16">Status</label>
+                                            <select id="ddlactive" class="form-control" tabindex="1" name="status" onchange="ProductList();">
+                                                <option value="1">Active</option>
+                                                <option value="0">Inactive</option>
+                                                <option value="2">Both</option>
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                        <input type="hidden" id="Categoryid" value="0" />
+                                        <div class="table-responsive rounded card-table">
+                                            <table class="table border-no" id="example1">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="display:none">Product Id</th>
+                                                        <th><i class="fa fa-image"></i></th>
+                                                        <th>Product Name</th>
+                                                        @*<th>Stock</th>
+                                                        <th>Price</th>*@
+                                                        <th style="display:none">Main Category Id</th>
+                                                        <th>Main Category Name</th>
+                                                        <th style="display:none">Category Id</th>
+                                                        <th>Categories</th>
+                                                        <th style="display:none">Sub Category Id</th>
+                                                        <th>Sub Category Name</th>
+                                                        <th>Tags</th>
+                                                        <th>Rate</th>
+                                                        <th>Date</th>
+                                                        <th>Status</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbodyData"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--/ Content-->
+        </div>
+    </div>
+    <script src="@Url.Content("~/js/Admin/Product.js")"></script>
+    <script type="text/javascript">
+        ProductList();
+    </script>
+</body>
+</html>
+

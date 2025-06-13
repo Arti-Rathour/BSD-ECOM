@@ -1,0 +1,70 @@
+﻿@model BSD_ECOM.ViewModel.IndexViewModel
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "WelfareDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .products-im p img {
+        width: 15%;
+        float: left;
+        height: 230px;
+        object-fit: cover;
+        margin-right: 20px;
+        border-radius: 50%;
+    }
+    .products-im {
+        margin-bottom: 20px;
+        display: inline-block;
+        width: 100%;
+    }
+    @@media (max-width: 769px) {
+        .products-im p img {
+            width: 100%;
+            float: initial;
+            height: auto !important;
+            object-fit: cover;
+            margin-right: 0px;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+<main class="main">
+     <div class="page-header mt-30 mb-50">
+        <div class="container-fluid">
+            <div class="archive-header">
+                <div class="row align-items-center">
+                    <div class="col-xl-3">
+                        <h1 class="mb-15">Blog</h1>
+                        <div class="breadcrumb">
+                            @* <a href="/bsdinfotechpvtltd.wordpress.com" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a> *@
+                            <a href="/Home/Index" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                             <span></span> Blog
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    @if (Model.blogs.Count > 0)
+    {
+        @foreach (var item in Model.blogs)
+        {
+            <section id="@item.LongDesc">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="products-im">
+                                <p><img src="/images/blog/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.img"> </p><h5 style="margin-bottom: 5px;font-weight: 500;">@Html.Raw(@item.ShortDesc) </h5>@Html.Raw(item.LongDesc)<p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+    }
+</main>
+

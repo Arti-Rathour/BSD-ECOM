@@ -1,0 +1,442 @@
+﻿@{
+    ViewData["Title"] = "Addtocart";
+   
+    Layout = "~/Views/Shared/_LayoutItem.cshtml";
+}
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+<html>
+<head>
+    <style>
+        .cart_total_label h6.text-muted {
+            color: black !important;
+        }
+
+      
+
+        @@media (max-width:500px){
+            .btn, .button {
+                padding: 12px 5px;
+            }
+
+            table.table.table-wishlist td {
+                padding: 10 !important;
+            }
+            .cart-totals.ml-30 {
+                margin-left: 0 !important;
+                text-align: center;
+                padding: 13px 10px;
+            }
+
+            .table-responsive {
+                border: none;
+            }
+
+            .table .tr-m td {
+                display: revert-layer;
+                text-align: center;
+                width: fit-content;
+                text-align:left;
+            }
+
+
+        }
+
+        @@media only screen and (max-width: 768px) {
+            table.table.table-wishlist td {
+                padding: 10px 5px;
+            }
+        }
+
+        .tr-m tr {
+            border:none;
+        }
+    </style>
+</head>
+<body>
+    <main class="main">
+        <div class="container mb-80 mt-50">
+            <div class="row">
+                <div class="col-lg-12 pb-4">
+                    <h1 class="heading-2 mb-10">Your Cart</h1>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="text-body">There are <span class="text-brand" id="count"></span> products in your cart</h6>
+                    </div>
+                    </div>
+                <div class="col-lg-8">
+                    <div class="table-responsive shopping-summery">
+                        <table class="table table-wishlist" id="addtocart">
+                            <thead>
+                                <tr class="main-heading">
+                                    <th class="custome-checkbox start pl-30" style="display:none">
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11" value="">
+                                        <label class="form-check-label" for="exampleCheckbox11"></label>
+                                    </th>
+                                    <th scope="col" colspan="2">Product</th>
+                                    <th scope="col">Unit Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col" class="end">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartdata">
+                                @{
+                                    double total = 0;
+                                    double Grandtotal = 0;
+                                    double shipcharge = 0;
+                                    double GGrandtotal = 0;
+                                }
+                                @if (ViewBag.count > 0)
+                                {
+                                    @foreach (var item in ViewBag.cart)
+                                    {
+                                        total = (item.quantity) * (item.productprice);
+                                        Grandtotal = (Grandtotal + @item.totalprice);
+                                        shipcharge += @item.shipcharge;
+                                        GGrandtotal = shipcharge + Grandtotal;
+
+                                        <tr class="pt-10">
+                                            <td class="custome-checkbox pl-30" style="display:none">
+                                                <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
+                                                <label class="form-check-label" for="exampleCheckbox1"></label>
+                                            </td>
+                                            <td class="image product-thumbnail pt-10"><img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.productimage" alt="#"></td>
+                                            <td class="product-des product-name">
+                                                @if (@item.unitdesc == "PIC")
+                                                {
+                                                    <h6 class="mb-5"><a class="product-name mb-10 text-heading" href="/product/@item.productid/@item.itemdetid/@item.productname.Replace(" ","-")/@item.CategoryId">@item.productname</a> </h6>
+
+                                                   @*  <h6><a href="/Product/@item.Id/@item.itemdetailsId/@item.ItemName.Replace(" ","-")/@item.CategoryId">@item.ItemName</a></h6> *@
+                                                }
+                                                else
+                                                {
+                                                    <h6 class="mb-5"><a class="product-name mb-10 text-heading" href="/product/@item.productid/@item.itemdetid/@item.productname.Replace(" ","-")/@item.CategoryId">@item.productname</a>@*  (<span> Type-</span>@item.unitdesc ) *@</h6>
+                                                }
+                                            @*     <div class="product-rate-cover">
+                                                    <div class="product-rate d-inline-block">
+                                                        <div class="product-rating" style="width:90%">
+                                                        </div>
+                                                    </div>
+                                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                                </div> *@
+                                            </td>
+                                            <td class="price" data-title="Price">
+                                                <h5 class="text-body unitprice" id="unitprice_@item.productid">@item.productprice</h5>
+                                                <input type="hidden" value="@item.itemdetid" id="productdetId_@item.productid" />
+                                            </td>
+                                            <td class="text-center detail-info" data-title="Stock">
+                                                <div class="detail-extralink">
+                                                    <div class="detail-qty border radius">
+                                                        <a href="#" class="qty-down" onclick="changeprice(@item.productid,'1')"><i class="fi-rs-angle-small-down"></i></a>
+                                                        <span class="qty-val" id="qty_@item.productid">@item.quantity</span>
+                                                        <a href="#" class="qty-up" onclick="changeprice(@item.productid,'2')"><i class="fi-rs-angle-small-up"></i></a>
+                                                    </div>
+                                                 
+                                                </div>
+                                            </td> 
+                                            <td class="price" data-title="Price">
+                                                <h5> <span id="total_@item.productid" class="text-brand total">@total</span></h5>
+                                            </td>
+                                            <td class="action text-center" data-title="Remove"><a href="#" class="text-body" onclick=changeprice(@item.productid,3)><i class="fi-rs-trash"></i></a></td>
+                                        </tr>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <tr class="pt-10">
+                                        <td>
+                                            <h5 class="mb-5">Empty Your Cart</h5>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="shopping-cart-footer">
+                            <div class="shopping-cart-total text-end">
+                                <h4>Total- <span id="grandtotal" class="grandtotal">@Grandtotal</span></h4>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="table-responsive shopping-summery">
+                    <div id="divPrint"></div>
+                    </div>*@
+                    <div class="divider-2 mb-30"></div>
+                    <div class="cart-action d-flex justify-content-between">
+                        <a class="btn  mr-10 mb-sm-15" href=/home/index><i class="fi-rs-arrow-left mr-10"></i>Continue Shopping</a>
+                        <a class="btn  mr-10 mb-sm-15"><i class="fi-rs-refresh mr-10"></i>Update Cart</a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="border p-md-4 cart-totals mt-3">
+                        <div class="table-responsive">
+                            <table class="table no-border">
+                                <tbody class="tr-m">
+                                    <tr>
+                                        <td class="cart_total_label">
+                                            <h6 class="text-muted"> Total</h6>
+                                        </td>
+                                        <td class="cart_total_amount">
+                                            <h4 class="text-brand text-end" id="stotal">@Grandtotal</h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col" colspan="2">
+                                            <div class="divider-2 mt-10 mb-10"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cart_total_label">
+                                            <h6 class="text-muted">Shipping</h6>
+                                        </td>
+                                        <td class="cart_total_amount">
+                                            <h5 class="text-heading text-end" id="shipcharge">@shipcharge</h5>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td scope="col" colspan="2">
+                                            <div class="divider-2 mt-10 mb-10"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cart_total_label">
+                                            <h6 class="text-muted">Grand Total</h6>
+                                        </td>
+                                        <td class="cart_total_amount">
+                                            <h4 class="text-brand text-end" id='gtotal'> @GGrandtotal</h4>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="/CheckOut" class="btn mb-20 w-100" onclick="proceedcheckout()">Place Order<i class="fi-rs-sign-out ml-15"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="@Url.Content("~/js/Front/ProductDetails.js")"></script>
+
+    @* <script type="text/javascript">
+
+
+        function changeprice(itemid, type) {
+
+            //var   type="";
+
+            var itemdetid = $('#' + 'productdetId_' + itemid).val();
+            var quantity = $('#' + 'quantity_' + itemid).text();
+
+            if (quantity == 0) {
+                quantity = 1;
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: '/Home/Addcart',
+                data: { productId: itemid, quantity: quantity, itemdetid: itemdetid, type: type },
+                dataType: "JSON",
+                success: function (response) {
+                    var html = '';
+                    var count = 0;
+                    count = response.carts.length;
+                    //  debugger;
+                    //alert(count);
+                    $('#carttotal').html(count)
+                    //  var fff = response.carts[0].productname;
+                    var total = "0";
+                    var gtotal = "0";
+                    var shipchg = "0";
+
+                    if (response.message == "add cart added.")
+
+                        $('#cartdata').html('')
+
+                    for (var i = 0; i < count; i++) {
+                        total = (parseFloat(total) + parseFloat(response.carts[i].totalprice));
+
+                        shipchg = (parseFloat(shipchg) + parseFloat(response.carts[i].shipcharge));
+                        html += '<tr class="pt-10">'
+                        html += '<td class="custome-checkbox pl-30" style="display:none">'
+                        html += '<input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">'
+                        html += '<label class="form-check-label" for="exampleCheckbox1"></label>'
+                        html += '</td>'
+                        html += '<td class="image product-thumbnail pt-10"><img src="/images/Productimage/6/' + response.carts[i].productimage + '" alt="#"></td>'
+                        html += '<td class="product-des product-name">'
+                        html += '<h6 class="mb-5"><a class="product-name mb-10 text-heading" href="/product/' + response.carts[i].productid + '/' + response.carts[i].productname + '">' + response.carts[i].productname + '</a></h6>'
+                       // html += '<div class="product-rate-cover">'
+                       // html += ' <div class="product-rate d-inline-block">'
+                        //html += '<div class="product-rating" style="width:90%">'
+                      //  html += '</div>'
+                      //  html += '</div>'
+                       // html += '<span class="font-small ml-5 text-muted"> (4.0)</span>'
+                      //  html += '</div>'
+                        html += '</td>'
+                        html += '<td class="price" data-title="Price">'
+                        html += '<h4 class="text-body unitprice" id="unitprice_' + response.carts[i].productid + '">' + response.carts[i].productprice + '</h4>'
+                        html += '<input type="hidden" value=' + response.carts[i].itemdetid + ' id="productdetId_' + response.carts[i].productid + '" />'
+                        html += ' </td>'
+
+                          
+                        html += '<td class="text-center detail-info" data-title="Stock">'
+                        html += '<div class="detail-extralink">'
+                        html += '<div class="detail-qty border radius">'
+                        html += '<a href="#" class="qty-down" onclick="changeprice(' + response.carts[i].productid + ',1)"><i class="fi-rs-angle-small-down"></i></a>'
+                        html += '<span class="qty-val" id="qty_' + response.carts[i].productid + '">' + response.carts[i].quantity + '</span>'
+                        html += '<a href="#" class="qty-up" onclick="changeprice(' + response.carts[i].productid + ',2)"><i class="fi-rs-angle-small-up"></i></a>'
+                        html += '</div>'
+                        html += '</div>'
+                        html += ' </td>'
+                        html += '<td class="price" data-title="Price">'
+                        html += ' <span id="total_' + response.carts[i].productid + '" class="text-brand total">' + response.carts[i].totalprice + '</span>'
+                        html += ' </td>'
+                        html += ' <td class="action text-center" data-title="Remove"><a href="#" class="text-body" onclick=changeprice(' + response.carts[i].productid + ',3)><i class="fi-rs-trash"></i></a></td>'
+                        html += ' </tr>'
+
+
+                    }
+
+
+
+                    $("#stotal").text(total);
+                    $('#shipcharge').text(shipchg);
+
+                    $("#gtotal").text(parseFloat(total) + parseFloat(shipchg));
+                    $("#grandtotal").text(total);
+
+                    if (html != "") {
+                        $("#cartdata").html(html);
+                        if (response.displaymessage != "") {
+                            alert(response.displaymessage);
+                        }
+                    }
+                    else {
+                        $("#cartdata").html("Your Cart is Empty.");
+                    }
+                   
+                    // alert("Your product added in cart.");
+                },
+                error: function (e) {
+                    //$('#divPrint').html(e.responseText);
+                }
+            });
+        }
+        function chek(itemid) {
+            alert("ddd");
+        }
+
+
+        
+
+        var Addtocarts = new Array();
+        var Subtotal = 0;
+
+        var rowCount;
+        function viewcart() {
+            $.ajax({
+                url: "/Home/Viewcart",
+                dataType: 'JSON',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.length == 0)
+                        alert('Some error occured.');
+                    else {
+                        $('#divPrint').html(response);
+                        rowCount = $("#cartView tr").length;
+                        $('#count').text(rowCount);
+                    }
+                },
+                error: function (e) {
+                    $('#divPrint').html(e.responseText);
+                    rowCount = $("#cartView tr").length - 1;
+                    $('#count').text(rowCount);
+                }
+            });
+        }
+        function DeleteProduct(productid, itemdetid) {
+            var checkstr = confirm('Are You Sure You Want To Delete This?');
+            var PetObj = JSON.stringify({ productid: productid, itemdetid: itemdetid });
+            alert(productid);
+            // var item;
+            if (checkstr == true) {
+                $.ajax({
+                    url: "/Home/DeleteViewCart",
+                    data: JSON.parse(PetObj),
+                    dataType: 'JSON',
+                    type: 'POST',
+                    //contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                        if (result.msg == "Delete Successfull!!") {
+                            viewcart();
+                        }
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        }
+
+
+ 
+        (function () {
+            const quantityContainer = document.querySelector(".quantity");
+            const minusBtn = quantityContainer.querySelector(".minus");
+            const plusBtn = quantityContainer.querySelector(".plus");
+            const inputBox = quantityContainer.querySelector(".input-box");
+
+            updateButtonStates();
+
+            quantityContainer.addEventListener("click", handleButtonClick);
+            inputBox.addEventListener("input", handleQuantityChange);
+
+            function updateButtonStates() {
+                const value = parseInt(inputBox.value);
+                minusBtn.disabled = value <= 1;
+                plusBtn.disabled = value >= parseInt(inputBox.max);
+            }
+
+            function handleButtonClick(event) {
+                if (event.target.classList.contains("minus")) {
+                    decreaseValue();
+                } else if (event.target.classList.contains("plus")) {
+                    increaseValue();
+                }
+            }
+
+            function decreaseValue() {
+                let value = parseInt(inputBox.value);
+                value = isNaN(value) ? 1 : Math.max(value - 1, 1);
+                inputBox.value = value;
+                updateButtonStates();
+                handleQuantityChange();
+            }
+
+            function increaseValue() {
+                let value = parseInt(inputBox.value);
+                value = isNaN(value) ? 1 : Math.min(value + 1, parseInt(inputBox.max));
+                inputBox.value = value;
+                updateButtonStates();
+                handleQuantityChange();
+            }
+
+            function handleQuantityChange() {
+                let value = parseInt(inputBox.value);
+                value = isNaN(value) ? 1 : value;
+
+                // Execute your code here based on the updated quantity value
+                console.log("Quantity changed:", value);
+            }
+        })();
+
+    </script> *@
+</body>
+</html>

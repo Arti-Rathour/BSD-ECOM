@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewData["Title"] = "Blog";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">Blog</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Blog</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <div id="divDescription">
+
+                                            <div class="row">
+                                                <input type="hidden" id="id" value="0"/>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Title</label>
+                                                        <input type="text" class="form-control" id="txttitle" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Blog Image</label>
+                                                        <input type="file" class="form-control" name="blogImage" id="blogimg" />
+                                                    </div>
+                                                </div>
+                                                 <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <img id="img" src="~/images/dummy-pic.png" alt="your image" width="75" height="80" />
+                                                </div>
+                                            </div>
+
+                                                @* <div class="col-md-3">
+                                                    <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Meta Title</label>
+                                                    <input type="text" class="form-control" id="txtmetatitle" />
+                                                    </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                    <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Meta Keybord</label>
+                                                    <input type="text" class="form-control" id="txtmetakey" />
+                                                    </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                    <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Meta Desc</label>
+                                                    <input type="text" class="form-control" id="txtmetadesc" />
+                                                    </div>
+                                                    </div>*@
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Short Desc</label>
+                                                        <textarea id="txtShortDesc" rows="200" name="Short_Desc" class="ckeditor"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Long Desc</label>
+                                                        <textarea id="txtlongDesc" rows="200"  class="ckeditor"></textarea>
+                                                    </div>
+                                                </div>
+                                                    
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Status</label>
+                                                        <input type="checkbox" id="chkStatus" name="status" checked />  Active
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-actions mt-10">
+                                                <input type="button" class="btn btn-primary" id="btnSave"
+                                                      onclick="IUBlog()" value="Save" />
+                                                <input type="button" class="btn btn-danger" value="Clear" onclick="clearBlog()" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="col-md-12">
+                                    <table id="data-table" class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                    <th>Title</th>
+                                    <th>Image</th>
+                                    <th>ShortDesc</th>
+                                    <th>LongDesc</th>
+                                    <th>Status</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="blogbody"></tbody>
+                                    </table>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+     <script src="@Url.Content("~/js/Admin/Blog.js")"></script>
+    <script type="text/javascript">
+        ShowBlog();
+    </script>
+
+</body>
+</html>
+
+

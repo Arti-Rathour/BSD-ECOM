@@ -1,0 +1,119 @@
+﻿@model BSD_ECOM.Areas.Admin.Models.Category
+@{
+    ViewData["Title"] = "CategoryReportFile";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title"> Category </h3>
+                        <a href="/Admin/Admin/Category">back <i class="fa back-top-home"></i></a>
+                        <br />
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Category</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body row">
+                                <div class="col-md-12" style="margin-bottom:20px;">
+                                    <form action="#">
+                                        <div class="form-body">
+                                            <div id="divDescription">
+
+                                                <div class="row">
+                                                    <input type="hidden" id="Main_cat_id" name="Main_cat_id" value="" />
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <h3>Category </h3>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form_wrapper wd6">
+                                                    <ul>
+                                                        <li style="list-style-type:none">
+                                                            <center><u><b> Category Details</b></u></center>
+                                                        </li>
+
+                                                    </ul>
+                                                    <ul>
+                                                    </ul>
+                                                    <ul class="form grid-3col">
+
+                                                        @*<li>
+                                                                <label name="Main_cat_id">Main_cat_id: @Model.Main_cat_id</label>
+                                                            </li>*@
+                                                        <li style="list-style-type:none">
+                                                            <label name="category_name">Category: @Model.category_name</label>
+                                                        </li>
+
+
+                                                        <li style="list-style-type:none">
+                                                            <label name="cat_status">Status : @Model.cat_status</label>
+                                                        </li>
+
+                                                        <li style="list-style-type:none">
+                                                            <label name="Main_cat_id">Main Category ID: @Model.Main_cat_id</label>
+                                                        </li>
+
+                                                        <li style="list-style-type:none">
+                                                            <label name="main_cat_name">Main Category Name: @Model.main_cat_name</label>
+                                                        </li>
+                                                        <li style="list-style-type:none">
+                                                            <label name="entry_date">Entry Date: @Model.entry_date</label>
+                                                        </li>
+
+                                                    </ul>
+
+                                                </div>
+
+                                            </div>
+
+
+
+
+
+
+
+
+
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,40 @@
+﻿@model BSD_ECOM.ViewModel.IndexViewModel
+@{
+    ViewData["Title"] = "PaymentInformation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="main">
+    <div class="page-header mt-30 mb-50">
+        <div class="container-fluid">
+            <div class="archive-header">
+                <div class="row align-items-center">
+                    <div class="col-xl-6">
+                        <h2 class="mb-15">Payment Information</h2>
+                        <div class="breadcrumb">
+                            <a href="/Home/Index" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                             <span></span> Payment Information
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="subscription">
+        <div class="container">
+            <div id="divAboutus" class="divterms">
+                
+            </div>
+            @if (Model.paymentInfos.Count > 0)
+            {
+                @foreach (var item in Model.paymentInfos)
+                {
+                        @Html.Raw(item.paymentcontent)
+                }
+            }
+
+        </div>
+    </section>
+</main>
+

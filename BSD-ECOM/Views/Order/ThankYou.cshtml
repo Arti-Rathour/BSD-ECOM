@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "ThankYou";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="main">
+    <div class="page-header mt-30 mb-50">
+        <div class="container">
+            @* <div class="archive-header">
+                <div class="row align-items-center">
+                    <div class="col-xl-3">
+                        <h1 class="mb-15">Thank you</h1>
+                        <div class="breadcrumb">
+                            <a href="/Home/Index" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                             <span></span> Thank you
+                        </div>
+                    </div>
+                    
+                </div>
+            </div> *@
+        </div>
+    </div>
+      <section class="subscription">
+            <div class="container" style="text-align:center" >
+
+            <h1>
+                Thank you for placing your order with us!
+            </h1>
+            <br />
+            <h5 class="head text-juliet">
+                Your temporary order number is  : <span>@ViewBag.orderno</span>
+            </h5>
+            <h4></h4>
+            <h5>
+            Our team will contact you shortly to reconfirm the order details. Please note no
+            payment has been processed yet.
+            </h5>
+            </div>
+            </section>
+        </main>
+

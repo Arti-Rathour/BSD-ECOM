@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "PrivacyPolish";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">Privacy Policy</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Privacy Policy</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <div id="divDescription">
+                                            <div class="row">
+                                                <input type="hidden" id="id" value="0" />
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16">Privacy Policy</label>
+                                                        <textarea id="txtPrivacyPolish" class="ckeditor" name="Terms" rows="200">
+                                                        </textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions mt-10">
+                                        <input type="button" class="btn btn-primary" id="btnSave" onclick="IUPrivacyPolish()"
+                                               value="Save" />
+                                        <input type="button" class="btn btn-danger" value="Clear" onclick="Clearpolicy()" />
+                                    </div>
+                                </form>
+                                <div class="col-md-12">
+                                    <table id="data-table" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="display:none">ID</th>
+                                                <th>Privacy Policy</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="PrivacyPolishbody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script src="@Url.Content("~/js/Admin/PolishPrivacy.js")"></script>
+    <script type="text/javascript">
+      ShowPrivacyPolish();
+    </script>
+</body>
+</html>
+
+

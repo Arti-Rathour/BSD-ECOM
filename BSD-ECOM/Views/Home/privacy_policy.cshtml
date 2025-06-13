@@ -1,0 +1,41 @@
+﻿@model BSD_ECOM.ViewModel.IndexViewModel
+@{
+    ViewData["Title"] = "privacy_policy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="main">
+     <div class="page-header mt-30 mb-50">
+        <div class="container-fluid">
+            <div class="archive-header">
+                <div class="row align-items-center">
+                    <div class="col-xl-6">
+                        <h1 class="mb-15"> Privacy Policy  </h1>
+                        <div class="breadcrumb">
+                            <a href="/Home/Index" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                             <span></span>  Privacy Policy
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="subscription">
+        <div class="container">
+            <div id="divAboutus" class="divterms">
+                <h2 class="text-center text-uppercase heading">
+                   
+                </h2>
+            </div>
+            @if (Model.privacy_Policies.Count > 0)
+            {
+                @foreach (var item in Model.privacy_Policies)
+                {
+                        @Html.Raw(item.privacy)
+                }
+            }
+        </div>
+    </section>
+</main>
+

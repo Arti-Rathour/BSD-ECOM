@@ -1,0 +1,120 @@
+﻿@*@model BSD_ECOM.Areas.Admin.Models.StockMaster*@
+@{
+    ViewData["Title"] = "strockUpdate";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">STOCK MASTER</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">STOCK MASTER</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <input type="hidden" id="itemdetailsid" name="itemdetailsid" />
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Super Category</label>
+                                                    <select id="ddlSuCategory" class="form-control" tabindex="1" name="Main_cat_id">
+                                                        <option value="0">Select Super Category</option>
+                                                        @if (ViewBag.ItemCategory != null)
+                                                        {
+                                                            foreach (var item in ViewBag.ItemCategory as List<SelectListItem>)
+                                                            {
+                                                                <option value="@item.Value">@item.Text</option>
+                                                            }
+                                                        }
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Category</label>
+                                                    <select id="ddlCategory" class="form-control" tabindex="1" name="category_id">
+                                                        @*<option value="0">Select Category</option>
+                                                            @if (ViewBag.Category != null)
+                                                            {
+                                                                foreach (var item in ViewBag.Category as List<SelectListItem>)
+                                                                {
+                                                                    <option value="@item.Value">@item.Text</option>
+                                                                }
+                                                            }*@
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Sub Category</label>
+                                                    <select id="ddlsubCategory" class="form-control" tabindex="1" name="cat_id">
+                                                        @*<option value="0">Select Category</option>
+                                                            @if (ViewBag.Category != null)
+                                                            {
+                                                                foreach (var item in ViewBag.Category as List<SelectListItem>)
+                                                                {
+                                                                    <option value="@item.Value">@item.Text</option>
+                                                                }
+                                                            }*@
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="table-responsive rounded card-table">
+                                    <table class="table border-no" id="example1">
+                                        <thead>
+                                            <tr>
+                                                <th style="display:none">Id</th>
+                                                <th>ItemName</th>
+                                                <th>Quantity</th>
+                                                <th>StockQty</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody class="tbodyData"></tbody>
+                                    </table>
+                                </div>
+                               @*   <ul><li><span id="itemdetailsid"></span></li></ul> *@
+                                <div class="form-actions mt-10">
+                                    <input type="button" class="btn btn-primary" id="btnSave"
+                                           value="Update" onclick="Updatebyid()" />
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--/ Content-->
+        </div>
+    </div>
+    <script src="@Url.Content("~/js/Admin/strock.js")"></script>
+    <script type="text/javascript">
+        // ItemstockqtyList();
+    </script>
+    <!--Report-->
+</body>
+</html>

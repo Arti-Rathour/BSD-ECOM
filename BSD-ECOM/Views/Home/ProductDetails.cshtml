@@ -1,0 +1,873 @@
+﻿@model BSD_ECOM.ViewModel.IndexViewModel
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "ProductDetails";
+    Layout = "~/Views/Shared/_LayoutItem.cshtml";
+}
+
+<style>
+    #Ingredients-info table {
+        width: 100% !important;
+    }
+</style>
+<style>
+    div#product-data {
+        z-index: 9999;
+    }
+</style>
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/Home/Index" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                @*<span></span> <a href="shop-grid-right.html">Vegetables & tubers</a> <span></span> Seeds of Change Organic*@
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 mb-md-0 mb-sm-5">
+                            <div class="detail-gallery">
+                                <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                <!-- MAIN SLIDES -->
+                                <div class="product-image-slider">
+                                    <figure class="border-radius-10">
+                                        <img id="frontimg" src="" alt="Frontimage">
+                                    </figure>
+                                    <figure class="border-radius-10">
+                                        <img id="Backimg" src="" alt="Backimage">
+                                    </figure>
+                                </div>
+                                <!-- THUMBNAILS -->
+                                <div class="slider-nav-thumbnails">
+                                    <div><img id="frontimg1" src="" alt="Frontimage"></div>
+                                    <div><img id="Backimg1" src="" alt="Backimage"></div>
+                                </div>
+                            </div>
+                            <!-- End Gallery -->
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-info pr-30 pl-30">
+                                @* <span class="stock-status out-stock"> Sale Off </span>*@
+
+                                <h3 class="title-detail" id="itemname"><a href="" class="text-heading"></a></h3>
+                                @*  <div class="product-detail-rating">
+                                <div class="product-rate-cover text-end">
+                                <div class="product-rate d-inline-block">
+                                <div class="product-rating" style="width: 90%"></div>
+                                </div>
+                                <span class="font-small ml-5 text-muted"> (32 reviews)</span>
+                                </div>
+                                </div> *@
+                                <div class="clearfix product-price-cover">
+                                    <div class="product-price primary-color float-left">
+                                        <span>
+
+                                            <span class="current-price text-brand" id="disamt"></span>
+                                            <span class="save-price font-md color3 ml-15" id="discount"></span>
+                                            <span class="old-price font-md ml-15" id="unitrate"></span>
+
+                                            <input type="hidden" value="" id="quickproductdetId" />
+                                            <input type="hidden" value="" id="quantityidid" />
+                                            <input type="hidden" value="" id="quickitemId" />
+                                        </span>
+                                    </div>
+
+                                </div>
+
+
+
+
+                                <div class="detail-extralink mb-30">
+                                    @*   <div class="detail-qty border radius">
+                                    <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                    <span class="qty-val" id="qtyquick">1</span>
+                                    <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                    </div> *@
+
+                                    <div class="detail-qty border radius">
+                                        <a href="#" class="qty-down" onclick="changepriceiddownid($('#quickitemId').val(), 1)"><i class="fi-rs-angle-small-down"></i></a>
+                                        <span class="qty-valid" @* id="qty_' + $('#quickitemId').val() + '" *@>1</span>
+                                        <a href="#" class="qty-up" onclick="changepriceidid($('#quickitemId').val(), 2)"><i class="fi-rs-angle-small-up"></i></a>
+                                    </div>
+
+                                    @*     <div class="detail-qty border radius">
+                                    <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                    <span class="qty-val" id="quantity_1">1</span>
+                                    <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                    </div> *@
+
+
+                                    <div class="product-extra-link2">
+                                        <button type="submit" class="button button-add-to-cart" onclick="addcart($('#quickitemId').val())"><i class="fi-rs-shopping-cart"></i>Add</button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- Detail Info -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mb-30">
+        <div class="row">
+            <div class="col-xl-11 col-lg-12 m-auto">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="product-detail accordion-detail">
+                            <div class="row mb-50 mt-30">
+                                <div class="col-md-4 col-sm-12 col-xs-12 mb-md-0 mb-sm-5">
+                                    <div class="detail-gallery">
+                                        <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                        <!-- MAIN SLIDES -->
+                                        <div class="product-image-slider">
+                                            @if (Model.itemStroes.Count > 0)
+                                            {
+                                                @foreach (var item in Model.itemStroes)
+                                                {
+                                                    <figure class="border-radius-10">
+                                                        <img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Frontimage" alt="@item.Frontimage" id="frontimg">
+                                                    </figure>
+                                                    <figure class="border-radius-10">
+                                                        <img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Backimage" alt="@item.Backimage">
+                                                    </figure>
+                                                    <figure class="border-radius-10">
+                                                        <img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Leftimage" alt="@item.Leftimage">
+                                                    </figure>
+                                                    <figure class="border-radius-10">
+                                                        <img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Rightimage" alt="@item.Rightimage">
+                                                    </figure>
+
+
+
+
+
+                                                    <figure class="border-radius-10">
+                                                        <video width="100%" height="100%" controls> <source src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Video" alt="@item.Video">   </video>
+                                                    </figure>
+
+                                                    <figure class="border-radius-10">
+                                                        <img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Frontimage" alt="@item.Frontimage" >
+                                                    </figure>
+
+                                                }
+                                            }
+                                        </div>
+
+
+
+                                        @* <video width="200" height="150" controls>
+                                            <source src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetString("Company_Id")/@Model.Image4" id="file1Image" height="70" width="70" type="video/mp4">
+
+                                        </video>
+                                        <input type="hidden" id="imgfile1name" asp-for="Image4" /> *@
+
+
+
+
+
+                                        <!-- THUMBNAILS -->
+                                        <div class="slider-nav-thumbnails">
+                                            @if (Model.itemStroes.Count > 0)
+                                            {
+                                                @foreach (var item in Model.itemStroes)
+                                                {
+                                                    <div><img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Frontimage" alt="@item.Frontimage"></div>
+                                                    <div><img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Backimage" alt="@item.Backimage"></div>
+                                                    <div><img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Leftimage" alt="@item.Leftimage"></div>
+                                                    <div><img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Rightimage" alt="@item.Rightimage"></div>
+
+                                                    <div>
+                                                        <video width="100%" height="100%" >
+                                                            <source src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Video" alt="@item.Video">
+                                                        </video>
+                                                    </div>
+
+                                                    <div>
+                                                        <img src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Pdf" alt="@item.Pdf"
+                                                       style="display:none" >
+                                                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                                                        <a data-bs-toggle="modal" data-bs-target="#product-data" href="#" target="_blank" class="fas fa-file-pdf" style="color: red; font-size: 80px;"></a>
+
+
+
+                                                    </div>
+
+
+
+
+                                                   
+                                                }
+                                            }
+
+                                            
+
+                                        </div>
+
+                                        <!-- Modal -->
+
+                                       
+                                             <div class="modal fade" id="product-data" tabindex="-1" aria-labelledby="product-dataModalLabel" aria-hidden="true">
+
+                                         @if (Model.itemStroes.Count > 0)
+                                            {
+                                                @foreach (var item in Model.itemStroes)
+                                                {
+                                                    <div class="modal-dialog modal-xl">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="product-dataModalLabel">@item.ItemName</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <iframe  src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Pdf" style="width:100%; height:500px;" frameborder="0"></iframe>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                             
+                                            }
+
+                                        }
+                                             </div>
+
+                                    </div>
+                                    <!-- End Gallery -->
+                                </div>
+                                
+                              
+
+
+
+                                <div class="col-md-8 col-sm-12 col-xs-12">
+                                    <div class="detail-info pr-30 pl-30">
+                                        @if (Model.itemStroes.Count > 0)
+                                        {
+                                            @foreach (var item in Model.itemStroes)
+                                            {
+                                                <input type="hidden" id="productId" value="@item.Id" />
+                                                <input type="hidden" value="@item.quantity" id="unitqttyid" />
+                                                <input type="hidden" value="@item.ItemName" id="ItemName_@item.Id" />
+
+
+
+                                                @* <span class="stock-status out-stock"> Sale Off </span> *@
+                                                <h2 class="title-detail" id="itemname">@item.ItemName</h2>
+                                                @*  <div class="product-detail-rating">
+                                        <div class="product-rate-cover text-end">
+                                        <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: 90%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> (32 reviews)</span>
+                                        </div>
+                                        </div> *@
+                                                <div class="clearfix product-price-cover">
+                                                    @if (item.price == 1)
+                                                    {
+                                                        <div class="product-price primary-color float-left" style="display:@((item.price == 1)?"inline-block":"none") ">
+                                                            <span class="current-price text-brand" id="disamtS_@item.Id">₹@item.Disamt</span>
+                                                            <span>
+                                                                @if (item.discount != 0)
+                                                                {
+                                                                    <span class="save-price font-md color3 ml-15" style="display:@((item.price == 1)?"inline-block":"none")" id=dis_@item.Id>@item.discount%</span>
+                                                                    <span class="old-price font-md ml-15" style="display:@((item.price == 1)?"inline-block":"none")" id="urate_@item.Id">₹@item.Unit_Rate</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="save-price font-md color3 ml-15" id=dis_@item.Id></span>
+                                                                    <span class="old-price font-md ml-15" id="urate_@item.Id"></span>
+                                                                }
+
+
+
+                                                            </span>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div class="short-desc mb-30">
+                                                    @*<p class="font-lg">@item.description</p>*@
+                                                    @Html.Raw(item.description)
+                                                </div>
+                                                <div class="col-lg-3" id="gifidupnew" style="display:none">
+                                                    <div class="form-group">
+                                                        <img src="/CompanyLogo/loading-waiting.gif"
+                                                             style="width: 68px;height: 57px;margin:-99rem 0px 0 14rem;border-radius: 100%;    margin-bottom: -46px;/* position: absolute; */" />
+                                                    </div>
+                                                </div>
+                                                <div class="attr-detail attr-size mb-30">
+                                                    @{
+                                                        int cc = 0;
+                                                        int unitid = 0;
+                                                    }
+                                                    @if (@item.unitid != 3)
+                                                    {
+                                                       @*  @if (item.price == 1)
+                                                        {
+                                                            <strong class="mr-10">Size / Weight: </strong>
+                                                        } *@
+                                                       
+                                                        <ul class="list-filter size-filter font-small" onchange="selectonchange(this.value,@item.Id)">
+                                                            @foreach (var ITEMDET in Model.ItemdetailsS.Where(p => p.itemId == @item.Id))
+                                                            {
+                                                                var ddd = "";
+                                                                if (@ITEMDET.Id == ViewBag.itemidet)
+                                                                {
+                                                                    ddd = "active";
+                                                                }
+                                                                else
+                                                                {
+                                                                    ddd = "";
+                                                                }
+
+                                                                @if (cc == 0)
+                                                                {
+                                                                    unitid = @ITEMDET.Id;
+                                                                    <li value="@ITEMDET.Id" class=@ddd><a href="#" onclick="changerate(@ITEMDET.Id,@item.Id)">@ITEMDET.Unit_Qty</a></li>
+                                                                    cc++;
+                                                                }
+                                                                else
+                                                                {
+                                                                    <li value="@ITEMDET.Id" class=@ddd><a href="#" onclick="changerate(@ITEMDET.Id,@item.Id)">@ITEMDET.Unit_Qty</a></li>
+                                                                }
+                                                            }
+                                                        </ul>
+                                                    }
+                                                    <input type="hidden" value="@item.itemdetailsId" id="productdetId_@item.Id" />
+                                                </div>
+                                                <div class="detail-extralink mb-50">
+
+                                                    @if (item.price == 1)
+                                                    {
+
+
+                                                        <div class="detail-extralink mr-15">
+                                                            <div class="detail-qty border radius">
+                                                                <a href="#" class="qty-down" onclick="changepriceiddown(@item.Id,'1')"><i class="fi-rs-angle-small-down"></i></a>
+                                                                <span class="qty-val" id="quantity_@item.Id">1</span>
+                                                                <a href="#" class="qty-up" onclick="qtychangepriceid(@item.Id,'2')"><i class="fi-rs-angle-small-up"></i></a>
+                                                            </div>
+                                                        </div>
+
+                                                    }
+
+
+
+                                                    <div class="product-extra-link2">
+                                                        <button type="button" id="btnAddtoCart" class="button button-add-to-cart" onclick="addcart(@item.Id)" style="display:@((item.price == 1)?"inline-block":"none")"><i class="fi-rs-shopping-cart"></i>Add</button>
+                                                        <button type="button" class="button button-add-to-cart" onclick="bindpopupnew(@item.Id)">
+                                                            Send Query
+                                                        </button>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" href="#" onclick="Addwishlist(@item.Id)"><i class="fi-rs-heart"></i></a>
+                                                        @*  <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>*@
+                                                    </div>
+                                                </div>
+                                                <div class="font-xs">
+                                                    <ul class="mr-50 float-start">
+                                                        <li class="mb-5">Category: <span class="text-brand">@item.category_name</span></li>
+                                                        @* <li class="mb-5" style="display:@((item.price == 1)?"inline-block":"none")">SKU: <a href="#">@item.skucode</a></li> *@
+                                                        @*<li class="mb-5">MFG:<span class="text-brand"> Jun 4.2021</span></li>
+                                                <li>LIFE: <span class="text-brand">70 days</span></li>*@
+                                                    </ul>
+                                                    <ul class="float-start">
+
+                                                        <li class="mb-5">Tags: <a href="#" rel="tag">@item.productTag</a></li>
+                                                        @* <li style="display:@((item.price == 1)?"inline-block":"none")">Stock:<span class="in-stock text-brand ml-5">@item.sbalance Items In Stock</span></li> *@
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+
+                                    <!-- Detail Info -->
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div class="tab-style3">
+                                    <ul class="nav nav-tabs text-uppercase">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="Description-tab" data-bs-toggle="tab" href="#Description">Description</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="Additional-info-tab" data-bs-toggle="tab" href="#Additional-info">Additional info</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="Vendor-info-tab" data-bs-toggle="tab" href="#Ingredients-info">Specification</a>
+                                        </li>
+                                        @* <li class="nav-item">
+                                        <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">Reviews (3)</a>
+                                        </li> *@
+                                    </ul>
+                                    <div class="tab-content shop_info_tab entry-main-content" style="margin-top:20px;">
+                                        <div class="tab-pane fade show active" id="Description">
+                                            @if (Model.itemStroes.Count > 0)
+                                            {
+                                                @foreach (var item in Model.itemStroes)
+                                                {
+                                                    <div class="">
+                                                        @Html.Raw(item.description)
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="tab-pane fade" id="Additional-info">
+                                            @if (Model.itemStroes.Count > 0)
+                                            {
+                                                @foreach (var item in Model.itemStroes)
+                                                {
+                                                    <div class="">
+                                                        @Html.Raw(item.additional)
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="tab-pane fade" id="Ingredients-info">
+                                            @if (Model.itemStroes.Count > 0)
+                                            {
+                                                @foreach (var item in Model.itemStroes)
+                                                {
+                                                    <div class="">
+                                                        @Html.Raw(item.ingredients)
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="tab-pane fade" id="Reviews">
+                                            <!--Comments-->
+                                            <div class="comments-area">
+                                                <div class="row">
+                                                    <div class="col-lg-8">
+                                                        <h4 class="mb-30">Customer questions & answers</h4>
+                                                        <div class="comment-list">
+                                                            @if (Model.Reviews.Count > 0)
+                                                            {
+                                                                @foreach (var reviews in Model.Reviews)
+                                                                {
+                                                                    <div class="single-comment justify-content-between d-flex mb-30">
+                                                                        <div class="user justify-content-between d-flex">
+                                                                            <div class="thumb text-center">
+                                                                                <img src="/images/dummy-pic.png" alt="">
+                                                                                <a href="#" class="font-heading text-brand">@reviews.Name</a>
+                                                                            </div>
+                                                                            <div class="desc">
+                                                                                <div class="d-flex justify-content-between mb-10">
+                                                                                    <div class="d-flex align-items-center">
+                                                                                        <span class="font-xs text-muted">@reviews.entrydate </span>
+                                                                                    </div>
+                                                                                    <div class="product-rate d-inline-block">
+                                                                                        <div class="product-rating" style="width: 80%"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <p class="mb-10">@reviews.Review<a href="#" class="reply">Reply</a></p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <h4 class="mb-30">Customer reviews</h4>
+                                                        <div class="d-flex mb-30">
+                                                            <div class="product-rate d-inline-block mr-15">
+                                                                <div class="product-rating" style="width: 90%"></div>
+                                                            </div>
+                                                            <h6>4.8 out of 5</h6>
+                                                        </div>
+                                                        <div class="progress">
+                                                            <span>5 star</span>
+                                                            <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                                                        </div>
+                                                        <div class="progress">
+                                                            <span>4 star</span>
+                                                            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                                        </div>
+                                                        <div class="progress">
+                                                            <span>3 star</span>
+                                                            <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
+                                                        </div>
+                                                        <div class="progress">
+                                                            <span>2 star</span>
+                                                            <div class="progress-bar" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
+                                                        </div>
+                                                        <div class="progress mb-30">
+                                                            <span>1 star</span>
+                                                            <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85%</div>
+                                                        </div>
+                                                        <a href="#" class="font-xs text-muted">How are ratings calculated?</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--comment form-->
+                                            <div class="comment-form">
+                                                <h4 class="mb-15">Add a review</h4>
+                                                <div class="product-rate d-inline-block mb-30"></div>
+                                                <div class="row">
+                                                    <div class="col-lg-8 col-md-12">
+                                                        <form class="form-contact comment_form" action="#" id="commentForm">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <textarea class="form-control w-100" name="comment" id="txtcomment" cols="30" rows="9" placeholder="Write Comment"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <input class="form-control" name="name" id="txtname" type="text" placeholder="Name">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <input class="form-control" name="email" id="email" type="email" placeholder="Email">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <select id="ddlreview">
+                                                                            <option value="1">*</option>
+                                                                            <option value="2">**</option>
+                                                                            <option value="3" selected>***</option>
+                                                                            <option value="4">****</option>
+                                                                            <option value="5">*****</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12" style="display:none">
+                                                                    <div class="form-group">
+                                                                        <input class="form-control" name="website" id="website" type="text" placeholder="Website">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <button type="button" class="button button-contactForm" id="btnReview" onclick="AddReview()">Submit Review</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                          @*   <div class="col-lg-3" id="gifid" style="display:none">
+                                <div class="form-group">
+                                    <img src="/CompanyLogo/loading-waiting.gif"
+                                         style="width: 68px;height: 57px;margin:-99rem 0px 0 37rem;border-radius: 100%;/* position: absolute; */" />
+                                </div>
+                            </div> *@
+
+
+                             <div class="row mt-60">
+                                <div class="col-12">
+                                    <h2 class="section-title style-1 mb-30">Related products</h2>
+                                </div>
+                                <div class="col-12">
+                                    <div class="row related-products">
+                                        @if (Model.ItemStroerelateds.Count > 0)
+                                        {
+                                            @foreach (var itemrealted in Model.ItemStroerelateds)
+                                            {
+                                                <div class="col-lg-3 col-md-4 col-12 col-sm-6 mb-3">
+                                                    <div class="product-cart-wrap mb-30 list-products">
+                                                        <div class="product-img-action-wrap">
+                                                            <div class="product-img product-img-zoom">
+                                                       @*          <a href="/Product/@itemrealted.Id/@itemrealted.itemdetailsId/@itemrealted.ItemName.Replace(" ","-")" tabindex="0">
+                                                                    <img class="default-img" src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@itemrealted.Frontimage" alt="">
+
+                                                                    <img class="hover-img" src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@itemrealted.Backimage" alt="">
+                                                                </a> *@
+
+
+
+                                                                <input type="hidden" value="@itemrealted.Id" id="productId" />
+                                                                <input type="hidden" value="@itemrealted.quantity" id="unitqtyidid_@itemrealted.Id" />
+                                                                <input type="hidden" value="@itemrealted.ItemName" id="ItemName_@itemrealted.Id" />
+                                                                <input type="hidden" value="@itemrealted.itemdetailsId" id="productdetId_@itemrealted.Id" />
+
+
+                                                                <a href="/Product/@itemrealted.Id/@itemrealted.itemdetailsId/@itemrealted.ItemName.Replace(" ","-")/@itemrealted.CategoryId">
+                                                                    <img class="default-img" src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@itemrealted.Frontimage" alt="">
+                                                                    <img class="hover-img" src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@itemrealted.Backimage" alt="">
+
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="product-action-1">
+                                                                <a aria-label="Add To Wishlist" class="action-btn" href="#" onclick="Addwishlist(@itemrealted.Id)"><i class="fi-rs-heart"></i></a>
+
+                                                                @* @if (itemrealted.price == 1)
+                                                                {
+                                                                    <a aria-label="Quick view" class="action-btn" onclick="ShowItemView(@itemrealted.Id)"><i class="fi-rs-eye"></i></a>
+                                                                } *@
+                                                                @*<a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal" onclick="ShowItemView(@item.Id)"><i class="fi-rs-eye"></i></a>*@
+                                                            </div>
+                                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                                                <span class="hot">@itemrealted.productTag</span>
+                                                            </div>
+
+                                                           
+                                                        </div>
+                                                        <div class="product-content-wrap">
+                                                            <div class="col-lg-3" id="gifid_@itemrealted.Id" style="display:none">
+                                                                <div class="form-group">
+                                                                    <img src="/CompanyLogo/loading-waiting.gif"
+                                                                         style="width: 68px;height: 57px;margin:-99rem 0px 0 7rem;border-radius: 100%;    margin-bottom: -81px;/* position: absolute; */" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="product-category">
+                                                                <a href="#">@itemrealted.category_name</a>
+                                                            </div>
+
+                                                            @* <h2><a href="/Product/@itemrealted.Id/@itemrealted.itemdetailsId/@itemrealted.ItemName.Replace(" ","-")" tabindex="0">@itemrealted.ItemName</a></h2> *@
+
+
+
+                                                            <h2><a href="/Product/@itemrealted.Id/@itemrealted.itemdetailsId/@itemrealted.ItemName.Replace(" ","-")/@itemrealted.CategoryId">@itemrealted.ItemName</a></h2>
+                                                            @* <div class="rating-result" title="90%">
+                                                                <span> </span>
+                                                            </div> *@
+                                                            <div class="main-data-list">
+
+
+
+                                                                <div class="clearfix product-price-cover">
+                                                                    @if (itemrealted.price == 1)
+                                                                    {
+                                                                        <div class="product-price primary-color float-left" style="display:@((itemrealted.price == 1)?"inline-block":"none") ">
+                                                                            <span class="current-price text-brand" id="disamtS_@itemrealted.Id">₹@itemrealted.Disamt</span>
+                                                                            <span>
+
+                                                                                @if (itemrealted.discount != 0)
+                                                                                {
+                                                                                    <span class="save-price font-md color3 ml-15" style="display:@((itemrealted.price == 1)?"inline-block":"none")" id=dis_@itemrealted.Id>@itemrealted.discount%</span>
+
+                                                                                    @* <span class="old-price font-md ml-15" style="display:@((itemrealted.price == 1)?"inline-block":"none")" id="urate_@itemrealted.Id">₹@itemrealted.Unit_Rate</span> *@
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <span class="save-price font-md color3 ml-15" id=dis_@itemrealted.Id></span>
+
+                                                                                    <span class="old-price font-md ml-15" id="urate_@itemrealted.Id"></span>
+                                                                                }
+
+                                                                            </span>
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @* <span class="current-price text-brand" id="disamtS_@item.Id">₹ Not Available</span> *@
+                                                                    }
+
+                                                                </div>
+
+
+
+
+
+
+                                                              @*   <div class="attr-detail attr-size mb-30">
+                                                                    @{
+                                                                        int cc = 0;
+                                                                        int unitid = 0;
+                                                                    }
+                                                                    @if (@itemrealted.unitid != 3)
+                                                                    {
+                                                                       @*  @if (itemrealted.price == 1)
+                                                                        {
+                                                                            <strong class="mr-10">Size / Weight: </strong>
+                                                                        }
+ 
+                                                                        <ul class="list-filter size-filter font-small" onchange="selectonchange(this.value,@itemrealted.Id)">
+                                                                            @foreach (var ITEMDET in Model.ItemdetailsS.Where(p => p.itemId == @itemrealted.Id))
+                                                                            {
+                                                                                var ddd = "";
+                                                                                if (@ITEMDET.Id == ViewBag.itemidet)
+                                                                                {
+                                                                                    ddd = "active";
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    ddd = "";
+                                                                                }
+
+                                                                                @if (cc == 0)
+                                                                                {
+                                                                                    unitid = @ITEMDET.Id;
+                                                                                    <li value="@ITEMDET.Id" class=@ddd><a href="#" onclick="changerate(@ITEMDET.Id,@itemrealted.Id)">@ITEMDET.Unit_Qty</a></li>
+                                                                                    cc++;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <li value="@ITEMDET.Id" class=@ddd><a href="#" onclick="changerate(@ITEMDET.Id,@itemrealted.Id)">@ITEMDET.Unit_Qty</a></li>
+                                                                                }
+                                                                            }
+                                                                        </ul>
+                                                                    }
+                                                                    <input type="hidden" value="@itemrealted.itemdetailsId" id="productdetId_@itemrealted.Id" />
+                                                                </div> *@
+
+
+
+                                                                @{
+
+                                                                    // int cc = 0;
+                                                                    int unitids = 0;
+                                                                    int tcount = 0;
+                                                                    int unitidd = 0;
+
+                                                                }
+                                                                @if (@itemrealted.types != 3)
+                                                                {
+                                                                    @* <div class="product-card-bottoms mt-2">
+                                                                        <div class="product-prices">
+                                                                            <select name="itemm" style="box-shadow: 2px 2px 0px 0px #3bb77e;" id="ddlItemunit" onchange="selectonchange(this.value,@itemrealted.Id)">
+                                                                                @foreach (var ITEMDET in Model.ItemdetailsS.Where(p => p.itemId == @itemrealted.Id))
+                                                                                {
+
+                                                                                    unitidd = ITEMDET.unitId;
+
+                                                                                    if (cc == 0)
+                                                                                    {
+                                                                                        unitids = @ITEMDET.Id;
+                                                                                        <option value=@ITEMDET.Id>@ITEMDET.Unit_Qty</option>
+                                                                                        cc++;
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <option value=@ITEMDET.Id>@ITEMDET.Unit_Qty</option>
+
+                                                                                        cc++;
+                                                                                    }
+                                                                                }
+                                                                            </select>
+                                                                        </div>
+                                                                    </div> *@
+                                                                }
+                                                                else
+                                                                {
+                                                                    @foreach (var ITEMDET in Model.ItemdetailsS.Where(p => p.itemId == @itemrealted.Id))
+                                                                    {
+
+                                                                        unitids = @ITEMDET.Id;
+                                                                    }
+
+                                                                }
+
+
+                                                               <div class="product-card-bottom main-bottom">
+                                                                    @* @foreach (var ITEMDET in Model.ItemdetailsS.Where(p => p.itemId == @itemrealted.Id && p.Id == unitids))
+                                                                    {
+                                                                        <div class="product-price mt-2">
+                                                                            <span id=disamtS_@itemrealted.Id>₹@ITEMDET.Disamt</span>
+                                                                            <span class="old-price" id=urate_@itemrealted.Id>₹@ITEMDET.Unit_Rate</span>
+                                                                            <input type="hidden" value="@ITEMDET.Id" id="productdetId_@itemrealted.Id" />
+
+                                                                        </div>
+                                                                    } *@
+                                                                    @if (itemrealted.price == 1)
+                                                                    {
+                                                                        <div class="detail-qty border radius">
+                                                                            <a href="#" class="qty-down" onclick="changepriceiddown(@itemrealted.Id,'1')"><i class="fi-rs-angle-small-down"></i></a>
+                                                                            <span class="qty-val" id="quantity_@itemrealted.Id">1</span>
+                                                                            <a href="#" class="qty-up" onclick="changepriceidpro(@itemrealted.Id,'2')"><i class="fi-rs-angle-small-up"></i></a>
+                                                                        </div>
+                                                                    }
+
+
+                                                            <div class="add-cart">
+                                                                @if (itemrealted.price == 1)
+                                                                {
+                                                                    <button type="button" class="button button-add-to-cart" onclick="addcart(@itemrealted.Id)"><i class="fi-rs-shopping-cart mr-5"></i>Add </button>
+                                                                    <button type="button" id="btnsendquery" class="button button-add-to-cart" style="display:@((itemrealted.send_query == 1)?"inline-block":"none")" onclick="bindpopup(@itemrealted.Id)">
+                                                                        Send Query
+                                                                    </button>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <button type="button" id="btnsendquery" class="button button-add-to-cart" style="display:@((itemrealted.send_query == 1)?"inline-block":"none")" onclick="bindpopup(@itemrealted.Id)">
+                                                                        Send Query
+                                                                    </button>
+                                                                }
+                                                            </div>
+
+
+                                                           
+                                                          </div>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-xl-3 primary-sidebar sticky-sidebar mt-30">
+                        @*@await Component.InvokeAsync("RightPanel")*@
+                        @*  <div class="sidebar-widget widget-category-2 mb-30">
+                        <h5 class="section-title style-1 mb-30">Browse by Sub-Categories of Readers</h5>
+                        <ul>
+                        @if (Model.subcategories.Count > 0)
+                        {
+                        @foreach (var item in Model.subcategories)
+                        {
+                        <li>
+                        <a  href="/Category/@item.cat_id/@item.cat_name.Replace(" ","-")"> <img src="/images/SubCategory/@item.Image" alt="">@item.cat_name</a>
+                        </li>
+                        }
+                        }
+                        </ul>
+                        </div> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="divPrint"></div>
+    </div>
+</main>
+<script src="@Url.Content("~/js/Front/ProductDetails.js")"></script>
+
+<script>
+    function changerate(id, itemid) {
+        $.ajax({
+            type: 'POST',
+            url: "/Home/itemrate",
+            data: { id: id, itemid: itemid },
+            dataType: 'JSON',
+            //contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+
+                $('#' + 'disamtS_' + itemid).html("₹" + result[0].disamt);
+                $('#' + 'urate_' + itemid).text("₹" + result[0].unit_Rate)
+                $('#' + 'productdetId_' + itemid).val(id)
+                $('#' + 'dis_' + itemid).text(result[0].discount)
+
+            }
+        });
+
+
+    }
+
+
+
+ 
+</script>

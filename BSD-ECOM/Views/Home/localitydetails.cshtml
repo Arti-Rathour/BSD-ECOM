@@ -1,0 +1,124 @@
+﻿@using BSD_ECOM.ViewModel;
+@*@model BSD_ECOM.ViewModel.IndexViewModel*@
+@*@using Microsoft.AspNetCore.Http;
+ @inject IHttpContextAccessor HttpContextAccessor*@
+@model IndexViewModel
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "localitydetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .red {
+        color: red;
+    }
+</style>
+<main class="main">
+    <section class="" style="padding-top: 30px;">
+        <div class="container">
+            <div class="row">
+                <div class="section-title wow animate__ animate__fadeIn" style="visibility: visible; animation-name: fadeIn;">
+                    <h3 class="">@ViewBag.sevename</h3>
+                    <ul class="nav nav-tabs links" id="myTab-2" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <input style="border: 1px solid #3bb77e;" type="text" class="search form-control" placeholder="Search by Pincode" id="txtsearch"> <i style="position: absolute;right: 12px;top: 20px;" class="fi-rs-search"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div id="maindivid" class="row">
+                    @if (Model.locality.Count > 0)
+                    {
+                        @foreach (var item in Model.locality)
+                        {
+                            <div class="col-sm-6 col-lg-3" id="divlocalitydetils">
+                                <a data-bs-toggle="modal" href="#exampleModalToggle">
+                                    <div class="donation-item">
+                                        <div class="img">
+                                            <input type="hidden" value="@item.Loc_detailsId" id="Loc_detailsId" />
+                                            <input type="hidden" value="@item.id" id="LocalityId" />
+                                            <img src="/images/Locality_Img/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.locdetails_Img" id="locdetails_Img" alt="Donation">
+                                            <div class="donate-btn">
+                                                @*<a class="common-btn" data-bs-toggle="modal" href="#exampleModalToggle" id="btnviewdetails">View Details</a>*@
+                                                <a class="common-btn" id="btnviewdetails">View Details</a>
+                                            </div>
+                                        </div>
+                                        <div class="inner">
+                                            <div class="top">
+                                                <h3 id="LocName">@item.LocDetails_name</h3>
+                                                <h6 id="address">Address: @item.Loc_address</h6>
+                                                <h6 id="pincode">Pin code: @item.pincode</h6>
+                                                <hr>
+                                                <h6 class="phone" id="contactno">Contact No.: @item.mobile_no</h6>
+                                                <hr />
+                                                <h6 class="phone" id="phoneno">Phone No.: @item.phone</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    @*<h4 id="Locality_detailsName">Connect with "Akash medical shop"</h4>*@
+                    <h4 id="Locality_detailsName"></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img width="100%" src="assets/img/s1.png" id="locDetailsimg">
+                        </div>
+                        <div class="col-md-8">
+                            <form action="#">
+                                <div class="row">
+                                    <input type="hidden" value="" id="hidLocalityId" />
+                                    <input type="hidden" value="" id="hidlocdetailsId" />
+                                    <div class="col-lg-12">
+                                        <div class="default-form-box">
+                                            <label>Full Name <span class="red">*</span></label>
+                                            <input type="text" required="" id="txtfullname" maxlength="100">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="default-form-box">
+                                            <label>Phone<span class="red">*</span></label>
+                                            <input type="text" required="" class="numberone" maxlength="10" id="txtPhone">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="default-form-box">
+                                            <label> Email Address <span class="red">*</span></label>
+                                            <input type="text" required="" id="txtEmail" maxlength="50">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="default-form-box">
+                                            <label>Description<span class="red">*</span></label>
+                                            <textarea style="height: auto;min-height: auto;" id="txtdescription" maxlength="300"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input style="margin-right: 28px;" class="btn btn-md btn-golden" id="btnSubmit" type="button" value="Submit">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts{
+    <script src="@Url.Content("~/js/Front/LocalityEnquairy.js")"></script>
+}

@@ -1,0 +1,229 @@
+﻿
+@{
+    ViewData["Title"] = "ORT_Dispatch";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">Orders Ready to Dispatch</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Orders Ready to Dispatch</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body row">
+                              <div class="col-md-12" style="margin-bottom:20px;">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <div id="divDescription">
+                                            <div class="row">
+
+                                                    <input type="hidden" id="hidType" value="@ViewBag.Type">
+                                                <input type="hidden" id="order_id"  />
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16"> From Date </label>
+                                                         <input type="date" class="form-control" id="txtfdate"  />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-700 font-size-16"> To Date </label>
+                                                         <input type="date" class="form-control" id="txttdate" onchange="SearchORT_Dispatch()" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions mt-10">
+                                        <input type="button" class="btn btn-primary" id="btnSave" onclick="ShowORT_Dispatch();"
+                                               value="Serach" />
+                                            <input type="button" class="btn btn-danger" value="Clear" onclick="clear();" />
+                                    </div>
+                                </form>
+                              </div> 
+                                <div class="col-md-12" style="overflow:auto">
+                                    <table id="data-table" class="table table-bordered" style="width: 1500px; table-layout: fixed;">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 4%;">S.No</th>
+                                                <th style="display:none">order id</th>
+                                                <th style="width: 10%;">Order No</th>
+                                                <th style="width: 14%;">Customer</th>
+                                               
+                                                <th style="width: 14%;">Address</th>
+                                                <th style="width: 8%;">Mobile No</th>
+                                                <th style="width: 9%;">Order Date</th>
+                                                <th style="display:none">Dispatch Date</th>
+                                                <th style="width: 10%;">Payment Type</th>
+                                                <th style="width: 10%;">Dispatch Status</th>
+                                                <th style="width: 5%;">View</th>
+                                                <th style="width: 5%;">Action</th>
+                                                @*<th>Delete</th>*@
+                                            </tr>
+                                        </thead>
+                                        <tbody class="ORT_Dispatchbody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="orderlist" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="datalist">Order Report</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h2 class="text-muted">
+                                Order Information <small><i class="fa fa-pencil"></i></small>
+                                <span class="pull-right">
+                                </span>
+                            </h2>
+                            <br>
+                            <table id="data-table" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. NO</th>
+                                        <th style="display:none">order id</th>
+                                        <th>Order NO</th>
+                                        <th>Item Name</th>
+                                        <th>Unit Rate</th>
+                                        <th>Quantity </th>
+                                        <th>Courior </th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="OrdersReportsbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="orderDispatchlist" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDis">Order Tracker Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnclose">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @*<h2 class="text-muted">
+                                Order Tracker Information <small><i class="fa fa-pencil"></i></small>
+                                <span class="pull-right">
+                                </span>
+                            </h2>
+                            <br>*@
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="box">
+                                        <div class="box-body row">
+                                            <div class="col-md-12" style="margin-bottom:20px;">
+                                                <form action="#">
+                                                    <div class="form-body">
+                                                        <div id="divDescription">
+                                                            <div class="row">
+                                                                <input type="hidden" id="orderid" />
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="font-weight-700 font-size-16">Courier Master</label>
+                                                                        <select id="ddlcourier" class="form-control" tabindex="1">
+                                                                            <option value="0">--Select--</option>
+                                                                            @if (ViewBag.Courier != null)
+                                                                            {
+                                                                                foreach (var item in ViewBag.Courier as List<SelectListItem>)
+                                                                                {
+                                                                                    <option value="@item.Value">@item.Text</option>
+                                                                                }
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="font-weight-700 font-size-16">Tracker No </label>
+                                                                        <input type="text" class="form-control" id="txttrackno" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label class="font-weight-700 font-size-16"> Courier Remarks</label>
+                                                                        <textarea rows="5" cols="50" class="form-control" id="txtcr"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-actions mt-10">
+                                                        <input type="button" class="btn btn-primary" id="btnSave" onclick="UpdateDispatchOrder();"
+                                                               value="UPDATE" />
+                                                        <input type="button" class="btn btn-danger" value="CLOSE" onclick="Clear();" />
+                                                    </div> 
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*------------------------END--------------------*@
+
+    <script src="@Url.Content("~/js/Admin/Orders.js")"></script>
+    <script type="text/javascript">
+         ShowORT_Dispatch();
+         //SearchORT_Dispatch();
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,722 @@
+﻿@model BSD_ECOM.ViewModel.IndexViewModel
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutItem.cshtml";
+}
+
+<style>
+    .product-cardssss {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-bottom: 0px;
+    }
+
+    .product-card-bottom.main-bottom {
+        /* display: block; */
+    }
+
+    #quickViewModal .title-detail {
+        text-align: left;
+        font-size: 21px;
+    }
+
+    .detail-extralink.mb-30 {
+        text-align: justify;
+    }
+
+    .form-control {
+        background: #fbfbfb;
+    }
+
+    #btnAddtoquery label {
+        font-size: 17px;
+    }
+
+    #btnAddtoquery .form-control {
+        border: 1px solid #cbc3c3;
+    }
+
+
+  /*   @@media only screen and (min-width: 575px) {
+    .product-cart-wrap.mb-30.wow.animate__.animate__fadeIn.animated {
+        height: 500px;
+    } */
+}
+</style>
+<div class="text-center">
+    <div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12 mb-md-0 mb-sm-5">
+                            <div class="detail-gallery">
+                                <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                <!-- MAIN SLIDES -->
+                                <div class="product-image-sliderwidget-about font-md mb-md-3 mb-lg-3 mb-xl-0 wow animate__ animate__fadeInUp animated">
+                                    <figure class="border-radius-10">
+                                        <img id="frontimg" src="" alt="Frontimage">
+                                    </figure>
+                                    <figure class="border-radius-10">
+                                        <img id="Backimg" src="" alt="Backimage">
+                                    </figure>
+                                </div>
+                                <!-- THUMBNAILS -->
+                                <div class="slider-nav-thumbnails">
+                                    <div><img id="frontimg1" src="" alt="Frontimage"></div>
+                                    <div><img id="Backimg1" src="" alt="Backimage"></div>
+                                </div>
+                            </div>
+                            <!-- End Gallery -->
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-info pr-30 pl-30">
+                                @* <span class="stock-status out-stock"> Sale Off </span>*@
+
+                                <h3 class="title-detail" id="itemname"><a href="" class="text-heading"></a></h3>
+                                @* <div class="product-detail-rating">
+                                    <div class="product-rate-cover text-end">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: 90%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> (32 reviews)</span>
+                                    </div>
+                                </div> *@
+                                <div class="clearfix product-price-cover">
+                                    <div class="product-price primary-color float-left">
+                                        <span class="current-price text-brand" id="disamt"></span>
+                                        <span>
+                                            @* <span class="save-price font-md color3 ml-15" id="discount"></span> *@
+                                            <span class="old-price font-md ml-15" id="unitrate"></span>
+                                             <input type="hidden" value="" id="quickproductdetId" />
+                                             <input type="hidden" value="" id="quantityidid" />
+                                              <input type="hidden" value="" id="quickitemId" />
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="detail-extralink mb-30">
+                                    <div class="detail-qty border radius">
+                                        <a href="#" class="qty-down" onclick="changepriceiddownid($('#quickitemId').val(), 1)"><i class="fi-rs-angle-small-down"></i></a>
+                                        <span class="qty-valid" @* id="qty_' + $('#quickitemId').val() + '" *@>1</span>
+                                        <a href="#" class="qty-up" onclick="changepriceidid($('#quickitemId').val(), 2)"><i class="fi-rs-angle-small-up"></i></a>
+                                    </div>
+                                    <div class="product-extra-link2">
+                                        <button type="submit" class="button button-add-to-cart" onclick="addcart($('#quickitemId').val())"><i class="fi-rs-shopping-cart"></i>Add</button>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <!-- Detail Info -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+   
+    <!--End header-->
+    <main class="main">
+        <section class="home-slider position-relative mb-30">
+            <div class="container">
+                <div class="home-slide-cover mt-30">
+                    <div class="hero-slider-1 style-4 dot-style-1 dot-style-1-position-1">
+                        @if (Model.mainBanners.Count > 0)
+                        {
+                            @foreach (var mbanner in Model.mainBanners)
+                            {
+                                if (@mbanner.typeid == 1)
+                                {
+                                    if (@mbanner.HBanner != "")
+                                    { 
+                                      @*   <a href="@mbanner.MUrl"> *@
+                                            <div class="single-hero-slider single-animation-wrap"
+                                                 style="background-image: url()">
+                                                <img src="/images/Banner/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@mbanner.HBanner" />
+                                                <div class="slider-content">
+                                                </div>
+                                            </div>
+                                     @*    </a> *@
+                                    }
+                                    
+                                }
+
+                            }
+                            
+                        }
+
+                    </div>
+                    <div class="slider-arrow hero-slider-1-arrow"></div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <section class="product-tabs section-padding position-relative">
+            <div class="container-fluid">
+                <div class="section-title style-2 wow animate__animated animate__fadeIn">
+                    <h3>Popular Products</h3>
+                </div>
+                <!--End nav-tabs-->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+                        <div class="row product-grid-4">
+                            @if (Model.itemStroes.Count > 0)
+                            {
+                                @foreach (var item in Model.itemStroes)
+                                {
+                                    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6 mb-3">
+                                        <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
+                                            <div class="product-img-action-wrap">
+                                                <div class="product-img product-img-zoom">
+                                                    <input type="hidden" value="@item.Id" id="productId" />
+                                                    <input type="hidden" value="@item.quantity" id="unitqtyid_@item.Id" />
+                                                    <input type="hidden" value="@item.itemdetailsId" id="productdetId_@item.Id" />
+                                                    @{
+                                                        int itemdetailsid = 0;
+                                                    }
+                                                    @foreach (var ITEMDET in Model.ItemdetailsS.Where(p => p.itemId == @item.Id))
+                                                    {
+                                                        itemdetailsid = ITEMDET.Id;
+                                                    }
+                                                    @* <a href="/Product/@item.Id/@itemdetailsid/@item.ItemName.Replace(" ","-")"> *@
+
+
+                                                    <a href="/Product/@item.Id/@item.itemdetailsId/@item.ItemName.Replace(" ","-")/@item.CategoryId">
+                                                        <img class="default-img" src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Frontimage" alt="" id="frontimg">
+                                                        <img class="hover-img" src="/images/Productimage/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.Backimage" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="product-action-1">
+                                                    <a aria-label="Add To Wishlist" class="action-btn" href="#" onclick="Addwishlist(@item.Id)"><i class="fi-rs-heart"></i></a>
+
+                                                    @* @if (item.price == 1)
+                                                    {
+                                                        <a aria-label="Quick view" class="action-btn" onclick="ShowItemView(@item.Id)"><i class="fi-rs-eye"></i></a>
+                                                    } *@
+                                                    @*<a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal" onclick="ShowItemView(@item.Id)"><i class="fi-rs-eye"></i></a>*@
+                                                </div>
+                                                <div class="product-badges product-badges-position product-badges-mrg">
+                                                    <span class="hot">@item.productTag</span>
+                                                </div>
+                                            </div>
+                                            <div class="product-content-wrap">
+
+                                                <div class="col-lg-3" id="gifid_@item.Id" style="display:none">
+                                                    <div class="form-group">
+                                                        <img src="/CompanyLogo/loading-waiting.gif"
+                                                             style="width: 68px;height: 57px;margin:-99rem 0px 0 5rem;border-radius: 100%;    margin-bottom: -81px;/* position: absolute; */" />
+                                                    </div>
+                                                </div>
+                                                <div class="product-category">
+                                                    <a href="#">@item.category_name</a>
+                                                </div>
+                                                <h2><a href="/Product/@item.Id/@itemdetailsid/@item.ItemName.Replace(" ","-")/@item.CategoryId">@item.ItemName</a></h2>
+                                                <div class="main-data-list">
+                                                    @*                                                 <div class="product-rate-cover" style="display:none">
+                                            <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: 90%"></div>
+                                            </div>
+                                            <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                            </div> *@
+
+
+
+                                                    <div class="clearfix product-price-cover">
+                                                        @if (item.price == 1)
+                                                        {
+                                                            <div class="product-price primary-color float-left" style="display:@((item.price == 1)?"inline-block":"none") ">
+                                                                <span class="current-price text-brand" id="disamtS_@item.Id">₹@item.Disamt</span>
+                                                                <span>
+
+                                                                    @if (item.discount != 0)
+                                                                    {
+                                                                        <span class="save-price font-md color3 ml-15" style="display:@((item.price == 1)?"inline-block":"none")" id=dis_@item.Id>@item.discount%</span>
+
+                                                                        <span class="old-price font-md ml-15" style="display:@((item.price == 1)?"inline-block":"none")" id="urate_@item.Id">₹@item.Unit_Rate</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="save-price font-md color3 ml-15" id=dis_@item.Id></span>
+
+                                                                        <span class="old-price font-md ml-15" id="urate_@item.Id"></span>
+                                                                    }
+
+                                                                </span>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            @* <span class="current-price text-brand" id="disamtS_@item.Id">₹ Not Available</span> *@
+                                                        }
+
+                                                    </div>
+
+                                                 @*    <div class="attr-detail attr-size mb-30">
+                                                        @{
+                                                            int cc = 0;
+                                                            int unitid = 0;
+                                                        }
+                                                        @if (@item.unitid != 3)
+                                                        {
+                                                            @if (item.price == 1)
+                                                            {
+                                                                <strong class="mr-10">Size / Weight: </strong>
+                                                            }
+
+                                                            <ul class="list-filter size-filter font-small" onchange="selectonchange(this.value,@item.Id)">
+                                                                @foreach (var ITEMDET in Model.ItemdetailsS.Where(p => p.itemId == @item.Id))
+                                                                {
+                                                                    var ddd = "";
+                                                                    if (@ITEMDET.Id == ViewBag.itemidet)
+                                                                    {
+                                                                        ddd = "active";
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        ddd = "";
+                                                                    }
+
+                                                                    @if (cc == 0)
+                                                                    {
+                                                                        unitid = @ITEMDET.Id;
+                                                                        <li value="@ITEMDET.Id" class=@ddd><a href="#" onclick="changerate(@ITEMDET.Id,@item.Id)">@ITEMDET.Unit_Qty</a></li>
+                                                                        cc++;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <li value="@ITEMDET.Id" class=@ddd><a href="#" onclick="changerate(@ITEMDET.Id,@item.Id)">@ITEMDET.Unit_Qty</a></li>
+                                                                    }
+                                                                }
+                                                            </ul>
+                                                        }
+                                                        <input type="hidden" value="@item.itemdetailsId" id="productdetId_@item.Id" />
+                                                    </div> *@
+
+                                                    @{
+
+                                                        // int cc = 0;
+                                                        int unitids = 0;
+                                                        int tcount = 0;
+                                                        int unitidd = 0;
+                                                        tcount = Model.ItemdetailsS.Where(p => p.itemId == @item.Id).Count();
+                                                        // unitidd = ITEMDET.unitId;
+                                                    }
+                                                    @if (@item.types != 3)
+                                                    {
+                                                       @*  <div class="product-card-bottoms mt-2">
+                                                            <div class="product-prices">
+
+                                                                <select name="itemm" style="box-shadow: 2px 2px 0px 0px #3bb77e;" id="ddlItemunit" onchange="selectonchange(this.value,@item.Id)">
+                                                                    @foreach (var ITEMDET in Model.ItemdetailsS.Where(p => p.itemId == @item.Id))
+                                                                    {
+
+                                                                        unitidd = ITEMDET.unitId;
+
+                                                                        if (cc == 0)
+                                                                        {
+                                                                            unitids = @ITEMDET.Id;
+                                                                            <option value=@ITEMDET.Id>@ITEMDET.Unit_Qty</option>
+                                                                            cc++;
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <option value=@ITEMDET.Id>@ITEMDET.Unit_Qty</option>
+
+                                                                            cc++;
+                                                                        }
+                                                                    }
+                                                                </select>
+
+                                                            </div>
+                                                        </div> *@
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="product-card-bottoms mt-2">
+                                                            <div class="product-prices">
+
+                                                                @foreach (var ITEMDET in Model.ItemdetailsS.Where(p => p.itemId == @item.Id))
+                                                                {
+
+                                                                    unitids = @ITEMDET.Id;
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    }
+
+
+                                                    <div class="product-card-bottom main-bottom">
+
+                                                       @*  @foreach (var ITEMDET in Model.ItemdetailsS.Where(p => p.itemId == @item.Id && p.Id == unitids))
+                                                        {
+                                                            <div class="product-price">
+                                                                <span id=disamtS_@item.Id>₹@ITEMDET.Disamt</span>
+                                                                <span class="old-price" id=urate_@item.Id>₹@ITEMDET.Unit_Rate</span>
+                                                                <input type="hidden" value="@ITEMDET.Id" id="productdetId_@item.Id" />
+                                                            </div>
+
+
+                                                        } *@
+
+                                                        @if (item.price == 1)
+                                                        {
+                                                            <div class="detail-qty border radius">
+                                                                <a href="javascript:void(0);" class="qty-down" onclick="changepriceiddown(@item.Id)"><i class="fi-rs-angle-small-down"></i></a>
+                                                                <span class="qty-val" id="quantity_@item.Id">1</span>
+                                                                <a href="javascript:void(0);" class="qty-up" onclick="changepriceid(@item.Id)"><i class="fi-rs-angle-small-up"></i></a>
+                                                            </div>
+                                                        }
+
+
+
+                                                        <div class="add-cart">
+                                                            @if (item.price == 1)
+                                                            {
+                                                                <button type="button" class="button button-add-to-cart" onclick="addcart(@item.Id)"><i class="fi-rs-shopping-cart mr-5"></i>Add </button>
+                                                                <button type="button" id="btnsendquery" class="button button-add-to-cart" style="display:@((item.send_query == 1)?"inline-block":"none")" onclick="bindpopup(@item.Id)">
+                                                                    Send Query
+                                                                </button>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button type="button" id="btnsendquery" class="button button-add-to-cart" style="display:@((item.send_query == 1)?"inline-block":"none")" onclick="bindpopup(@item.Id)">
+                                                                    Send Query
+                                                                </button>
+                                                            }
+                                                        </div>
+
+                                                        
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+
+                            <!--end product card-->
+                        </div>
+                        <!--End product-grid-4-->
+                    </div>
+                    <!--En tab one-->
+                </div>
+                <!--End tab-content-->
+            </div>
+        </section>
+
+
+
+
+       @*  <div class="col-lg-3" id="gifid" style="display:none">
+            <div class="form-group">
+                <img src="/CompanyLogo/loading-waiting.gif"
+                     style="width: 68px;height: 57px;margin:-99rem 0px 0 37rem;border-radius: 100%;/* position: absolute; */" />
+            </div>
+        </div> *@
+
+
+
+
+        <!--Products Tabs-->
+        @* <section class="banners mb-25">
+            <div class="container">
+                <div class="row">
+                    @if (Model.mainBanners.Count > 0)
+                    {
+                       @foreach (var fbitem in Model.mainBanners)
+                       {
+                            if (fbitem.HBanner != "" && fbitem.MUrl != "")
+                            {
+                                if (@fbitem.typeid == 2)
+                                {
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="banner-img wow animate__animated animate__fadeInUp" data-wow-delay="0">
+
+                                            <img src="/images/banner/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@fbitem.HBanner" alt="">
+                                            <div class="banner-text">
+                                                <h4>
+                                                    Everyday Fresh & <br>Clean with Our<br>
+                                                    Products
+                                                    </h4><h4>
+                                                    <br><br>
+                                                </h4>
+                                                <a href="@fbitem.MUrl" target="_blank" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                }
+                            }     
+                       }
+                    }
+                    </div>
+                   @* <div class="col-lg-4 col-md-6">
+                        <div class="banner-img wow animate__animated animate__fadeInUp" data-wow-delay=".2s">
+                            @if (Model.featureBanners.Count > 0)
+                            {
+                                @foreach (var fbitem in Model.featureBanners)
+                                {
+                                    if (fbitem.TBanner2 != "" && fbitem.TUrl2 != "")
+                                    {
+                                        <img src="/images/banner/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@fbitem.TBanner2" alt="">
+                                        <div class="banner-text">
+                                            <h4>
+                                                    Make your Breakfast<br>
+                                                    Healthy and Easy
+                                                </h4>
+                                                <br>
+                                            
+                                            <a href="@fbitem.TUrl2" target="_blank" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
+                                        </div>
+                                    }
+                                }
+                            }
+
+                        </div>
+                    </div> *@
+                  @* <div class="col-lg-4 d-md-none d-lg-flex">
+                        <div class="banner-img mb-sm-0 wow animate__animated animate__fadeInUp" data-wow-delay=".4s">
+                            @if (Model.featureBanners.Count > 0)
+                            {
+                                @foreach (var fbitem in Model.featureBanners)
+                                {
+                                    if (fbitem.TBanner3 != "" && fbitem.TUrl3 != "")
+                                    {
+                                        <img src="/images/banner/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@fbitem.TBanner3" alt="">
+                                        <div class="banner-text">
+                                            <h4>The best Organic <br>Products Online</h4>
+                                            <a href="@fbitem.TUrl3" target="_blank" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
+                                        </div>
+                                    }
+                                }
+                            }
+
+                        </div>
+                    </div> 
+                
+            </div>
+        </section>  *@
+
+      
+
+        <!--End banners-->
+
+
+        @* <section class="section-padding pb-5" >
+            <div class="container ">
+                <div class="section-title wow animate__animated animate__fadeIn">
+                    <h3 class="">Shop by Category</h3>
+                    <ul class="nav nav-tabs links" id="myTab-2" role="tablist">
+                        
+
+                    </ul>
+                </div>
+                <div class="row ">
+                    <div class="col-lg-3 d-none d-lg-flex wow animate__animated animate__fadeIn">
+                        <div class="style-2">
+                            @if (Model.mainBanners.Count > 0)
+                            {
+                                @foreach (var fbitem in Model.mainBanners)
+                                {
+                                    if (@fbitem.typeid == 3)
+                                    {
+                                        if (fbitem.HBanner != "" && fbitem.MUrl != "")
+                                        {
+                                           @*  <a href="@fbitem.MUrl"><img src="/images/banner/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/                  @fbitem.HBanner" alt=""></a> 
+
+                                            <img src="/images/banner/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@fbitem.HBanner" alt="">
+                                        }
+                                    }
+                                }
+                            }
+                         <div class="banner-text">
+                                <h2 class="mb-100"></h2>
+                                <a href="#" class="btn btn-xs"><i class="fi-rs-arrow-small-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-12 wow animate__animated animate__fadeIn " data-wow-delay=".4s">
+                        <div class="tab-content" id="myTabContent-1">
+                            <div class="tab-pane fade show active" id="tab-one-1" role="tabpanel" aria-labelledby="tab-one-1">
+                                <div class="carausel-4-columns-cover arrow-center position-relative">
+                                    <div class="slider-arrow slider-arrow-2 carausel-4-columns-arrow " id="carausel-4-columns-arrows"></div>
+                                    <div class="carausel-4-columns carausel-arrow-center" id="carausel-4-columns">
+                                        @if (Model.subcategories.Count > 0)
+                                        {
+                                            @foreach (var Subitem in Model.subcategories)
+                                            {
+                                                <div class="product-cart-wrap background">
+                                                    <div class="product-content-wrap ">
+                                                        <a href="/Category/@Subitem.cat_id/@Subitem.cat_name.Replace(" ","-")" >
+                                                            <div class="product-img product-img-zoom">
+                                                                <img class="default-img" src="/images/SubCategory/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@Subitem.Image" alt="">
+                                                            </div>
+                                                            <h2>@Subitem.cat_name</h2>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End tab-content-->
+                    </div>
+                    <!--End Col-lg-9-->
+                </div>
+            </div>
+        </section>  *@
+        <br>
+        <!--End hero slider-->
+        @* <section class="popular-categories section-padding">
+            <div class="container wow animate__animated animate__fadeIn">
+                <div class="section-title wow animate__animated animate__fadeIn">
+                    <h3 class="">Locality for Services</h3>
+                    <ul class="nav nav-tabs links" id="myTab-2" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <input style="border: 1px solid #3bb77e;" type="text" class="search form-control" placeholder="Search" id="filter" /> <i style="position: absolute;right: 12px;top: 20px;" class="fi-rs-search"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    @if (Model.locality.Count > 0)
+                    {
+                        @foreach (var item in Model.locality)
+                        {
+                            <div class="col-md-4">
+                                <div id="divLocal" class="locality-details">
+                                    <div class="product-img-text text-center">
+                                        <h4 class="servicename">@item.Loc_serviceName</h4>
+                                    </div>
+                                    <div class="product-img product-img-zooms">
+                                        <div class="product-img product-img-zoom">
+                                            <img class="default-img" id="loc_img" src="/images/Locality_Img/@item.image" alt="">
+                                        </div>
+                                        <div class="product-img-details">
+                                            @Html.Raw(item.content)
+                                            <br>
+                                            <div class="button-product text-end">
+                                                <a href="/locality-details/@item.id/@item.Loc_serviceName"> Read more</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </section> *@
+        <!-- offer-slider -->
+        <!-- <section>
+            <div class="container">
+                <div class="row">
+                         <div class="carausel-10-columns-cover position-relative">
+                        <div class="carausel-10-columns" id="carausel-10-columns">
+                            <div class="card-2 bg-9 wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
+                                <a href="shop-grid-right.html">
+                                <figure class="img-hover-scale overflow-hidden">
+                                    <img class="default-img" src="assets/img/Offer.jpg" alt="">
+                                </figure>
+                            </a>
+                            </div>
+                            <div class="card-2 bg-9 wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
+                                <a href="shop-grid-right.html">
+                                <figure class="img-hover-scale overflow-hidden">
+                                    <img class="default-img" src="assets/img/Offer2.jpg" alt="">
+                                </figure>
+                            </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+
+        @* <section class="container mb-50 d-none d-md-block">
+            <div class="row about-count">
+                
+                <div class="col-lg-1-5 col-md-6 text-center">
+                    <h1 class="heading-1"><span class="count">36</span>+</h1>
+                    <h4>Happy clients</h4>
+                </div>
+                <div class="col-lg-1-5 col-md-6 text-center">
+                    <h1 class="heading-1"><span class="count">57</span>+</h1>
+                    <h4>Projects complete</h4>
+                </div>
+                <div class="col-lg-1-5 col-md-6 text-center">
+                    <h1 class="heading-1"><span class="count">24</span>+</h1>
+                    <h4>Team advisor</h4>
+                </div>
+                <div class="col-lg-1-5 text-center d-none d-lg-block">
+                    <h1 class="heading-1"><span class="count">26</span>+</h1>
+                    <h4>Products Sale</h4>
+                </div>
+            </div>
+        </section> *@
+
+        <!--End category slider-->
+        @* <section class="section-padding pb-5 pt-0">
+            <div class="container ">
+                <div class="row " style="margin: 13px;">
+                    <div class="col-md-12" style="    box-shadow: 0px 0px 12px 0px grey;padding: 26px;">
+                        <div class="wow animate__animated animate__fadeIn text-center">
+                            <h3 class="" style="font-weight: 500;background: #a6a9a7;color: white;padding: 6px 0px;">
+                                Govt. Servent's CO OP House BLDG Society Ltd.
+                            </h3>
+                            <br>
+                           @* <h6>A resident welfare association (frequently abbreviated as RWA) is a Non-governmental organization that represents the interests of the residents of a specific urban or suburban locality, particularly in Indian cities.</h6>
+                        </div>
+                        <br>
+                        <br>
+                        <!--End Col-lg-9-->
+                        <div class="row">
+                            @if (Model.Welfares.Count > 0)
+                            {
+                                @foreach (var item in Model.Welfares)
+                                {
+
+                                    <div class="col-xl-3 col-lg-1-5 col-md-1-5 aos-init aos-animate" data-aos="fade-up">
+                                        <a href="/welfaredetails/@item.id">
+                                            <div class="product-cart-wrap ">
+                                                @if (item.img == "")
+                                                {
+                                                    <img id="imgwelfare" src="/images/dummy-pic.png" style="width: 100%; height: 270px; object-fit: cover; border-radius: 50%; ">
+                                                }
+                                                else
+                                                {
+                                                    <img id="imgwelfare" src="/images/Welfare/@HttpContextAccessor.HttpContext.Session.GetInt32("SiteId")/@item.img" style="width: 100%; height: 270px; object-fit: cover; border-radius: 50%; ">
+                                                }
+                                                <h5>@item.Welfare_Name</h5>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> *@
+    </main>
+</div>
+<script src="@Url.Content("~/js/Front/ProductDetails.js")"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    
+</script>
+

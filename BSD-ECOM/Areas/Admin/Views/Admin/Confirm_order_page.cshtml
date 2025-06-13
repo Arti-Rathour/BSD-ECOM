@@ -1,0 +1,284 @@
+﻿
+@{
+    ViewData["Title"] = "Confirm_order_page";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<h1>Confirm_order_page</h1>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h5 class="page-title">Confirm Order</h5>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <Orderli class="breadcrumb-item" aria-current="page">Order Inquiry Detailsli>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body row">
+                                <div class="col-md-12" style="margin-bottom:20px;">
+                                    <form action="#">
+                                        <div class="form-body">
+                                            <div id="divDescription">
+                                               
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div class="col-md-12">
+                                    <table id="data-table" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Order No</th>
+                                                <th>Customer Name</th>
+                                               
+                                                <th>Mobile No</th>
+                                                <th>Item Name</th>
+
+                                               @*  <th>Payment Mode</th>
+                                                <th>Shipping Address</th>
+                                                <th>Customer Email</th>
+                                                
+                                                <th>Item Rate</th>
+                                                <th>Quantity</th> *@
+                                                <th>Payment Confirmation</th>
+                                                <th>Payment Status</th>
+                                                <th>Final Mail</th>
+                                               @*  <th>Action</th> *@
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Confirm_order_body"></tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+
+
+    <div class="modal fade custom-modal" id="btnconfirmfinal" tabindex="-1" aria-labelledby="btnAddtoquery" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="padding:0px;    background: white;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="detail-info">
+                                @* <span class="stock-status out-stock"> Sale Off </span>*@
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 contact-form">
+                                        <fieldset>
+                                            <h4></h4>
+                                            <br />
+                                            <div class="row">
+                                                <input type="hidden" id="hididf" value="0">
+                                                <input type="hidden" id="hididdf" value="0">
+                                                <input type="hidden" id="hididdforder" value="0">
+                                                <input type="hidden" id="custemail" value="0">
+                                                <input type="hidden" id="hididdpayamountf" value="0">
+                                                <input type="hidden" id="hidcustomerid" value="@ViewBag.customerid">
+                                                <input type="hidden" id="hiditemid" value="@ViewBag.itemid">
+                                                <input type="hidden" id="hidcompanyid" value="@ViewBag.companyid">
+
+
+
+
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;    margin-bottom: 20px;">
+                                                    <label>Name</label><br>
+                                                    <input name="txtFname" type="text" id="txtFullnamef" maxlength=" 100" class="form-control valid" value="" err="Please Enter First Name">
+
+                                                    <label>Email</label><br>
+                                                    <input name="txtEmail" type="text" id="txtEmailf"
+                                                           maxlength="100" class="form-control valid" value="" err="Please Enter Email">
+
+                                                </div>
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;    margin-bottom: 20px;">
+                                                    <label>Mobile No</label><br>
+                                                    <input name="txtMobile" type="text" id="txtMobilef"
+                                                           maxlength="10" class="form-control valid numberone" value="" err="Please Enter Mobile">
+
+
+
+                                                    <label>Payment mode</label><span style="color:red">*</span>
+                                                    <select id="ddlpayment_modef" class="form-control">
+                                                        <option value="0">Select payment mode</option>
+                                                        <option value="1">COD</option>
+                                                        <option value="2">Online</option>
+                                                        <option value="3">Cheque</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;    margin-bottom: 20px;">
+                                                    <label>Shipping Address</label><br>
+                                                    <textarea name="txtaddress" style="height:100px;" type="text" id="txtaddressf" class="form-control valid" err="Please Enter Message"></textarea>
+
+
+                                                </div>
+
+                                                <div class="table-responsive shopping-summery">
+                                                    <table class="table table-wishlist" id="addtocart">
+                                                        <thead>
+                                                            <tr class="main-heading">
+                                                                <th class="custome-checkbox start pl-30" style="display:none">
+                                                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11f" value="">
+                                                                    <label class="form-check-label" for="exampleCheckbox11"></label>
+                                                                </th>
+                                                                <th>S.No</th>
+                                                                <th style="display:none;">ID</th>
+                                                                <th scope="col">Item Name</th>
+                                                                <th scope="col">Rate</th>
+                                                                <th scope="col">Quantity</th>
+                                                                <th scope="col">Courior Charges</th>
+                                                                <th scope="col">Tax</th>
+                                                                <th scope="col">Total</th>
+
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="itemdetails_bodyf"></tbody>
+                                                    </table>
+
+                                                </div>
+
+                                                <div class="col-md-12 col-sm-12" style="text-align: justify;">
+
+                                                    <br>
+                                                    <div align="right">
+                                                        <input type="button" name="btnSumit" value="Final order" onclick="Saveconfrimorderfinal(1)" id="btnSumitf" class="main-btn" style="margin-top: 10PX;margin-bottom: 0px !important;background: #3465ae;
+    color: white;height: auto;padding: 10px 0px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- Detail Info -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="orderModalFinal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderModalFinal">Order Confirmation and Payment Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <input type="hidden" id="hidratef" value="0">
+                
+                <input type="hidden" id="hidquantityf" value="0">
+                <input type="hidden" id="hidcouriorf" value="0">
+                <input type="hidden" id="hidtaxf" value="0">
+                <input type="hidden" id="hidtotalf" value="0">
+
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                    <p id="dearf" contenteditable="true">Dear  <span id="cust"></span>,</p>
+                    <p id="thankf" contenteditable="true">Thank you for placing your order with us. Your Order Number:<span id="ordernof" contenteditable="true">.</span></p>
+
+                    <h6 id="orderfinal" contenteditable="true">Order Details:</h6>
+                    <table class="table table-bordered" id="dataitemf">
+                        <thead>
+                            <tr>
+                                <th id="th1f" contenteditable="true">S.No</th>
+                                <th id="th2f" contenteditable="true">Item</th>
+                                <th id="th3f" contenteditable="true">Rate</th>
+                                <th id="th4f" contenteditable="true">Qty</th>
+                                <th id="th5f" contenteditable="true">Courier Charges</th>
+                                <th id="th6f" contenteditable="true">Tax (%)</th>
+                                <th id="th7f" contenteditable="true">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="itemdetailsemailfinal"></tbody>
+                    </table>
+
+                    <p id="totalf" contenteditable="true">Total Amount Payable:<span id="payamountf" contenteditable="true">.</span></p>
+
+                    <h6 id="accountdetailf" contenteditable="true">Bank Account Details:</h6>
+                    <p id="bankf" contenteditable="true">Bank Name: HDFC Bank Ltd</p>
+                    <p id="accountf" contenteditable="true">Account No.: 05512000003074</p>
+                    <p id="beneficiaryf" contenteditable="true">Beneficiary Name: BSD InfoTech</p>
+                    <p id="branchf" contenteditable="true">Branch: Mayapuri</p>
+                    <p id="ifscf" contenteditable="true">IFSC Code: HDFC0000551</p>
+
+                    <h6 id="paymenttermf" contenteditable="true">Payment Terms:</h6>
+                    <p id="advancef" contenteditable="true">100% advance payment required.</p>
+                    <p>
+                        <span id="kindlyf" contenteditable="true">
+                            Kindly share the payment screenshot with us at
+                        </span> <a id="emailf" contenteditable="true" href="mailto:info@bsdinfotech.com">info@bsdinfotech.com</a><span id="oncef" contenteditable="true"> .Once the payment is confirmed, we will provide the dispatch details.</span>
+                    </p>
+                    <p id="choosingf" contenteditable="true">Thank you for choosing BSD InfoTech.</p>
+                    <p id="bestf" contenteditable="true">Best Regards,</p>
+                    <p id="teamf" contenteditable="true">Team BSD</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="Saveconfrimorderemailfinal(2)">Send</button>
+                    @* <button type="button" class="btn btn-secondary" onclick="openpopupedit()">Edit</button> *@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <style>
+        /* Remove border when clicking on editable text */
+        [contenteditable="true"]:focus {
+            outline: none;
+        }
+    </style>
+
+    <script src="~/js/Admin/Confirm_order.js"></script>
+    <script type="text/javascript">
+       
+    </script>
+
+</body>
+
+
+</html>
+
+
+
+
+
+

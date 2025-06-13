@@ -1,0 +1,89 @@
+﻿@model IEnumerable<BSD_ECOM.Areas.Admin.Models.Orders>
+@{
+    ViewData["Title"] = "OrdersReport";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">Orders</h3>
+                        <a href="/Admin/Admin/Orders">back <i class="fa back-top-home"></i></a>
+                        <br />
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Orders</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2 class="text-muted">
+                        Order Information <small><i class="fa fa-pencil"></i></small>
+                        <span class="pull-right">
+                        </span>
+                    </h2>
+                    <br>
+                    <div class="form-horizontal">
+                        <strong>Order Information:</strong>
+                    </div>
+                    <table id="tbl" class="table table-bordered  ">
+                            @if (Model != null)
+                                foreach (var item in Model)
+                                {
+                                    <ul id="Orders">
+
+                                        <li>
+                                           
+                                            @Html.DisplayFor(modelItem => item.order_no)
+                                        </li>
+                                        <li>
+                                            @Html.DisplayFor(modelItem => item.order_date)
+                                            <br />
+                                        </li>
+
+                                        <li>
+                                            @Html.DisplayFor(modelItem => item.UserName)
+                                        </li>
+
+                                        <li>
+                                            @*@Html.DisplayFor(modelItem => item.UserName)*@
+                                            <img id="img" src="~/images/item.itemimage" alt="your image" width="75" height="80" />
+                                        </li>
+
+                                        <li>
+                                            @Html.DisplayFor(modelItem => item.amount)
+                                        </li>
+
+                                        <li>
+                                            @Html.DisplayFor(modelItem => item.payment_mode)
+                                        </li>
+
+                                        <li>
+                                            @Html.DisplayFor(modelItem => item.itemName)
+                                        </li>
+                                    </ul>
+                                }
+                            }
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div> 
+</body>
+</html>
+
+

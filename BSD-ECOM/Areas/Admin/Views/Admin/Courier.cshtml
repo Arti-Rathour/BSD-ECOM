@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewData["Title"] = "Courier";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-full">
+            <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <h3 class="page-title">Courier</h3>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                    <li class="breadcrumb-item" aria-current="page">Courier</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Main content-->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <form action="#">
+                                    <div class="form-body">
+                                        <input type="hidden" id="ID" value="0" name="ID"/>
+                                        @*<input type="hidden" id="CompanyId" value="6" name="CompanyId" />*@
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Name</label>
+                                                    <input type="text" class="form-control" id="txtName" name="Name" placeholder="Name" />
+                                                    <div class="error"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Contact Person</label>
+                                                    <input type="text" class="form-control" id="txtContactPerson" name="Contact_Person" placeholder="Contact Person" />
+                                                    <div class="error"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Mobile Number</label>
+                                                    <input type="text" class="form-control" id="txtMobileNumber" name="MobileNumber" placeholder="Mobile Number" />
+                                                    <div class="error"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Email</label>
+                                                    <input type="text" class="form-control" id="txtEmail" name="Email"  placeholder="Email"/>
+                                                    <div class="error"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Address</label>
+                                                    <input type="text" class="form-control" id="txtAddress" name="Address" placeholder="Address" />
+                                                    <div class="error"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="font-weight-700 font-size-16">Status</label>
+                                                    <input type="checkbox" id="chkStatus" checked />Active
+                                                </div>
+                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions mt-10">
+                                        <input type="button" class="btn btn-primary" id="btnSave" onclick="Savecourier()" value="Save" />
+                                        <input type="button" class="btn btn-danger" value="Clear" onclick="clearcourierfield()" />
+                                    </div>
+                                </form>
+                                <div class="table-responsive rounded card-table">
+                                    <table id="example1" class="table border-no">
+                                        <thead>
+                                            <tr>
+                                                <th style="display:none">id</th>
+                                                <th>Name</th>
+                                                <th>Contect Person</th>
+                                                <th>Email</th>
+                                                <th>Address</th>
+                                                <th>Mobile NO</th>
+                                                <th>Status</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="tbodyData"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--/ Content-->
+        </div>
+    </div>
+    <script src="@Url.Content("~/js/Admin/Courier.js")"></script>
+    <script>
+        ShowDataInTable();
+    </script>
+</body>
+</html>

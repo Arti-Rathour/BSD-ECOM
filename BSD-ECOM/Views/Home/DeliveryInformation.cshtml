@@ -1,0 +1,40 @@
+﻿@model BSD_ECOM.ViewModel.IndexViewModel
+@{
+    ViewData["Title"] = "DeliveryInformation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="main">
+      <div class="page-header mt-30 mb-50">
+        <div class="container-fluid">
+            <div class="archive-header">
+                <div class="row align-items-center">
+                    <div class="col-xl-3">
+                        <h1 class="mb-15">Delivery Information</h1>
+                        <div class="breadcrumb">
+                            <a href="/Home/Index" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                             <span></span> Delivery Information
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="subscription">
+        <div class="container">
+            <div id="divAboutus" class="divterms">
+               
+            </div>
+            @if (Model.deliveryInfo.Count > 0)
+            {
+                @foreach (var item in Model.deliveryInfo)
+                {
+                        @Html.Raw(item.Delivery)
+                }
+            }
+
+        </div>
+    </section>
+</main>
+
